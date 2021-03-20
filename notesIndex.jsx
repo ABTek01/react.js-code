@@ -9500,6 +9500,7 @@ export default Root
 
 import React from 'react'
 import Child from './child'
+import PropTypes from 'prop-types'
 
 class Comp extends React.Component{
     //pass down state to child component.
@@ -9579,6 +9580,179 @@ class Child extends React.Component{
     }
 }
 export default Child
+
+/*
+    propTypes challenge/default props; 
+    functional component & class component based
+*/
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import Comp from './comp'
+
+function Root(){
+    return(
+        <div>
+            <Comp
+                compBGC='black'
+                compHeight={200}
+                compWidth={200}
+            />
+        </div>
+    )
+}
+export default Root
+
+import React from 'react'
+import Child from './child'
+import PropTypes from 'prop-types'
+
+function Comp(props){
+    const propStyle = {
+        backgroundColor: props.compBGC,
+        width: props.compWidth,
+        height: props.compHeight
+    }
+    return(
+        <>
+            <div style={propStyle}>
+                <Child
+                    alias = 'cyberman'
+                />
+            </div>
+            <br/>
+            <div style={propStyle}>
+                <Child
+                    language = 'cyberman'
+                />
+            </div>
+        </>
+    )
+}
+
+Comp.propTypes = {
+    compBGC: PropTypes.string,
+    compWidth:PropTypes.number.isRequired,
+    compHeight:PropTypes.number.isRequired
+}
+
+Comp.defaultProps = {
+    compBGC:'white',
+    compWidth:100,
+    compHeight: 100
+}
+export default Comp
+
+import React from 'react'
+
+function Child(props){
+    return(
+        <>
+            <h1>{props.alias}</h1>
+            <h1>{props.language}</h1>
+        </>
+    )
+}
+export default Child
+
+/*
+    default props and proptypes practice
+*/
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+
+import React from 'react'
+import PropTypes from 'prop-types'
+import Child from './child'
+
+
+function Root(){
+    return(
+        <div>
+            <Child
+                compColor=''
+                compBorder=''
+                compBGC=''
+            />
+        </div>
+    )
+}
+export default Root
+
+import React from 'react'
+import PropTypes from 'prop-types'
+
+function Comp(){
+    //no block level const style = {}
+    return(
+        <div>
+            <div // inline jsx css style
+                style={{
+                color: props.compColor,
+                border: props.compBorder,
+                backgroundColor: props.compBGC,
+            }}>
+                <Child
+                    alias = 'cyberman'
+                    language = 'javaScript'
+                />
+            </div>
+        </div>
+    )
+}
+
+//propTypes 
+Comp.propTypes = {
+    compColor: PropTypes.oneOf(['black', 'white', 'red']),
+    compBorder: PropTypes.string.isRequired,
+    compBGC: PropTypes.oneOf(['black', 'red', 'green', 'gold'])
+}
+
+Comp.defaultProps = {
+
+}
+export default Comp
+
+import React from 'react'
+
+function Child(props){
+    return(
+        <div>
+
+        </div>
+    )
+}
+export default Child
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
