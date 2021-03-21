@@ -9790,11 +9790,14 @@ function Root(){
     return(
         <>
             <DefaultDiv 
+            //style/props is applied here.
+            // text content/props can also be applied.
                 defaultBorder = 'inset 10px lightBlue'
                 defaultColor='red'
                 defaultHeight='150px'
                 defaultWidth='150px'
             >
+                <h1>Inserted Content Accepted</h1>
                 <h1>Largest Heading</h1>
                 <br/>
                 <p>This is paragraph data</p>
@@ -9837,6 +9840,62 @@ DefaultDiv.defaultProps = {
     defaultWidth: 100
 }
 export default DefaultDiv
+
+//react.js children; passing down text content/props
+//patterns; a.1, a.2, b
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import DivComp from './divcomp'
+
+function Root(){
+    return(
+        <main>
+            <DivComp>
+                <h1>React Chilren Practice</h1>
+                <p>
+                    React.js children is a good technique used for writing D.R.Y. code/reusability.
+                </p>
+            </DivComp>
+        </main>
+    )
+}
+export default Root
+
+import React from 'react'
+
+function DivComp(props){
+    return(
+        <div style = {{
+            border: '5px solid red',
+            backgroundColor:'pink',
+            height: 300,
+            width: 300,
+            color: 'black'
+        }}>
+            {/*props being passed down*/}
+            {props.children}
+        </div>
+    )
+}
+export default DivComp
+
+//js practice
+
+
+
+
+
+
+
+
 
 
 
