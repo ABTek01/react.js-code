@@ -124,7 +124,10 @@ as many iterations needed as there are (n)length values.
 
 - O(n^2); QUADRATIC time complexity; represents an algorithm whose 
 performance is directly proportional to the squared size of the (n)input data set.
-[ 1 (1 loop), 2 (2 loops), 3 (3 loops) ]
+arrayNLength = [1, 2, 3, 4, 5]; perform as many iterations on each element 
+as there are elements; total of 25 iterations.
+
+
 
 
 
@@ -132,7 +135,8 @@ performance is directly proportional to the squared size of the (n)input data se
 Mathematical Expression; Asymptotic Analysis; 
 
 - Where Big O values come from;
-study behavior of f(n) as n input length grows towards infinity.
+study behavior of function(arrayN) as arrayN 
+input length grows towards infinity.
 
 
 O(1) time complexity expressed as; 
@@ -143,9 +147,10 @@ Based on time performance, # of operations;
 speed behavior of algorithm performs 
 in CONSTANT time as input increases towards to infinity.
 
-[ can use many elementary operations on the input of the array
-    but will remain at constant time O(1) ];
-F1(arrayLength) => 1 + a[0]; looping and adding an integer to each 
+[ can use set amount of elementary operations on the input of the array
+but will remain at constant time O(1) ];
+
+function1(arrayNLength) => int + a[0]; looping and adding an integer to each 
 indexed value in an array.
 
 
@@ -157,9 +162,11 @@ Based on time performance, # of operations;
 
 speed behavior of algorithm performs
 in LINEAR time as input(n) grows closer to
-increases towards infinity. 
-Fb(arrayLength) => sum(arrayLength); Needing to traverse through all
-(n)length input values that exist or are added. Iterating
+or increases towards infinity. 
+
+function2(arrayNLength) => sum(arrayNLength);
+ Needing to traverse through all
+(arrayNLength)length input values that exist or are added. Iterating
 through an array as many times as there are (n)length input values.
 
 

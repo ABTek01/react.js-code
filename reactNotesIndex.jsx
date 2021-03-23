@@ -4537,7 +4537,7 @@ class Root extends React.Component{
                 
                 <label>
                     <input 
-                        type = "text"
+                        type = "checkbox"
                         name = 'isSysAdmin'
                         checked = {this.state.isSysAdmin}
                         onChange = {this.handleChange}
@@ -4547,7 +4547,7 @@ class Root extends React.Component{
 
                 <label>
                     <input 
-                        type = "text"
+                        type = "checkbox"
                         name = 'isNetworking'
                         checked = {this.state.isNetworking}
                         onChange = {this.handleChange}
@@ -8847,6 +8847,13 @@ export default Comp
     3. HOC
     4. render props
 
+    React children; allows component reusability 
+    and props pass down with {props.children} pattern
+    and regular props pass down patterns.
+
+    React.js HOC; allows components
+
+
 */
 
 //REACT.js BOOTCAMP
@@ -9887,7 +9894,191 @@ function DivComp(props){
 }
 export default DivComp
 
-//js practice
+//js practice; compound division operator
+
+var mathDivVar = 24
+mathDivVar /= 3
+
+//js string variables; escape string, single and double quotes.
+var myStringVar = 'new string'
+myStringVar
+
+var escapedString = 'this is an escaped \"string variable\".'
+escapedString
+
+var singleQuotes = 'This string uses "\single quotes\".'
+singleQuotes
+
+var aposterpheVar = "it\'s an aposterphe string."
+aposterpheVar
+
+var leveledEscape = "FirstLine\n\t\SecondLine\n\ThirdLine"
+leveledEscape = "FirstLine\n\SecondLine\n\ThirdLine"
+
+//js string concatenation with + operator.
+var myConCatString = 'First half. ' + 'Second half.'
+myConCatString += ' This is the third string.'
+
+//js constructing/concatenating strings with a variable.
+var myLang = 'javaScript'
+var myLangLib = 'React.js is built with '
+myLangLib += myLang
+
+//can find the length of a string; .length property.
+var stringLength = 'this string has a certain length'
+stringLength.length
+
+//find a zero-indexed character in a string using bracket notation.
+stringLength[4]
+stringLength[0]
+
+/*
+find the first indexed letter of newStringLength 
+and assign it to stringLength
+*/
+stringLength = ''
+var newStringLength = 'new string sentence'
+stringLength = newStringLength[0]
+
+/*
+string literals are immutable and cannot 
+be changed once created. But can assign
+variable a new string.
+*/
+var myGreeting = 'jyberman; react front developer'
+var trueDevAlias = 'cyberman; '
+var devLib = 'react.js'
+var devTyped = ' end '
+myGreeting = trueDevAlias + devLib + ' front' + devTyped + 'developer'
+
+
+/*
+finding the nth letter of a string;
+bracket notation.
+*/
+
+var aNewStringedName = 'alias name'
+var assignedLetter = aNewStringedName[3]
+assignedLetter
+
+/*
+    React.js reusability HOC pt.1;
+    derived from higher order functions,
+    functions taking functions as an argument.
+
+    function that takes a component as an argument
+    that is given new abilities.
+
+    A function that takes a component as its 
+    first argument and returns a new component 
+    that wraps the given component, 
+    providing extra capabilities to it.
+*/
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+//component will receive props
+import React from 'react'
+import {higherOrderComp_a} from './higherOrderComp_a'
+import {higherOrderComp_b} from './higherOrderComp_b'
+
+function Root(props){
+    return(
+        <div>
+            {props.passedDown_a}
+            {props.passedDown_b}
+        </div>
+    )
+}
+
+const AddedPropsComp_a = higherOrderComp_a(Root)
+export default AddedPropsComp_a
+
+//or
+
+const AddedPropsComp_b = higherOrderComp_b(Root)
+export default AddedPropsComp_b
+
+
+import React from 'react'
+//function that takes in a component as an argument
+//returns a new component with new abilities, can be used anywhere.
+export default function higherOrderComp_a(Component){
+    //new component returned that passes down props
+    return function(props){
+        return(
+            <div>
+                <Component 
+                    passedDown_a = 'props data'
+                />
+            </div>
+        )
+    }
+}
+
+import React from 'react'
+//function that takes in a component as an argument
+//returns a new component with new abilities, can be used anywhere.
+export default function higherOrderComp_b(Component){
+    //new component returned that passes down props
+    return function (props){
+        return(
+            <div>
+                <Component
+                    passedDown_b = 'additional new props data'
+                />
+            </div>
+        )
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
