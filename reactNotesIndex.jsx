@@ -10032,12 +10032,14 @@ export default function higherOrderComp_b(Component){
         return(
             <div>
                 <Component
-                    passedDown_b = 'additional new props data'
+                    passedDown_b = 'additional props data'
                 />
             </div>
         )
     }
 }
+
+
 
 
 
