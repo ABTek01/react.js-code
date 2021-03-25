@@ -213,7 +213,11 @@ only increases by a small amount.
 ex; sorting through an array with (n)input length.
 
 
-Data Structures; Arrays
+Data Structure; Arrays
+
+//how os memory views individual integer data.
+0 = 00000000 00000000 00000000 00000000 = 32 bit integers/4 bytes
+1 = 00000000 00000000 00000000 0000000 00000000 00000000 00000000 00000001 = 64 bit integers/ 8 bytes
 
 - The most fundamental ds in algorithms
 and data structures.
@@ -223,14 +227,89 @@ within memory slots; bit data is held
 in specific number of slots.
 
 - Types of arrays; 
-static & dynamic arrays.
-static array; fixed number of memory slots, specified length.
-common operations; accessing index of value in array.
+Static & Dynamic arrays.
 
-array = [0, 1, 2, 3]
-readArrayIndex([3]) = 3; finding an indexed element.
+Static array; fixed number of memory slots, specified length.
+
+specify length of an array and allocated memory 
+slots & do not change; common languages; python, js
+
+a. common operations; access elements in an array at a given index.
+array = [1, 2, 3]
+array[1] = 3; finding an indexed element = O(1)constant time/instant,
+O(1) constant space/instant, not using up any more space slots.
+
+a. operation; OS finds beginning of array memory address, 
+counts bytes, ids indexed element, multiplies the 0-index 
+element and the amount of bytes needed.
+
+b. common operation; overwrite/set an element at an index;
+array = [1, 2, 3]
+array[0] = 5; 
+O(1) constant time; operation is independent of array length.
+O(1) constant space instant; operation not using up any more 
+memory slots, remains fixed as n increases.
+
+c. common operation; init/initialize an array, first stores it in memory.
+initial length; array.length() = n. 
+O(8 x n)/O(n) linear time/operation on elements grow linearly as n grows.
+O(8 x n)/O(n) linear space/operation allocates memory linearly as n grows.
+
+
+d. common operation; simple traversing/loop through an array.
+O(n) linear time/looping over every element operation, 
+as n grows towards infinity.
+O(1) space/not using any other memory.
+
+e. common operation; copy/map an array.
+O(n) time/operation loops over every array element.
+O(n) space/operation allocates the same amount of memory.
+
+f. common operation; inserting a value in an array, beginning, middle, end.
+array = [1, 2, 3] insert 5 any place in the array.
+copies array then allocates a new set of memory slots plus 1.
+
+within static arrays fixed;
+O(n) linear time/operation is performed on all elements as n increases to infinity.
+O(1) constant space/operation allocates a new set of memory slots which is independent
+of the length/instant.
+
+within dynamic arrays;
+change in size, allows faster insertions at end of array.
+may allocate double the amount of space needed.
+
+static array; array = [1, 2, 3]
+dynamic array; array = [1, 2, 3,_ , _, _]
+O(1) time/operation perform many constant time insertions; amortized analysis.
+O(1) space/operation automatically allocates 
+linear operations become insignificant.
+
+g. common operations; pop()/remove an element at the end of array.
+O(1) time/instant/operation happened once on an element.
+O(1) space/instant/operation frees up space in memory.
+O(n) time/space to pop()/remove and element from the middle of an array.
+array == queue; when trying to remove an element from the beginning of an array.
+O(n) time/space to add an element in the middle of an array.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 dynamic array; 
+
 
 - common array operation;
 

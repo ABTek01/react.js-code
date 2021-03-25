@@ -10041,6 +10041,156 @@ export default function higherOrderComp_b(Component){
 
 
 
+//js review; returning the last letter, Nth letter in a string.
+var stringedName = 'cyberman'
+var lastLetter = stringedName[stringedName.length - 1]
+lastLetter
+
+stringedName = 'cyberman dev'
+var indexedLetter = stringedName[stringedName.length - 4]
+//stringedName.length = 12; 12 - 4 = 8
+indexedLetter//returns 8th indexed string character.
+
+//js mad libs word game; filling in the blank spaces with variables
+var noun = 'programmer'
+var verb = 'typed'
+var adjective = 'front end'
+var adVerb = 'urgently'
+var myString = 'The ' + adjective + ' ' + noun + ' ' + adVerb + ' ' + verb + ' a new string.'
+
+//js arrays
+var myArray = [1, 'javaScript']
+/*
+    js nested arrays/multi dimensional array;
+    an array of arrays.
+*/
+var nestedArray = [
+    ['html5', 'css3'], 
+    ['javaScript', 'react.js']
+]
+//access array data with bracket notation.
+var nestedData = nestedArray[0]
+//modify array data with indexes
+nestedArray[0] = ['jsx', 'css objects']
+
+//accessing multi-dimensional arrays with indexes.
+var nestedIndices = nestedArray[1][1]
+
+//modify arrays with .push() method
+nestedArray.push(['redux', 'node.js'])
+//finding the length of an array.
+nestedArray.length
+
+/*
+    remove the last element 
+    from an array with .pop() method; 
+    returns the last removed item from an array.
+*/
+
+var newNestedArray = [
+    ['front end development', 'javaScript runtime'],
+    ['react.js', 'node.js']
+]
+var lastItemRemoved = newNestedArray.pop()
+
+/*
+    remove the first element 
+    from an array with .shift() method; 
+    returns the first removed item from an array.
+*/
+var firstItemRemoved = newNestedArray.shift()
+
+/*
+    add the first element 
+    to an array with .unshift() method; 
+    adds the first item from an array.
+*/
+
+newNestedArray.unshift([
+    'user interface development', 
+    'run js apps outside a browser'
+])
+
+//nested-array shopping list
+var technologyListArray = [
+    ['html version;', 5],
+    ['css version;', 3],
+    ['javaScript version;', 7],
+    ['react.js version;', 17]
+]
+
+//functions; create and invoke/call a function with functionName()
+function aNewFunction(){
+    console.log('a new finction has been invoked.')
+}
+aNewFunction()
+
+//passing values to functions as arguments.
+function addTwoNums(numA, numB){
+    return numA + numB
+}
+addTwoNums(1, 2)
+
+/*
+    global vs local variables;
+    global: can be seen by the whole
+    program, local; can only be see from within 
+    a function.
+*/
+
+var globalVar = 6
+function programFunction(localVar){
+    globalVar > localVar ? console.log(true) 
+    : console.log(false)
+}
+programFunction(5)
+
+//local scope & functions
+function localFunction(){
+    var localVar = true
+    console.log('inside of global function: ' + localVar)
+}
+localFunction()
+
+/*
+    global vs local inside functions; variables with same names
+    local scope will be priority over global scoped functions.
+*/
+var scopedVar = 'global scoped'
+function scopedFunction(){
+    var scopedVar = 'local scoped'
+    return scopedVar
+}
+scopedFunction()
+
+//arrays are 0-indexed
+const constArray = [0, 1, 2, 3]
+constArray[3]//returns 3
+
+
+//react.js HOC continued;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
