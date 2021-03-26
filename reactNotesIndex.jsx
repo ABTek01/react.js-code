@@ -10017,6 +10017,7 @@ export default function higherOrderComp_a(Component){
             <div>
                 <Component 
                     passedDown_a = 'props data'
+                    {...props}
                 />
             </div>
         )
@@ -10033,6 +10034,7 @@ export default function higherOrderComp_b(Component){
             <div>
                 <Component
                     passedDown_b = 'additional props data'
+                    {...props}
                 />
             </div>
         )
@@ -10168,7 +10170,170 @@ const constArray = [0, 1, 2, 3]
 constArray[3]//returns 3
 
 
-//react.js HOC continued;
+/*
+    react.js HOC continued; build an app that uses 
+    HOC logic throughout its components.
+*/
+import React from 'react'
+
+class Toggler extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            on: false
+        }
+        this.toggle = this.toggle.bind(this)
+    }
+    toggle(){
+        this.setState(prevState=>{
+            return {
+                on: !prevState.on
+            }
+        })
+    }
+
+    render(){
+        const Component = this.props.component
+        return (
+             <Component
+                on={this.state.on}
+                toggle={this.toggle}
+                {...this.props}
+             />
+        )
+    }
+}
+
+export function higherOrderFun(component){
+    return function(props){
+        return(
+            <Component
+                component={component}
+                {...props}
+            />
+        )
+    }
+}
+
+import React from 'react'
+import {higherOrderFun} from './higherorderfun'
+// component toggles ui data.
+class Menu extends React.Component{
+    render(){
+        <div>
+            <button onClick={this.props.toggle}>
+                {/*conditional rendering */}
+                {this.props.on ? 'Hide Menu' : 'Show Menu'}
+            </button>
+            <nav style={{display: this.props.on ? 'block' : 'none'}}>
+                <ol>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JS</li>
+                    <li>React.JS</li>
+                    <li>Redux</li>
+                </ol>
+            </nav>
+        </div>
+    }
+}
+const superChargedMenu = higherOrderFun(Menu)
+export default superChargedMenu
+
+import React from 'react'
+import {higherOrderFun} from './higherorderfun'
+
+class Favorite extends React.Component{
+    render(){
+        return(
+            <div>
+                <h3>Click to favorite</h3>
+                <span onClick={this.props.toggle}>
+                    {this.props.on ? '*' : ''}
+                </span>
+            </div>
+        )
+    }
+}
+const superChargedFavorite = higherOrderFun(Favorite)
+export default superChargedFavorite
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+
+function App(){
+    return(
+        <div>
+            <Menu/>
+            <Incrementer/>
+        </div>
+    )
+}
+export default App
+
+import React from 'react'
+
+class Incrementer extends React.Component{
+    state = {
+        int:0
+    }
+
+    increment = () => {
+        this.setState(prevState =>{
+            return {
+                int: prevState.int += 1
+            }
+        })
+    }
+
+    render(){
+        const Component = this.props.component
+        return(
+            <div>
+                <Component
+                    //comes from state object/property.
+                    int = {this.state.int}
+                    increament = {this.increment}
+                    {...this.props}
+                />
+            </div>
+        )
+    }
+}
+
+export function superPoweredFun(component){
+    return function (props){
+        return (
+            <div>
+                <Component
+                    component={component}
+                    {...props}
+                />
+            </div>
+        )
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
