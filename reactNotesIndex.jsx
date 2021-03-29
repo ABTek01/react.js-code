@@ -10207,7 +10207,7 @@ class Toggler extends React.Component{
 export function higherOrderFun(component){
     return function(props){
         return(
-            <Component
+            <Toggler
                 component={component}
                 {...props}
             />
@@ -10278,17 +10278,26 @@ function App(){
 }
 export default App
 
-import React from 'react'
+import React, {Component} from 'react'
 
-class Incrementer extends React.Component{
+class ExtendedLogic extends Component{
     state = {
-        int:0
+        int:0,
+        on: false
     }
 
     increment = () => {
         this.setState(prevState =>{
             return {
-                int: prevState.int += 1
+                int: prevState.int ++
+            }
+        })
+    }
+
+    toggle = () => {
+        this.setState(prevState=>{
+            return{
+                on: !prevState.on
             }
         })
     }
@@ -10296,23 +10305,24 @@ class Incrementer extends React.Component{
     render(){
         const Component = this.props.component
         return(
-            <div>
-                <Component
-                    //comes from state object/property.
-                    int = {this.state.int}
-                    increament = {this.increment}
-                    {...this.props}
-                />
-            </div>
+            <Component
+                //comes from state object/property.
+                on = {this.state.on}
+                int = {this.state.int}
+                increament = {this.increment}
+                toggle = {this.toggle}
+                //props applied to be passed down.
+                {...this.props}
+            />
         )
     }
 }
 
-export function superPoweredFun(component){
+export function extendedFun(component){
     return function (props){
         return (
             <div>
-                <Component
+                <ExtendedLogic
                     component={component}
                     {...props}
                 />
@@ -10320,6 +10330,168 @@ export function superPoweredFun(component){
         )
     }
 }
+
+
+import React, {Component} from 'react'
+import {extendedFun} from './extendedFun'
+
+class Menu extends Component{
+    render(){
+        return(
+            <div>
+                {/*method passed down from props is applied*/}
+                <button onClick={this.props.toggle}>
+
+                {/*state/props passed down is evaluated*/}
+                    {this.props.on ? 'Hide Menu' : 'Show Menu'}
+                </button>
+                {/*state/props passed down is evaluated*/}
+                <nav style={{display: this.props.on ? 'block' : 'none'}}>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                        <li>Item 3</li>
+                        <li>Item 4</li>
+                    </ul>
+                </nav>
+            </div>
+        )
+    }
+}
+const superCharedMenu = extendedFun(Menu)
+export default superCharedMenu
+
+
+import React from 'react'
+
+class Counter extends React.Component{
+    render(){
+        return(
+            <div>
+                <h1>{this.props.int}</h1>
+                <button onClick={this.props.increment}>
+                    Click to increment
+                </button>
+            </div>
+        )
+    }
+}
+const superChargedCounter = extendedFun(Counter)
+export default superChargedCounter
+
+/*
+React.js HOCs; create an application that 
+changes ui color based on a click of a button
+with different text on the page.
+*/
+<!DOCTYPE html>
+<html>
+    <head>
+        <body>
+            <div id='root'></div>
+        </body>
+    </head>
+</html>
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React, {Component} from 'react'
+class Transformer extends Component{
+    state = {
+        conversion:false,
+        uiData_0: 'cyberman',
+        uiData_1: 'aaron bevans'
+    }
+
+
+        handleConversion =()=>{
+            this.setState(prevState =>{
+                return {
+                    conversion: !prevState.conversion
+                }
+            })
+        }
+
+    // method that allows input forms to be changed.
+    // handleChange(){
+    //     const {name, type, value, checked} = event.target
+    //     type === 'checkbox' ? {[name]: value} : {[name]:checked}
+    // }
+
+    render(){
+        const ComponentProps = this.props.componentProps
+        return (
+            <>
+                <ComponentProps
+                    conversion={this.state.conversion}
+                    uiData_0 = {this.state.uiData_0}
+                    uiData_1 = {this.state.uiData_1}
+                    handleConversion={this.handleConversion}
+                    {...this.props}
+                />
+            </>
+        )
+    }
+}
+
+export function extendedTransformer(ComponentProps){
+    return function(props){
+        return (
+            <>
+                <Transformer
+                    componentProps={componentProps}
+                    {...props}
+                />
+            </>
+        )
+    }
+}
+
+import React,{Component} from 'react'
+import {extendedTransformer} from './extendedtransformer'
+class MetamorphicComp extends Component{
+    render(){
+        return(
+            <div>
+                <button onClick={this.props.handleConversion}>
+                    Click to convert display.
+                </button>
+                {/* conditional rendering based on state */}
+                {
+                    this.props.conversion ? <div>
+                    <h1>{this.props.uiData_0}</h1></div>
+                    :
+                    <div>
+                        <h1>{this.props.uiData_1}</h1>
+                    </div>
+                }
+            </div>
+        )
+    }
+}
+const superCharedUi = extendedTransformer(MetamorphicComp)
+export default superCharedUi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

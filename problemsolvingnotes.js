@@ -240,8 +240,11 @@ array[1] = 3; finding an indexed element = O(1)constant time/instant,
 O(1) constant space/instant, not using up any more space slots.
 
 a. operation; OS finds beginning of array memory address, 
-counts bytes, ids indexed element, multiplies the 0-index 
+counts bytes, ids indexed element, multiplies the 0-indexed
 element and the amount of bytes needed.
+array = [1, 2, 3] operation => array[2]; 2 x 8  = finds indexed element 
+at 16th consecutive memory slot = 3 in array.
+
 
 b. common operation; overwrite/set an element at an index;
 array = [1, 2, 3]
@@ -351,6 +354,89 @@ take O(1) constant since space is already available.
 pop array index from the end of array;
 O(1) space & time complexity.
 
+Linked Lists; similar to arrays
+read from left to right.
+
+Implemented by connection of numbers 
+stored at any slot in memory that
+use nexts. 
+
+nexts; point to other memory slots
+by referring memory address.
+
+node + next/memory address => node in memory slot.
+used because node slots may be taken by another element.
+
+space/time complexity; linked lists
+
+common operations; getting/setting an element in memory.
+head/node - beginning of list.
+
+get;
+traverse through the whole linked-list/O(i) => time;
+traversing through all elements to find ith element.
+set;
+traverse through the whole linked-list & swapping out an element/O(i) => time;
+no more space is being allocated/O(1) => space.
+
+common operations; initializing a linked list
+allocating memory & next operation speed grows 
+as n grows O(2 * n)/O(n) linearly in time.
+allocating memory grows linear as n grows/O(n) linearly in memory.
+
+common operations; copying a linked list
+traverse then allocating memory; O(2 * n)/O(n) linear
+time of operation grows linearly as n grows towards infinity.
+allocation of memory continues to grows O(n) linearly as n grows
+towards infinity.
+
+common operations; insertion/deleting an element from 
+a linked list.
+add element to beginning of the link-list operation/O(1) time
+one operation independent of linked-list(n) length.
+
+add element to end/tail of the linked-list with reference to tail O(1) time.
+add element to end/tail of the linked-list with no reference to tail O(n)linear time,
+need to traverse through the whole linked-list and add more space. O(i) time/O(n)space grows linearly.
+
+common operations; traverse through a linked list
+operation grows linearly in time as linked-list(n) grows/O(n) linear.
+traverse through an array remains constant, no added 
+memory to linked-list(n) length/O(1) constant memory.
+
+
+singly linked-list; one link between two values.
+[head/3] => next => [1] => next => [4] => next => [2] => [null/tail node]
+[head/3] => next => [1] => next => [4] => next => [2] (no tail node)
+
+doubly linked-list; every node has two next/pointer(s).
+[null] <= [3] prev, next =>(null, 1), [1]  prev, next =>(3, 4), [4] prev, next =>(1, 2), [2]  prev, next => =>(4, null) => [null]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -381,7 +467,7 @@ Focus on that one language.
 - Take interview prep to the next level.
 
 - Learning to prepare for coding interviews
-stretegically.
+strategically.
 
 - Mistakes; 
 
@@ -410,12 +496,12 @@ Solutions to mistakes;
 
 1. do not need to be fluent in a language
 just need to communicate problem solving that leads 
-to soluton
+to solution
 
 2. focus on the right things/ narrow down 
 to the right things. 
 
-stretegic undertanding and problem solving,
+strategic understanding and problem solving,
 not memorizing solutions.
 
 study consistently; study less everyday
@@ -427,9 +513,11 @@ to retain more information.
 
 
 
-- goal; study stretegically
+- goal; study strategically
 - goal; minimum work to pass interview
 - goal; land a job
+
+
 
 
 
