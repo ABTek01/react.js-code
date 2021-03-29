@@ -10464,6 +10464,7 @@ class MetamorphicComp extends Component{
                 </button>
                 {/* conditional rendering based on state */}
                 {
+                    // style each ui.
                     this.props.conversion ? <div>
                     <h1>{this.props.uiData_0}</h1></div>
                     :
