@@ -8849,9 +8849,37 @@ export default Comp
 
     React children; allows component reusability 
     and props pass down with {props.children} pattern
-    and regular props pass down patterns.
+    and regular props pass down style patterns.
 
-    React.js HOC; allows components
+    React.js HOC; a function that passes down
+    reusable logoic from a parent component to 
+    child components within an app. 
+````HOC returns a function that returns a ui and 
+    passed down props/state. The function takes a component
+    as a parameter and argument then is invoked allowing the 
+    children components special abilities.
+
+React.js render props; 
+key notes;
+callbacks - A callback is a 
+function passed as an argument to another function.
+function will be activated when outter
+function is called.
+
+buit in js methods - can take in 
+callbacks and other parameters.
+
+Render Props;
+
+"Is A component with a render={} prop takes a
+function that returns a React element and 
+calls it instead of implementing its own render logic."
+Functions are a valid argument for functions in Javascript 
+and work because they are passed down as props. 
+
+
+
+
 
 
 */
@@ -10457,6 +10485,16 @@ import React,{Component} from 'react'
 import {extendedTransformer} from './extendedtransformer'
 class MetamorphicComp extends Component{
     render(){
+        const styleA = {
+            border: '5px solid blue',
+            backgroundColor: 'lightBlue',
+            color: 'white'
+        }
+        const styleB = {
+            border: '5px solid red',
+            backgroundColor: 'pink',
+            color: 'white'
+        }
         return(
             <div>
                 <button onClick={this.props.handleConversion}>
@@ -10465,11 +10503,23 @@ class MetamorphicComp extends Component{
                 {/* conditional rendering based on state */}
                 {
                     // style each ui.
-                    this.props.conversion ? <div>
-                    <h1>{this.props.uiData_0}</h1></div>
+                    this.props.conversion ? 
+                    <div style={styleA}>
+                        <h1>
+                            Blue User Interface 
+                        </h1>
+                        <main>
+                            <h2>{this.props.uiData_0}</h2>
+                        </main>
+                    </div>
                     :
-                    <div>
-                        <h1>{this.props.uiData_1}</h1>
+                    <div style={styleB}>
+                        <h1>
+                            Red User Interface 
+                        </h1>
+                        <main>
+                            <h2>{this.props.uiData_1}</h2>
+                        </main>
                     </div>
                 }
             </div>
@@ -10478,6 +10528,358 @@ class MetamorphicComp extends Component{
 }
 const superCharedUi = extendedTransformer(MetamorphicComp)
 export default superCharedUi
+
+/*
+React.js Render Props; 
+
+function gets passed down and 
+invoked within a functional component.
+Acts as outside render logic instead of using
+its own render logic.
+*/
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import DevAliasUi from './devaliasui'
+function Root(props){
+    return (
+        <div>
+            <DevAliasUi 
+            render ={
+                function (alias, devType){
+                    return (
+                        `${alias} specializes in ${devType} development`
+                    )
+                }
+            }/>
+        </div>
+    )
+}
+export default Root
+
+import React from 'react'
+function DevAliasUi(props){
+    return(
+        <h1>{
+        props.render(
+        'cyberman', 
+        'user interface'
+        )
+            }
+        </h1>
+    )
+}
+export default DevAliasUi
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import ChildRender from './childrender'
+function Root(){
+    return(
+    <div>
+        <ChildRender
+            render={
+                (num1, num2)=>{
+                    return (
+                        `${num1 + num2}`
+                    )
+                }
+            }
+        />
+    </div>
+    )
+}
+export default Root
+
+import React from 'react'
+function ChildRender(props){
+    return(
+        <div>
+            <h1>{props.render(5, 7)}</h1>
+        </div>
+    )
+}
+export default ChildRender
+
+/*
+react.js render props continued;
+
+applying render props to HOC toggle
+component example.
+
+use render props over HOCs.
+
+react.js render props pattern a, pattern b
+
+*/
+
+//react.js render props pattern_a
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import SubscriptionUi from './subscriptionui'
+
+//import and render both signup and login components
+function Root(){
+    return(
+        <div>
+            <SubscriptionUi/>
+        </div>
+    )
+}
+export default Root
+
+import React, {Component} from 'react'
+class Toggler extends Component{
+    state = {
+        on: this.props.defaultOnValue
+    }
+
+    //static/read only props, mimic passed down props.
+    static defaultProps = {
+        defaultOnValue: false
+    }
+
+    toggle=()=>{
+        this.setState(prevState=>{
+            on: !prevState.on
+        })
+    }
+
+    handleChange =()=>{
+
+    }
+
+    render(){
+        return(
+            <div>
+                {/*Toggle component passes down state and method as props */}
+                <h1>
+                    {
+                        /*
+                            obj/obj.des used if there are multiple 
+                            states/props, methods to be passed down.
+                        */
+                        this.props.render({
+                            on: this.state.on,
+                            toggle: this.toggle
+                        })
+                    }
+                </h1>
+            </div>
+        )
+    }
+}
+export default Toggler
+
+//sign up component
+import React from 'react'
+import Toggler from './toggler'
+function SubscriptionUi(props){
+    return(
+        <div>
+            <Toggler
+                defaultOnValue={true}
+                render={
+                        /*
+                            obj/obj.des used if there are multiple 
+                            states/props, methods to be passed down.
+                        */
+                    ({on, toggle})=>(
+                        <div>
+                            {/*
+                                component should default to 
+                                a sign-up ui with a log in button
+                                that clicks over to log in page
+                                when clicked vice-versa.
+                            */}
+                            <button onClick={toggle}>
+                                Click to access log in page.
+                            </button>
+                            {
+                                on ? 
+                                <div>
+                                    {/*sign in ui */}
+                                </div>
+                                :
+                                <div>
+                                    {/*log in ui */}
+                                </div>
+                            }
+                        </div>
+                    )
+                }
+            />
+        </div>
+    )
+}
+export default SubscriptionUi
+
+
+
+
+//react.js render props pattern_b
+import React from 'react'
+import ReactDOM from './react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+
+import React from './react'
+import SubscriptionUi from './subscriptionui'
+import Toggler from './toggler'
+
+function Root(){
+    return(
+        <div>
+            <Toggler
+                defaultOnValue={true}
+                render={
+                    /*
+                        obj, obj/des used in case of 
+                        multiple props and methods 
+                        to be passed down.
+                    */
+                    ({ on, toggle })=>(
+                        <SubscriptionUi
+                            on={on}
+                            toggle={toggle} />
+                    )
+                }/>
+        </div>
+    )
+}
+export default Root
+
+
+//toggler component
+import React from 'react'
+class Toggler extends React.Component{
+    state = {
+        on: this.props.defaultOnValue
+    }
+
+    static defaultProps = {
+        defaultOnValue: false
+    }
+
+    toggle=()=>{
+        this.setState(prevState=>{
+
+        })
+    }
+    render(){
+        return(
+            <div>
+                {this.props.render({
+                    on: this.state.on, 
+                    toggle: this.toggle
+                })}
+            </div>
+        )
+    }
+}
+export default Toggler
+
+//subscriptionui component with toggler.render() function.
+import React from 'react'
+import Toggler from './toggler'
+
+function SubscriptionUi(props){
+    return(
+        <div>
+            {
+                props.on ? '' : ''
+            }
+            <button onClick={props.toggle}>
+                {
+                    props.on ? 'Sign Up' : 'Log In'
+                }
+            </button>
+        </div>
+    )
+}
+export default SubscriptionUi
+
+
+
+
+
+//react.js render props pattern_c; react children.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+
+ReactDOM.render(
+    <Root/>,
+        document.getElementById('root')
+)
+
+import React from 'react'
+import Toggler from './toggler'
+import SubscriptionUi from './subscriptionui'
+
+function Root(){
+    retur(
+        <div>
+            <Toggler defaultOnValue={true}>
+                {
+                    ({on, toggle})=>{
+                        return (
+                            <SubscriptionUi 
+                            on={on}
+                            toggle={toggle}
+                            />
+                        )
+                    }
+                }
+            </Toggler>
+        </div>
+    )
+}
+export default Root
+
+//subscriptionui component
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
