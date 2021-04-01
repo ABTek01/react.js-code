@@ -10826,6 +10826,10 @@ export default SubscriptionUi
 
 
 //react.js render props pattern_c; react children.
+/*
+toggler component lives within render/privides
+function, props.
+*/
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from 'root'
@@ -10839,8 +10843,9 @@ import React from 'react'
 import Toggler from './toggler'
 import SubscriptionUi from './subscriptionui'
 
+
 function Root(){
-    retur(
+    return(
         <div>
             <Toggler defaultOnValue={true}>
                 {
@@ -10859,7 +10864,86 @@ function Root(){
 }
 export default Root
 
+import React from 'react'
+class Toggler extends React.Component{
+    state = {
+        on: this.props.defaultOnValue
+    }
+
+    static defaultProps = {
+        defaultOnValue: false
+    }
+
+    toggle=()=>{
+        this.setState(prevState => ({on: !prevState.on}))
+    }
+    
+    render(){
+        return(
+            <div>
+                {this.props.children({
+                    on: this.state.on, 
+                    toggle: this.toggle
+                })}
+            </div>
+        )
+    }
+}
+export default Toggler
+
+
+
 //subscriptionui component
+import React from 'react'
+import Toggler from './toggler'
+
+function SubscriptionUi(props){
+    return(
+        <div>
+            {/*ui changes based on the current value of state.*/}
+            <h1>{
+                props.on ? 
+                <div>
+                    <h1>Log In Page</h1>
+                    <form>
+                        <input
+                            type = 'text'
+                            name = 'logIn'
+                            placeholder = 'Log In'
+                            //userName would be a props/state value
+                            value = {props.userName}
+                            onChange={props.handleChange}
+                        />
+                    </form>
+                </div>
+
+                : 
+
+                <div>
+                    <h1>Sign Up Page</h1>
+                    <form>
+                        <input
+                            type = 'text'
+                            name = 'signUp'
+                            placeholder = 'Sign Up'
+                            //firstName would be a props/state value
+                            value = {props.firstName}
+                            onChange={props.handleChange}
+                        />
+                    </form>
+                </div>
+            }</h1>
+
+            {/* //btn text changes based on the current value of state. */}
+            <button onClick={props.toggle}>
+                {
+                    props.on ? 'Sign Up' : 'Log In'
+                }
+            </button>
+        </div>
+    )
+}
+export default SubscriptionUi
 
 
 
