@@ -10945,6 +10945,266 @@ function SubscriptionUi(props){
 }
 export default SubscriptionUi
 
+//react.js render props pattern_a
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import DevData from './devdata'
+
+const Root = () =>
+    <div>
+        <DevData/>
+    </div>
+export default Root
+
+import React from 'react'
+
+class Toggler extends React.Component{
+    state = {
+        on: this.props.defaultOnValue,
+        alias: 'cyberman',
+        devType: 'user interface development',
+        devLanguage: 'javaScript',
+        library: 'react.js',
+        stateManagement: 'redux',
+        devMethod: 'd.r.y.: render props patterns'
+    }
+
+    static defaultOnValue = {
+        defaultOnValue: false
+    }
+
+    toggle =()=>{
+        this.setState(prevState=>{
+            return{
+                on: !prevState.on
+            }
+        })
+    }
+
+    render(){
+        return(
+            <div>
+                {this.props.render({
+                    on: this.state.on,
+                    alias: this.state.alias,
+                    devType: this.state.devType,
+                    devLanguage: this.state.devLanguage,
+                    library: this.state.devLibrary,
+                    stateManagement: this.state.stateManagement,
+                    devMethod: this.state.devMethod,
+                    toggle: this.toggle
+                })}
+            </div>
+        )
+    }
+}
+export default Toggler
+
+import React from 'react'
+import Toggler from './toggler'
+function DevData(){
+    return(
+        <div>
+            <Toggler 
+                defaultOnValue={true}
+                render={
+                    function(obj){
+                        return(
+                            <div>
+                                <span onClick={toggle}>
+                                    {
+                                        on ? 'Hide Developer Data'
+                                        : 'Show Developer Data'
+                                    }
+                                </span>
+                                <br/>
+                                <div 
+                                    style={
+                                        {// conditional rendering and styling
+                                            display: on ? 'block' : 'none',
+                                            border: 'solid 5px black',
+                                            borderRadius:20,
+                                            padding: 10,
+                                            margin: '0 auto',
+                                            textAlign: 'center'
+                                        }
+                                    }>
+                                    <ul>
+                                        <li>{alias}</li>
+                                        <li>{devType}</li>
+                                        <li>{devLanguage}</li>
+                                        <li>{library}</li>
+                                        <li>{stateManagement}</li>
+                                        <li>{devMethod}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )
+                    }
+                }/>
+        </div>
+    )
+}
+export default DevData
+
+//react.js render props pattern_b
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import Toggler from './toggler'
+import DevData from './devdata'
+function Root(){
+    return(
+        <div>
+            <Toggler
+                defaultOnValue={true}
+                render={
+                    (obj) =>
+                    <DevData
+                        on={on}
+                        toggle={toggle}
+                        alias={alias}
+                        devType={devType}
+                        devLanguage={devLanguage}
+                        devMethod={deMethod}
+                        library={library}
+                        stateManagement={stateManagement}
+                    />
+                }
+            />
+        </div>
+    )
+}
+export default Root
+
+import React from 'react'
+
+class Toggler extends React.Component{
+    state = {
+        on: this.props.defaultOnValue,
+        alias:'cyberman',
+        devType:'user interface development',
+        devLangauge: 'javaScript',
+        devMethod:'d.r.y.: render props',
+        stateManagement:'redux',
+        library:'react.js'
+    }
+
+    static defaultOnValue = {
+        defaultOnValue: false
+    }
+
+    toggle =()=>{
+        this.setState(prevState=>{
+            return{
+                on:!prevState.on
+            }
+        })
+    }
+
+    render(){
+        return(
+            <div>
+                {this.render({
+                    on:this.state.on,
+                    toggle: this.toggle,
+                    alias:this.state.alias,
+                    devType:this.state.devType,
+                    devLanguage: this.state.devLanguage,
+                    devMethod:this.state.devMethod,
+                    library:this.state.library,
+                    stateManagement:this.state.stateManagament
+                })}
+            </div>
+        )
+    }
+}
+export default Toggler
+
+import React from 'react'
+import Toggler from './toggler'
+function DevData(props){
+    return(
+        <div>
+            <span onClick={props.toggle}>
+                {props.on ? 'Hide Developer Data' 
+                    : 'Show Developer Data'}
+            </span>
+            <hr/>
+            <div style={{
+                display: props.on ? 'block' : 'none'
+            }}>
+                <ul>
+                    <li>{props.alias}</li>
+                    <li>{props.devType}</li>
+                    <li>{props.devLanguage}</li>
+                    <li>{props.devMethod}</li>
+                    <li>{props.library}</li>
+                    <li>{props.stateManagement}</li>
+                </ul>
+            </div>
+        </div>
+    )
+}
+export default DevData
+
+//react.js render props pattern_c; 
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import DevData from './devdata'
+import Toggler from './toggler'
+
+function Root(){
+    return(
+        <>
+            <Toggler defaultOnValue={true}>
+                {
+                    ({on, toggle})=>{
+                        return(
+                            <DevData
+                                on={on}
+                                toggle={toggle}
+                                alias={alias}
+                                devLanguage={devLanguage}
+                                devMethod={devMethod}
+                                library={library}
+                                toggle={toggle}
+                            />
+                        )}
+                }
+            </Toggler>
+        </>
+    )
+}
+export default Root
+
+//devdata component.
+
+
+
+
 
 
 
