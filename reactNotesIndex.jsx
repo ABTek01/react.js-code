@@ -11330,7 +11330,47 @@ export function higherOrderFun(component){
 }
 
 
-//render props patterns; a, b, c
+//react.js; hoc pattern b.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import {} from './'
+function Root(props){
+    return(
+        <div>
+            <h1>{props.obj.data}</h1>
+        </div>
+    )
+}
+
+
+import React from 'react'
+export function higherPowered(component){
+    const Component = component
+    return function(props){
+        return(
+            <>
+                <Component
+                    obj={{data:'user interface development'}}
+                    {...props}
+                />
+            </>
+        )
+    }
+}
+
+//react.js; render props + api challange.
+
+
+
+//render props patterns; a, b
 //pattern a
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -11392,6 +11432,7 @@ function DevComponent(){
 export default DevComponent
 
 //pattern b
+
 
 
 
