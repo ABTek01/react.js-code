@@ -5,7 +5,17 @@ in order to style with css.
 
 inline styles allows html elements to be 
 css styled within their tag/style attribute.
+
+font-size - sets the font size; e.g. px - pixels
+color - changes the text color
+background-color - sets the background color
+text-align - aligns text to left, center or right
+hex - hexadecimal values #7ab0fb
+rgb - red green blue rgb(0, 0, 0)
+hsl - hue, saturation, lightness hsl(100, 200%, 300%)
 */
+
+
 
 
 

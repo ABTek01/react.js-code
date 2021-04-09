@@ -11131,7 +11131,7 @@ class Toggler extends React.Component{
     render(){
         return(
             <div>
-                {this.render({
+                {this.props.render({
                     on:this.state.on,
                     toggle: this.toggle,
                     alias:this.state.alias,
@@ -11202,6 +11202,7 @@ function Root(){
                                 devLanguage={devLanguage}
                                 devMethod={devMethod}
                                 library={library}
+                                {...props}
                             />
                         )}
                 }
@@ -11210,6 +11211,48 @@ function Root(){
     )
 }
 export default Root
+//create a toggler component
+class Toggler extends React.Component{
+    state = {
+        on: this.props.defaultOnValue,
+        alias:'cyberman',
+        devType:'user interface development',
+        devLangauge: 'javaScript',
+        devMethod:'d.r.y.: render props',
+        stateManagement:'redux',
+        library:'react.js'
+    }
+
+    static defaultOnValue = {
+        defaultOnValue: false
+    }
+
+    toggle =()=>{
+        this.setState(prevState=>{
+            return{
+                on:!prevState.on
+            }
+        })
+    }
+
+    render(){
+        return(
+            <div>
+                {this.props.render({
+                    on:this.state.on,
+                    toggle: this.toggle,
+                    alias:this.state.alias,
+                    devType:this.state.devType,
+                    devLanguage: this.state.devLanguage,
+                    devMethod:this.state.devMethod,
+                    library:this.state.library,
+                    stateManagement:this.state.stateManagament
+                })}
+            </div>
+        )
+    }
+}
+export default Toggler
 
 //devdata component.
 import React from 'react'
@@ -11403,8 +11446,7 @@ class SuperPowers extends React.Component{
     render(){
         return(
             <div>
-                {
-                    this.render(
+                {this.props.render(
                         this.state.devAlias, 
                         this.state.devType
                     )}
@@ -11432,6 +11474,424 @@ function DevComponent(){
 export default DevComponent
 
 //pattern b
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import FunctionalLogic from 'functionalLogic'
+import DeveloperComponent from './developercomponent'
+function Root(){
+    return(
+        <div>
+            <FunctionalLogic
+                render={
+                    ({favLanguage, currentLibrary})=>(
+                        <DeveloperComponent
+                            favLanguage={favLanguage}
+                            currentLibrary={currentLibrary}
+                        />
+                    )
+                }
+            />
+        </div>
+    )
+}
+export default Root
+
+import React, {Component} from 'react'
+class FunctionalLogic extends Component{
+    state = {
+        favLanguage:'javaScript',
+        currentLibrary:'react.js'
+    }
+
+    //apply method if needed.
+    render(){
+        return(
+            <>
+                {
+                    this.props.render({
+                        favLanguage: this.state.favLanguage, 
+                        favLanguage: this.state.currentLibrary
+                    })
+                }
+            </>
+        )
+    }
+}
+export default FunctionalLogic
+
+import React from 'react'
+import FunctionalLogic from './functionallogic'
+class DeveloperComponent extends Component{
+    render(){
+        return(
+            <>
+                <h1>{this.props.favLanguage}</h1>
+                <h1>{this.props.currentLibrary}</h1>
+            </>
+        )
+    }
+}
+export default DeveloperComponent
+
+
+//react.js hooks; useState
+import React from 'react'
+import React, {useState} from 'react'
+function StateBased(props){
+    const [aliasState] = useState('cyberman')
+
+    return(
+        <div>
+            <h1>{aliasState}</h1>
+        </div>
+    )
+}
+export default StateBased
+
+//react.js render props challenge.
+import React from "react"
+import DataFetcher from "./DataFetcher"
+
+function App() {    
+    return (
+        <div>
+            <DataFetcher url="https://swapi.dev/api/people/1/">
+                {/**
+                 * Part 2: Call the function the DataFetcher is expecting.
+                 * If should receive the data and the loading state, and return the JSX
+                 * that makes use of that info. If the data is still loading, display
+                 * "Loading..." in an h1 element, and once the data has loaded, just display 
+                 * the data with `<p>{JSON.stringify(data)}</p>`
+                 * 
+                 * Remember: With the render props pattern, you can use a custom prop
+                 * (typically called `render`), OR you can use `props.children`. Based
+                 * on what's already written here for you, you should be able to figure
+                 * out which of these we're using. (You may have to make changes to the
+                 * DataFetcher component based on what you see here.)
+                 */}
+                 {({data, loading})=>{
+                    return(
+                        loading ? <h1>'Loading...'</h1> 
+                        : <p>{JSON.stringify(data)}</p>
+                    )
+                }}
+            </DataFetcher>
+        </div>
+    )
+}
+export default App
+
+
+/**
+ * Challenge: Fill in the blanks in the code here (part 1) and in the App.js
+ * file (part 2) until the code is working.
+ * 
+ * Render props are meant to allow us to re-use functionalty in multiple places.
+ * If your app were never to become more complicated than what we have here, it's
+ * probably not worth the effort to create a separate data fetching component.
+ * 
+ * HOWEVER, if you did find yourself repeating these things (setting a loading state,
+ * returning data, etc.) over and over in your app, a component like this might 
+ * make sense to build.
+ * 
+ * Tip: you can use your browser's dev tools to inspect the full React errors 
+ * in the console. Click in the menu bar above the editor to access the real
+ * right-click menu, or use your browser's shortcut code to get to the dev tools.
+ */
+import React, {Component} from "react"
+class DataFetcher extends Component {
+    state = {
+        loading: false,
+        data: null
+    }
+    
+    componentDidMount() {
+        this.setState({loading: true})
+        fetch(this.props.url)
+            .then(res => res.json())
+            .then(data => this.setState({data: data, loading: false}))
+    }
+    
+    render() {
+        return (
+            /**
+             * Part 1: Figure out what you're returning here. You should pass the 
+             * loading state and the data state through to the component needing it.
+             * 
+             * Remember: the render props pattern allows us to separate the data 
+             * and logic (like fetching data and setting the loading state) from 
+             * the UI (JSX). Think about which one of those this component is in 
+             * charge of. You'll need to pass both pieces of state to whatever 
+             * component is making use of the DataFetcher
+             * 
+             * Also, there's more than one "correct" way to make use of the render
+             * props pattern. Check App.js to determine which way it's being implemented
+             * in this challenge.
+             */
+
+            this.props.children({
+                data:this.state.data,
+                loading:this.state.loading          
+            })
+        )
+    }
+}
+export default DataFetcher
+
+
+//react.js render.props api pattern a
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    document.getElementById('root')
+)
+
+import React from 'react'
+import DataComp from './datacomp'
+function Root(){
+    return(
+        <DataComp/>
+    )
+}
+export default Root
+
+import React, { Component } from 'react'
+
+class ApiHandler extends Component {
+    state = {
+        data:null,
+        loading:false
+    }
+
+    componentDidMount(){
+        this.setState({loading:true})
+        fetch(this.props.url)
+        .then(response=> response.json())
+        .then(data=> this.setState({data:data, loading:false}))
+    }
+
+    render() {
+        // const { data, loading} = this.state
+        return (
+            <div>
+                this.props.render({{
+                    data:this.state.data, 
+                    loading:this.state.loading
+                }})
+            </div>
+        )
+    }
+}
+export default ApiHandler
+
+import React from 'react'
+import ApiHandler from './apihandler'
+
+ function DataComp() {
+    return (
+        <div>
+            <ApiHandler
+                url="https://swapi.dev/api/people/1/"
+                render={
+                    ({data, loading})=>(
+                        loading ? <h1>Loading...</h1>
+                        : <h2>{JSON.stringify(data)}</h2>
+                    )
+                }
+            />
+        </div>
+    )
+}
+export default DataComp
+
+
+//practice render.props reusability; basic to advanced.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import FunctionalLogic from './functionallogic'
+import AliasData from './aliasdata'
+import NewAliasData from './newaliasdata'
+
+function Root(){
+    return(
+        <>
+        {/*component reuse*/}
+            <FunctionalLogic
+                //props passed down contains a function.
+                devAlias={
+                    (alias)=>(
+                        <AliasData
+                        // props
+                            alias={'programmer'}
+                            handleChangeState={handleChangeState}
+                        />
+                    )
+                }
+            />
+            <br/>
+        {/*component reuse*/}
+            <FunctionalLogic
+                //props passed down contains a function.
+                devAlias={
+                    (alias)=>(
+                        <NewAliasData
+                        // props
+                            alias={'cyberman'}
+                            handleChangeState={handleChangeState}
+                        />
+                    )
+                }
+            />
+        </>
+    )
+}
+export default Root
+
+import React,{Component} from 'react'
+class FunctionalLogic extends Component{
+    state = {
+        alias:this.props.alias,
+        stateVisible:false
+    }
+
+    handleChangeState=()=>{
+        this.setState(
+            prevState=>{
+                return{
+                    stateVisible: !prevState.stateVisible
+                }
+            }
+        )
+    }
+
+    render(){
+        const {alias, handleChangeState} = this.state
+        return(
+            this.props.devAlias(alias, handleChangeState)
+        )
+    }
+}
+export default FunctionalLogic
+
+//aliasdata component
+import React,{Component} from 'react'
+import FunctionalLogic from './functionallogic'
+
+export default class  AliasData extends Component{
+    render() {
+        return (
+            <div>
+                <button onClick={this.props.handleChangeState}>
+                    {this.props.stateVisible ? 'Show State' : 'Hide State'}
+                </button>
+                <div style={{
+                    display: this.props.stateVisible ? 'none' : 'block'
+                }}>
+                    <h1>
+                        {this.props.alias}
+                    </h1>
+                </div>
+            </div>
+        )
+    }
+}
+
+//newaliasdata component
+
+
+
+
+
+
+
+//react.js render.props api data challenge; pattern b
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import ApiHandler from './apihandler'
+function Root(){
+    return(
+        <ApiHandler
+            url="https://swapi.dev/api/people/1/"
+            render={
+                (data, loading)=>(
+                    loading ? <h1>Loading...</h1>
+                    : <p>{JSON.stringify(data)}</p>
+                )
+            }
+        />
+    )
+}
+export default Root
+
+import React,{Component} from 'react'
+class ApiHandler extends Component{
+    state = {
+        loading:false,
+        data:null
+    }
+
+    componentDidMount(){
+        this.setState({loading:true})
+        .fetch(this.props.url)
+        .then(response=> response.json())
+        .then(data=> this.setState({data:data, loading:false}))
+    }
+
+    render(){
+        return(
+            this.props.render({
+                data: this.state.data,
+                loading: this.state.loading
+            })
+        )
+    }
+}
+export default ApiHandler
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
 
 
 
