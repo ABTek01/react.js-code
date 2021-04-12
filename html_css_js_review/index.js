@@ -462,7 +462,143 @@ greaterThan(11)
 
 /*
 comparison with the greater than or equal to operator.
+>=
+the greater then, or equal to operator will convert data types
+like the loosely equal(==) to or the inequality operator(!=).
 */
+
+function greaterOrEqualTo(value){
+    if(value >= 5){
+        return '5 and over'
+    }
+
+    if(value >= 15){
+        return '15 and over'
+    }
+}
+greaterOrEqualTo(6)
+
+/*
+less than operator (<)
+converts data types.
+*/
+
+function lessThan(value){
+
+    if(value < 4){
+        return 'under 4'
+    }
+
+    if(value < 55){
+        return 'under 55'
+    }
+    return 'over 4 and 55'
+}
+lessThan(2)
+lessThan(22)
+
+/*
+comparison with the less than or equal to operator
+(<=)
+the less than or equal to (<=) converts data.
+number on the left less than or equal to 
+number on the right; true : false.
+*/
+//global scoped variable
+let value = 100
+function lessThanOrEqualTo(){
+    if(`${value}` <= 10){
+        return 'less than or equal to 10'
+    }
+    if(`${value}` <= 50){
+        return 'less than or equal to 50'
+    }
+    return `${value} is greater than 10 and 50.`
+}
+lessThanOrEqualTo()
+
+/*
+comparison with the logical and operator (&&).
+
+sometimes you will need to test more than one thing at a time. 
+the logical and operator (&&) returns true 
+if and only if the operands to the left and right of it are true.
+*/
+
+//searching for value between 100 and 200.
+function nestedIfFun(value){
+    //checks for both conditions simultaneously.
+    if(value > 100){
+        if(value < 200){
+            return 'between 100 and 200'
+        }
+    }
+    return 'not between 100 and 200'
+}
+nestedIfFun(101)
+nestedIfFun(15)
+nestedIfFun(200)
+nestedIfFun(199)
+nestedIfFun(100)
+
+
+//searching for value greater then or equal to 100 (&&) less than or equal to 200.
+function useLogicalAndOp(value){
+    if(value >= 100 && value <= 200){
+        return 'between 100 and 200.'
+    }
+    return 'not between 100 and 200.'
+}
+useLogicalAndOp(5)
+useLogicalAndOp(101)
+useLogicalAndOp(99)
+
+
+/*
+comparison with the logical or operator(||).
+
+The logical or operator (||) 
+returns true if either of the operands is true. 
+Otherwise, it returns false.
+*/
+
+//searching for values within range between 10 and 20.
+function multiIfs(values){
+    if(values < 10){
+        return 'out of range'
+    }
+
+    if(values > 20){
+        return 'out of range'
+    }
+
+    return 'within range.'
+}
+multiIfs(8)
+
+//searching for values within range between 10 and 20.
+function useLogicalOrOp(values){
+    if(values < 10 || values > 20){
+        return 'out of range'
+    }
+    return 'within range'
+}
+useLogicalOrOp(50)
+useLogicalOrOp(5)
+useLogicalOrOp(15)
+
+/*
+introducing else statement.
+
+When a condition for an if statement is true, 
+the block of code following it is executed. 
+What about when that condition is false? Normally nothing would happen. 
+With an else statement, an alternate block of code can be executed.
+*/
+
+
+
+
 
 
 

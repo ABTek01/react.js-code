@@ -10551,14 +10551,36 @@ ReactDOM.render(
 import React,{Component} from 'react'
 import Root from 'root'
 import Example_a from './example_a'
+import Example_b from './examle_b'
 
 class Root extends Component{
     render(){
         return(
             <div>
                <Example_a
+                    alias={
+                        'cyberman'
+                    }
+                    //method returns 5
+                    method={
+                        function(){
+                            return(
+                                5
+                            )
+                        }
+                    }
 
+                    //method returns a string
+                    render={
+                        ()=> 'method invoked through props'
+                    }
                />
+                <hr/>
+                <Example_b
+                    devType={'user interface development'}
+                    devLanguage={{devData: 'javaScript'}}
+                    devLibrary={'react.js'}
+                />
             </div>
         )
     }
@@ -10570,11 +10592,87 @@ import React from 'react'
 function Example_a(props){
     return(
         <div>
-
+            <h1>
+                {props.alias}
+                {props.method()}
+                {props.render()}
+            </h1>
         </div>
     )
 }
 export default Example_a
+
+//passed down regular props both patterns.
+import React from 'react'
+function Example_b(props){
+    return (
+        <div>
+            <h1>{props.devType}</h1>
+            <h1>{props.devLanguage.devData}</h1>
+            <h2>{props.devLibrary}</h2>
+        </div>
+    )
+}
+export default Example_b
+
+//react.js; render.props use js logic to display a ui.
+//pattern_a; render/props from within render(<Root/>) component.
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import Example_c from './example_c'
+function Root(){
+    return(
+        <div>
+            <Example_c
+                render={
+                    function(number){
+                        return(
+                            <>
+                                {
+                                    number < 10 && number > 20 
+                                    ? <h1>Out of range</h1> 
+                                        : <h1>Within Range</h1>
+                                }
+                            </>
+                        )
+                    }
+                }
+            />
+        </div>
+    )
+}
+export default Example_c
+
+import React from 'react'
+function Example_c(props){
+    return(
+        <div>
+            <>
+                {props.render(15)}
+            </>
+        </div>
+    )
+}
+export default Exaple_c
+
+
+/*
+react.js; render props pattern b
+*/
+
+
+
+
+
 
 
 
