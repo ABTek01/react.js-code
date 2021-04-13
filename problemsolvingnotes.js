@@ -413,6 +413,28 @@ doubly linked-list; every node has two next/pointer(s).
 [null] <= [3] prev, next =>(null, 1), [1]  prev, next =>(3, 4), [4] prev, next =>(1, 2), [2]  prev, next => =>(4, null) => [null]
 
 
+Hash Table; ds where we can store keys and value.
+key value store.
+js - object literal. 
+can access a value given a key.
+
+var hashTable = {
+    value:'key',
+    foo: 1,
+    bar: 2,
+    baz: 3
+}
+
+- constant time operations O(1)
+inserting
+deleting
+search
+
+- hash table keys can be strings.
+- hash tables are built on arrays.
+- 
+
+
 
 
 

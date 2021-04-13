@@ -10666,7 +10666,7 @@ export default Exaple_c
 
 
 /*
-react.js pattern_b render props logic 
+react.js pattern_a render props logic 
 from within menu and favorite ui
 */
 
@@ -10691,8 +10691,15 @@ import React from 'react'
 class DisplayLogic extends React.Component{
     state = {
         alias:'cyberman',
-        on:false
+        on:this.props.defaultOnValue
     }
+
+    //applying default props on state as a "default value".
+    static defaultProps = {
+        defaultOnValue: false
+    }
+
+    //method that toggles the value of state.
     toggle =()=>{
         this.setState(prevState=>{
             return{
@@ -10721,6 +10728,7 @@ class Example_d extends React.Component{
         return(
             <div>
                 <DisplayLogic
+                    defaultOnValue={false}
                     render={
                         (on, alias, toggle)=>{
                             return(
@@ -10742,6 +10750,19 @@ class Example_d extends React.Component{
     }
 }
 export default Example_d
+
+/*
+react.js; render props.
+pattern_b; render props - wrap logic component 
+around ui component and pass down props
+*/
+
+
+
+
+
+
+
 
 
 
