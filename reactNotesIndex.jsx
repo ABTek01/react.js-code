@@ -10538,7 +10538,7 @@ custom functions can be passed down and rendered
 elsewhere.
 */
 
-//render props basics
+//render props basics; pattern a
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
@@ -10666,8 +10666,86 @@ export default Exaple_c
 
 
 /*
-react.js; render props pattern b
+react.js pattern_b render props logic 
+from within menu and favorite ui
 */
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+function Root(){
+    return (
+        <Example_d/>
+    )
+}
+export default Root
+
+import React from 'react'
+class DisplayLogic extends React.Component{
+    state = {
+        alias:'cyberman',
+        on:false
+    }
+    toggle =()=>{
+        this.setState(prevState=>{
+            return{
+                on:!prevState.on
+            }
+        })
+    }
+
+    render(){
+        return(
+            <div>
+                {this.props.render(
+                    this.state.on, 
+                    this.state.alias, 
+                    this.toggle)
+                }
+            </div>
+        )
+    }
+}
+export default DisplayLogic
+
+import React from 'react'
+class Example_d extends React.Component{
+    render(){
+        return(
+            <div>
+                <DisplayLogic
+                    render={
+                        (on, alias, toggle)=>{
+                            return(
+                                <div>
+                                    <button onClick={toggle}>
+                                        {on ? 'Hide Alias':'Show Alias'}
+                                    </button>
+                                    <hr/>
+                                    <div style={{display: on ? 'block':'none'}}>
+                                        <h1>{alias}</h1>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    }
+                />
+            </div>
+        )
+    }
+}
+export default Example_d
+
+
+
+
 
 
 
