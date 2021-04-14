@@ -596,8 +596,68 @@ What about when that condition is false? Normally nothing would happen.
 With an else statement, an alternate block of code can be executed.
 */
 
+function alternative(value){
+    var result = ''
+    if(value > 10){
+        //result is reassigned based on condition.
+        result = 'greater than 10'
+    }else{
+        //result is reassigned based on condition.
+        result = 'less than 10'
+    }
+    //returning current 'result' based on condition.
+    return result
+}
+alternative(20)
 
+function basedOnState(value){
+    var state = false
+    var message = ''
+    if(value === 'on'){
+        message = 'lights on'
+        state = true
+    }else{
+        message = 'lights off'
+        state = false
+    }
+    return message
+}
+basedOnState('on')
+basedOnState('off')
 
+/*
+If you have multiple conditions that need to be addressed, 
+you can chain if statements together with "else if" statements.
+*/
+
+function withinRange(value){
+    if(value < 100){
+        return 'out of range'
+    }else if(value <= 100){
+        return 'out of range'
+    }else if(value > 200){
+        return 'out of range'
+    }else if(value >= 200){
+        return 'out of range'
+    }else{
+        return 'within range'
+    }
+}
+withinRange(100)
+withinRange(200)
+withinRange(101)
+withinRange(199)
+
+//hash table data structure.
+var newHash = {
+    'key0':'foo',
+    'key1':'bar',
+    'key2':'baz'
+}
+console.log(newHash['key0'])
+console.log(newHash.key0)
+console.log(newHash.key1)
+console.log(newHash.key2)
 
 
 

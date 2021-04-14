@@ -239,7 +239,7 @@ array = [1, 2, 3]
 array[1] = 3; finding an indexed element = O(1)constant time/instant,
 O(1) constant space/instant, not using up any more space slots.
 
-a. operation; OS finds beginning of array memory address, 
+a. - operation; OS finds beginning of array memory address, 
 counts bytes, ids indexed element, multiplies the 0-indexed
 element and the amount of bytes needed.
 array = [1, 2, 3] operation => array[2]; 2 x 8  = finds indexed element 
@@ -425,14 +425,34 @@ var hashTable = {
     baz: 3
 }
 
-- constant time operations O(1)
-inserting
-deleting
-search
+- constant time operations O(1); instant
+inserting a key value pair
+deleting a key value pair
+search a key value pair
 
-- hash table keys can be strings.
-- hash tables are built on arrays.
-- 
+- hash table keys can be 'strings'.
+- hash table keys can be any data type.
+- hash tables are built on top of arrays.
+- use hash functions to transform a key ('string') into an index.
+
+Hashing function; 
+transform string into an integer;
+map every character to its askie coding value = integer of hash element.
+sum up all numbers and get an integer (e.g. 301).
+
+
+found integer of hash element % length of an array = remainder.
+remainder = array index of the hashed element.
+
+hash elements can be indexed at the same place as other hash/indexed elements.
+=> hash table double indices can become a reference to a linked list aka collision.
+need every element in linked list to point back to original indexed element.
+
+
+linked lists can be created with double indices; 
+
+o(n) linear time worst case, space complexity depends on the elements being stored.
+=> resizing; initialize hash table, doubles itself & adds key value pairs. 
 
 
 

@@ -10756,6 +10756,188 @@ react.js; render props.
 pattern_b; render props - wrap logic component 
 around ui component and pass down props
 */
+import React from 'react'
+import ReactDOM from 'react-dom'
+import root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React, { Component } from 'react'
+import Logic from './logic'
+import DataComponent from './datacomponent'
+
+class Root extends Component {
+    render() {
+        return (
+            <div>
+                <Logic
+                    render={
+                        ({on, alias, toggle})=>{
+                            return (
+                                <div>
+                                    <DataComponent
+                                        on={on}
+                                        alias={alias}
+                                        toggle={toggle}
+                                    />
+                                </div>
+                            )
+                        }
+                    }
+                />
+            </div>
+        )
+    }
+}
+export default Root
+
+import React, { Component } from 'react'
+
+class Logic extends Component {
+    state = {
+        on:false,
+        alias:'cyberman'
+    }
+
+    toggle=()=>{
+        this.setState(prevState=>{
+            return {
+                on:!prevState.on
+            }
+        })
+    }
+
+
+    render() {
+        return (
+            <div>
+                {this.props.render({
+                    on:this.state.on,
+                    alias:this.state.alias,
+                    toggle:this.toggle
+                })}
+            </div>
+        )
+    }
+}
+export default Logic
+
+import React from 'react'
+import Logic from './logic'
+export default function DataComponent(props) {
+    return (
+        <div>
+            <button onClick={props.toggle}>
+                {props.on ? 'Hide Alias':'Show Alias'}
+            </button>
+            <hr/>
+            <div style={{display: on ? 'block':'none'}}>
+                <h1>{props.alias}</h1>
+            </div>
+        </div>
+    )
+}
+
+
+
+/*
+react.js; render props.
+pattern_c; react.children
+*/
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+import React from 'react'
+import Logic from './logic'
+import DataComponent from './datacomponent'
+
+export default function Root() {
+    return (
+        <div>
+            <Logic defaulOnValue={true}>
+                
+                {
+                    ({on, alias, toggle})=>{
+                        return(
+                            <>
+                                <DataComponent 
+                                    on={on}
+                                    alias={alias}
+                                    toggle={toggle}
+                                />
+                            </>
+                        )
+                    }
+                }
+            </Logic>
+        </div>
+    )
+}
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    state = {
+        on:this.props.defaultOnValue,
+        alias:'cyberman'
+    }
+    static defaultProps = {
+        defaulOnValue: true
+    }
+
+    toggle=()=>{
+        this.setState(prevState=>{
+            return{
+                on:!prevState.on
+            }
+        })
+    }
+
+
+    render() {
+        return (
+            <div>
+                {this.props.children({
+                    on:this.state.on,
+                    alias:this.state.alias,
+                    toggle:this.toggle
+             })}
+            </div>
+        )
+    }
+}
+
+/*
+react.js; datacomponent
+*/
+import React from 'react'
+import Logic from './logic'
+export default function DataComponent(props) {
+    return (
+        <div>
+            <button onClick={props.toggle}>
+                {props.on ? 'Hide Alias':'Show Alias'}
+            </button>
+            <hr/>
+            <div style={{display:props.on ? 'block':'none'}}>
+                <h1>{props.alias}</h1>
+            </div>
+        </div>
+    )
+}
+
+/*
+challenge;
+react.js; fetch data from api with render props.
+*/
+
+
+
+
+
+
 
 
 
