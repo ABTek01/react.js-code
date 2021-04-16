@@ -10352,7 +10352,9 @@ export function extendedFun(component){
         return (
             <div>
                 <ExtendedLogic
+                    //component passed down as props
                     component={component}
+                    //all props are passed down
                     {...props}
                 />
             </div>
@@ -10928,10 +10930,453 @@ export default function DataComponent(props) {
     )
 }
 
+//react.js rende props patterns a, b, c
+//pattern a 
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(<Root/>, document.getElementById('root'))
+
+import React from 'react'
+import Child from './child'
+export default function Root() {
+    return (
+        <div>
+            <Child/>
+        </div>
+    )
+}
+
+import React from 'react'
+import Data from './data'
+export default function Child() {
+    return (
+        <div>
+            {/*container component wrapped within child/ui component*/}
+            <Data
+                render={
+                    (alias, devLanguage, devLibrary)=>(
+                        <>
+                            <ul>
+                                <li>
+                                    <h1>{alias}</h1>
+                                </li>
+                                <li>
+                                    <h1>{devLanguage}</h1>
+                                </li>
+                                <li>
+                                    <h1>{devLibrary}</h1>
+                                </li>
+                            </ul>
+                        </>
+                    )
+                }
+            />
+        </div>
+    )
+}
+
+
+import React, { Component } from 'react'
+
+export default class Data extends Component {
+    state = {
+        alias:'cyberman',
+        devLanguage:'javaScript',
+        devLibrary:'react.js'
+    }
+    render() {
+        const {alias, devLanguage, devLibrary} = this.state
+        return (
+            <div>
+                {this.props.render(
+                    alias, devLanguage, devLibrary
+                )}
+            </div>
+        )
+    }
+}
+
+//pattern b
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(<Root/>,document.getElementById('root'))
+
+import React from 'react'
+import Logic from './logic'
+import Child from './child'
+export default function Root() {
+    return (
+        <div>
+            <Logic
+                render={
+                    ({alias, devLanguage, devLibrary})=>(
+                        <>
+                            <Child
+                                alias={alias}
+                                devLanguage={devLanguage}
+                                devLibrary={devLibrary}
+                            />
+                        </>
+                    )
+                }
+            />
+        </div>
+    )
+}
+
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    state = {
+        alias:'cyberman',
+        devLanguage:'javaScript',
+        devLibrary:'react.js'
+    }
+
+    render() {
+        return (
+            <div>
+                {
+                    this.props.render({
+                        alias:this.state.alias,
+                        devLanguage:this.state.devLanguage,
+                        devLibrary:this.state.devLibrary
+                    })
+                }
+            </div>
+        )
+    }
+}
+
+import React from 'react'
+
+export default function Child(props) {
+    return (
+        <div>
+            <ul>
+                <li>{props.alias}</li>
+                <li>{props.devLanguage}</li>
+                <li>{props.devLibrary}</li>
+            </ul>
+        </div>
+    )
+}
+
+
+//pattern c; apply react.children
+import React from 'react'
+import Logic from './logic'
+import Child from './child'
+export default function Root() {
+    return (
+        <div>
+            <logic>
+                {(alias, devLanguage, devLibrary)=>(
+                    <Child
+                        alias={alias}
+                        devLanguage={devLanguage}
+                        devLibrary={devLibrary}
+                    />
+                )}
+            </logic>
+        </div>
+    )
+}
+
+import React from 'react'
+
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    state = {
+        alias:'cyberman',
+        devLanguage:'javaScript',
+        devLibrary:'react.js'
+    }
+    render() {
+        return (
+            <div>
+                {
+                    this.props.children(
+                        this.state.alias,
+                        this.state.devLanguage,
+                        this.state.devLibrary
+                    )
+                }
+            </div>
+        )
+    }
+}
+
+
+export default function Child() {
+    return (
+        <div>
+            <ul>
+                <li>{props.alias}</li>
+                <li>{props.devlanguage}</li>
+                <li>{props.devLibrary}</li>
+            </ul>
+        </div>
+    )
+}
+
+
 /*
 challenge;
 react.js; fetch data from api with render props.
+patterns; a, b, c
+"https://swapi.dev/api/people/1/"
 */
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+ReactDOM.render(<Root/>, document.getElementById('root'))
+
+import React from 'react'
+import UiComponent from './uicomponent'
+export default function Root() {
+    return (
+        <div>
+            <UiComponent/>
+        </div>
+    )
+}
+
+import React from 'react'
+import ApiData from './apidata'
+export default function UiComponent() {
+    return (
+        <div>
+            <ApiData
+                url="https://swapi.dev/api/people/1/"
+                render={
+                    ({data, loading, apiFetchError})=>(
+                        <>
+                            {
+                                loading ? <h1>{apiFetchError}</h1> 
+                                    : <h2>{JSON.stringify(data)}</h2>
+                            }
+                        </>
+                    )
+                }
+            />
+        </div>
+    )
+}
+
+import React, { Component } from 'react'
+
+export default class ApiFetch extends Component {
+    state = {
+        data:null,
+        loading:false,
+        apiFetchError:'api fetch error'
+    }
+
+    componentDidMount(){
+        this.setState({loading: true})
+        fetch(this.props.url)
+            .then(response => response.json())
+            .then(data=> this.setState({data:data, loading:false}))
+            .catch(err => console.log(apiFetchError))
+    }
+
+    render() {
+        return (
+            <div>
+                {
+                    this.props.render(
+                        {
+                            data:this.state.data,
+                            loading:this.state.loading,
+                            apiFetchError:this.state.apiFetchError
+                        }
+                    )
+                }
+            </div>
+        )
+    }
+}
+
+/*
+react.js; render props patter_b
+fetch api.
+*/
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(<Root/>,getElementById('root'))
+
+import React from 'react'
+import ApiFetch from './apifetch'
+import UiComponent from './uicomponent'
+export default function Root(){
+    return (
+        <div>
+            {/*
+                apifetch component wrapped around ui display component
+                where is passes down props.
+            */}
+            <ApiFetch
+                url="https://swapi.dev/api/people/1/"
+                render={
+                    //render value is an arrow function
+                    ({data, loading, apiFetchError})=>(
+                        <>
+                            <UiComponent
+                                data={data}
+                                loading={loading}
+                                apiFetchError={apiFetchError}
+                            />
+                        </>
+                    )
+                }
+            />
+        </div>
+    )
+}
+
+import React, { Component } from 'react'
+
+export default class ApiFetch extends Component {
+    state = {
+        data:null,
+        loading:false,
+        apiFetchError:'api fetch error'
+    }
+
+    componentDidMount(){
+        this.setState({loading: true})
+        fetch(this.props.url)
+            .then(response=> response.json())
+            .then(data=> this.setState({data:data, loading:false}))
+            .catch(data=> this.setState({apiFetchError:apiFetchError}))
+    }
+    render() {
+        return (
+            <div>
+                {
+                    //props.arrow function is invoked within jsx.
+                    this.props.render(
+                        {
+                            data:this.state.data,
+                            loading:this.state.loading,
+                            apiFetchError:this.state.apiFetchError
+                        }
+                    )
+                }
+            </div>
+        )
+    }
+}
+
+import React from 'react'
+import ApiFetch from './apifetch'
+export default function UiComponent(props) {
+    return (
+        <div>
+            {
+                props.loading ? <h1>{props.apiFetchError}</h1>
+                    : <h1>{JSON.stringify(props.data)}</h1>
+            }
+        </div>
+    )
+}
+
+//react.js; render props pattern c/react.children
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(<Root/>, document.getElementById('root'))
+
+import React from 'react'
+import ApiFetch from './apifetch'
+import UiComponent from './uicomponent'
+export default function Root() {
+    return (
+        <div>
+            <ApiFetch url="https://swapi.dev/api/people/1/">
+                {
+                    ({data, loading, apiFetchError})=>(
+                        <UiComponent
+                            data={data}
+                            loading={loading}
+                            apiFetchError={apiFetchError}
+                        />
+                    )
+                }
+            </ApiFetch>
+        </div>
+    )
+}
+
+import React, { Component } from 'react'
+
+export default class ApiFetch extends Component {
+    state = {
+        data:null,
+        loading:false,
+        apiFetchError:'api data fetch error'
+    }
+    //used to make sure components rendered properly to the browser.
+    componentDidMount(){
+        this.setState({loading: true})
+        fetch(this.props.url)
+            .then(response=> response.json())
+            .then(data=> this.setState({data:data, loading:false}))
+            .catch(data=> this.setState({apiFetchError:apiFetchError}))
+    }
+    render() {
+        return (
+            <div>
+                {
+                    this.props.children({
+                        data:this.state.data,
+                        loading:this.state.loading,
+                        apiFetchError:this.state.apiFetchError
+                    })
+                }
+            </div>
+        )
+    }
+}
+
+import React from 'react'
+import ApiFetch from './apifetch'
+export default function UiComponent(props) {
+    return (
+        <div>
+            {
+                props.loading ? {console.error(props.apiFetchError)} 
+                    && <h2>Loading...</h2> : <h2>{JSON.stringify(props.data)}</h2>
+            }
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

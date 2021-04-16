@@ -659,6 +659,75 @@ console.log(newHash.key0)
 console.log(newHash.key1)
 console.log(newHash.key2)
 
+//js challenge Golf Code
+/* 
+    = assignment operator, == equality operator,
+    === strict equality operator.
+*/
+
+//global scoped variables accessed within function.
+var names = ["Hole-in-one!", "Eagle", "Birdie", "Par", "Bogey", "Double Bogey", "Go Home!"];
+
+function golfScore(par, strokes) {
+if(strokes == 1){
+  return names[0]
+}else if(strokes <= par - 2){
+  return names[1]
+}else if(strokes == par - 1){
+  return names[2]
+}else if(strokes == par){
+  return names[3]
+}else if(strokes == par + 1){
+  return names[4]
+}else if(strokes == par + 2){
+  return names[5]
+}else if(strokes >= par + 3){
+  return names[6]
+}
+  return "Change Me";
+}
+golfScore(5, 4);
+
+/*
+    switch statements
+*/
+
+function useSwitch(val){
+    var level = ''
+    switch(val){
+        case 1:
+            return level = 'alpha';
+        break;
+        case 2:
+            return level = 'beta';
+        break;
+        case 3:
+            return level = 'gamma';
+        break;
+        case 4:
+            return level = 'delta';
+        break;
+        default:
+            return level = 'data error';
+        break;
+    }
+}
+useSwitch(1)
+useSwitch(2)
+useSwitch(5)
+
+/*
+    switch statementS; add a default 
+    value/option.
+
+    In a switch statement you may not be able to specify all possible 
+    values as case statements. Instead, you can add the default 
+    statement which will be executed if no matching case 
+    statements are found. Think of it like the 
+    final else statement in an if/else chain.
+*/
+
+
 
 
 
