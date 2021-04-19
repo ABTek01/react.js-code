@@ -11351,12 +11351,13 @@ export default function UiComponent(props) {
     return (
         <div>
             {
-                props.loading ? {console.error(props.apiFetchError)} 
+                props.loading ? <>{console.error(props.apiFetchError)}</>
                     && <h2>Loading...</h2> : <h2>{JSON.stringify(props.data)}</h2>
             }
         </div>
     )
 }
+
 
 
 

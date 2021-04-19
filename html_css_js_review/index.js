@@ -726,6 +726,365 @@ useSwitch(5)
     statements are found. Think of it like the 
     final else statement in an if/else chain.
 */
+function useNewSwitch(value){
+    var software = ''
+    switch(value){
+        case 'a':
+            return software = 'html';
+            break;
+        case 'b':
+            return software = 'css';
+            break;
+        case 'c':
+            return software = 'javascript';
+            break;
+        case 'd': 
+            return software = 'react.js'
+            break;
+        case 'e':
+            return software = 'jsx';
+            break;
+        // use of default option.
+        default:
+            return software = 'node.js'
+            break;
+    }
+    return answer
+}
+useNewSwitch('a')
+useNewSwitch('e')
+
+/*
+js switch statements; multiple identical options in switch statements
+
+If the break statement is omitted from a switch statement's case, 
+the multiple, consecutive case statement(s) are executed until a break is 
+encountered. If you have multiple inputs with the same output, 
+you can represent them in a switch statement. All assigned the same
+value.
+*/
+
+function backToBackSwitchCases(val){
+    var software = '';
+    switch(val){
+        case 1:
+        case 2:
+        case 3:
+            software = 'front end web development'
+            break;
+        case 4:
+        case 5:
+        case 6:
+            software = 'back end web development'
+            break;
+        default:
+            software = 'systems administration'
+            break;
+    }
+    return software
+}
+backToBackSwitchCases(3)
+backToBackSwitchCases(6)
+
+/*
+replace if/else statements with switch statements.
+
+if we have many options
+a switch case statement may be easier to 
+write than many if/else statements.
+*/
+
+function getValue(value){
+    var valueIdentified = ''
+    if(value < 100){
+        return valueIdentified = 'value out of range'
+    }else if(value <= 100){
+        return valueIdentified = 'value out of range'
+    }else if(value > 200){
+        return valueIdentified = 'value out of range'
+    }else if(value >= 200){
+        return valueIdentified = 'value out of range'
+    }else{
+        return valueIdentified = 'value identified within range'
+    }
+}
+getValue(150)
+getValue(250)
+getValue(250)
+
+function getProperValue(value){
+    var valueIdentified = ''
+    switch(value){
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+            valueIdentified = 'value out of range';
+            break;
+        case 10:
+            valueIdentified = 'value identified';
+            break;
+        default:
+            valueIdentified = 'value out of range';
+    }
+    return valueIdentified;
+}
+getProperValue(10)
+getProperValue(20)
+getProperValue(5)
+
+/*
+returning a boolean from functions &
+comparison operators.
+
+sometimes we can use an if/else 
+statement to return a boolean based
+on a condition. we can also return
+a boolean (true, false; based on conditions)
+with use of certain comparison operators
+and no if/else statement.
+*/
+
+function returnBoolean(value_a, value_b){
+    return value_b <= value_a
+}
+returnBoolean(6, 7)
+returnBoolean(7, 6)
+
+/*
+return early pattern from functions
+
+a function will end execution
+when a 'return' statement is
+reached and control returns
+to the calling location.
+*/
+
+function sendNumber(a, b){
+    if(a < 0 || b < 0){
+        return undefined
+    }
+      return Math.round(Math.pow(Math.sqrt(a) + Math.sqrt(b), 2));
+}
+sendNumber(3, 3)
+sendNumber(2, 2)
+sendNumber(-1, -2)
+sendNumber(1, 1)
+sendNumber(0, 0)
+
+/*
+js challenge;
+counting cards
+
+ count change; +1 
+ count change; 0
+ count change; -1
+
+ cards: 2, 3, 4, 5, 6
+ cards: 7, 8, 9
+ cards: 10, 'J', 'Q', 'K', 'A'
+
+ use if/else change for conditioning
+ or switch statement.
+
+ return count based on its value concatenated with string.
+*/
+let count = 0
+function countCards(card){
+    //set card and count values based on conditions/cases.
+    switch(card){
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            count++;
+            break;
+        case 10:
+        case 'J':
+        case 'Q':
+        case 'K':
+        case 'A':
+            count--
+            break;
+    }
+    //return string based on count value.
+    if(count > 0){
+        return count + ' Bet'
+    }else{
+        return count + ' Hold'
+    }
+}
+countCards(2)
+countCards(10)
+countCards(7)
+
+
+/*
+Build js objects
+object values can be accessed via 'properties'
+properties are made up of key values that store data.
+*/
+var newObject = {
+    language:'javascript',
+    development:'user interface',
+    library:'react.js'
+}
+
+/*
+accessing object properties with dot.notation
+
+dot notation is used to access object properties/values
+when we know that name of the properties.
+*/
+var devLanguage = newObject.language
+console.log(devLanguage)
+var devType = newObject.development
+console.log(devType)
+var devLibrary = newObject.library
+console.log(devLibrary)
+
+/*
+accessing object properties with dot.notation
+
+bracket notation can be used to access object
+properties/values for props that have spaces in their names.
+can also be used for props that do not have spaces,
+those that do have spaces have to be strings when 
+initialized and accessed. bracket noted props need to be strings.
+dot noted props do not need to be strings.
+*/
+
+var techObject = {
+    'systems admin':'linux os',
+    'front end web development':['html', 'css', 'js', 'react.js'],
+    'back end web development':'node.js'
+}
+
+var systemsManagement = techObject['systems admin']
+console.log(systemsManagement)
+var webDevelopment = techObject['front end web development']
+console.log(webDevelopment)
+var serverSideDevelopment = techObject['back end web development']
+console.log(serverSideDevelopment)
+
+/*
+accessing object props/values with variables.
+
+properties can be stored and accessed from 
+within a variable and used in bracket notation.
+*/
+
+var myTech = {
+    myFavLang: 'javascript',
+    myFavOs: 'linux',
+    myFavLib: 'react'
+}
+//storing object prop/value within a variable as a string.
+var bestLangTech = 'myFavLang'
+
+//storing accessed object prop variable within variable.
+var browserLang = myTech[bestLangTech]
+
+//logging value of new variable.
+console.log(browserLang)
+//javascript
+
+var bestOsTech = 'myFavOs'
+var customOs = myTech[bestOsTech]
+console.log(customOs)
+
+
+var bestDevLib = 'myFavLib'
+var componentLib = myTech[bestDevLib]
+console.log(componentLib)
+
+var goatObj = {
+    1:'MJ',
+    2:'Kobe',
+    3:'LeBron'
+}
+
+var first = 1
+var bestToDoIt = goatObj[first]
+console.log(bestToDoIt)
+
+var second = 2
+var goatsClone = goatObj[second]
+console.log(goatsClone)
+
+var third = 3
+var thirdInLine = goatObj[third]
+console.log(thirdInLine)
+
+/*
+updating object properties
+
+can update an object property using
+dot or bracket notation.
+*/
+
+var testObj = {
+    name:'aaron',
+    alias:'',
+    programming:'front end web development'
+}
+var myName = 'name'
+var newName = testObj[myName] = 'coder'
+console.log(newName)
+
+var myAlias = 'alias'
+var newAlias = testObj[myAlias] = 'cyberman'
+console.log(newAlias)
+
+var myProgramming = 'programming'
+var newProgramming = testObj[myProgramming] = 'user interface development'
+console.log(newProgramming)
+
+/*
+add new properties to a js object
+can add a property to an object using
+bracket or dot notation & assign it data
+*/
+var testObj1 = {
+    first:1,
+    second:2
+}
+
+testObj1['third'] = 12
+console.log(testObj1)
+
+testObj1.fourth = 1212
+console.log(testObj1)
+
+testObj1.fifth = 123 + ', fifth'
+console.log(testObj1)
+
+testObj1.fifth = 12121212 + ', fifth'
+console.log(testObj1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
