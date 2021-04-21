@@ -1035,6 +1035,7 @@ var testObj = {
     programming:'front end web development'
 }
 var myName = 'name'
+//updated obj property value.
 var newName = testObj[myName] = 'coder'
 console.log(newName)
 
@@ -1048,7 +1049,8 @@ console.log(newProgramming)
 
 /*
 add new properties to a js object
-can add a property to an object using
+
+*can add a property to an object using
 bracket or dot notation & assign it data
 */
 var testObj1 = {
@@ -1067,6 +1069,90 @@ console.log(testObj1)
 
 testObj1.fifth = 12121212 + ', fifth'
 console.log(testObj1)
+
+/*
+delete data from an object
+
+*use delete statement to delete data from
+an object along with dot notation
+or bracket notation.
+*/
+var testObj2 = {
+    'structure':'html',
+    'presentation':'css',
+    'behavior':'javascript',
+    'reusability':'react.js',
+    'state management':'redux',
+    'back end development':'node.js'
+}
+delete testObj2['back end development']
+console.log(testObj2)
+
+/*
+using objects for lookups
+
+can use objects to look up 
+data values instead of if/else
+and switch statements.
+
+use obj[bracketnotation](no string)
+to look up the functions parameter.
+*/
+function dataLookUp(val){
+    var data = ''
+    var softwareArchive = {
+        'virtualOs':'linux',
+        'devOs':'macOs',
+        'scriptingLang':['bash', 'python'],
+        'devLang':['javascript','jsx']
+    }
+    //data variable is assigned the object lookup of function parameter.
+    data = softwareArchive[val]
+    return data
+}
+dataLookUp('devOs')
+
+//object look up and reassignment
+var testObj3 = {
+    'systemsAdmin':'linux',
+    'frontEnd':'macOs',
+    'automation':['bash', 'python'],
+    'componentReUse':'react.js'
+}
+var systemsPro = 'systemsAdmin'
+var objData = testObj3[systemsPro]
+console.log(objData)
+
+//reassigns object key:value data.
+var newLinuxDist = testObj3['systemsAdmin'] = 'red hat linux'
+
+//look up new key:val data.
+testObj3[newLinuxDist]
+//log data.
+
+//reassign key:value data
+testObj3['systemsAdmin'] = 'centOs stream'
+//delete unwanted key:value data
+delete testObj3['sysadmin']
+//log data.
+console.log(testObj3)
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+Testing 
+*/
+
+
 
 
 

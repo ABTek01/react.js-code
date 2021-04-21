@@ -11358,6 +11358,199 @@ export default function UiComponent(props) {
     )
 }
 
+//react.js;render props patterns a, b, c
+//task; create a styled component that renders data with a click of a button.
+//pattern a
+import React from 'react'
+import ReactDOM from 'react-dom'
+import root from 'root'
+ReactDOM.render(<Root/>, document.getElementById('root'))
+
+import React from 'react'
+import Component from './component'
+export default function Root() {
+    return (
+        <div>
+            <Component/>
+        </div>
+    )
+}
+
+//logic component
+import React, { Component } from 'react'
+
+ export default class Logic extends Component {
+    state = {
+        devType:'front end web development',
+        devOs:'macOs',
+        devLanguage:'javaScript',
+        devLibrary:'react.js',
+        systemsManagement:'linux systems administration',
+        systemsAutomation:['bash', 'python'],
+        on:false
+    }
+
+    toggle=()=>{
+        this.setState(prevState=>{
+            return {
+                on:!prevState.on
+            }
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                {
+                    this.props.render({
+                        devType:this.state.devType,
+                        devOs:this.state.devOs,
+                        devLanguage:this.state.devOs,
+                        devLibrary:this.state.devLibrary,
+                        systemsManagement:this.state.systemsManagement,
+                        systemsAutomation:this.state.systemsAutomation,
+                        on:this.state.on,
+                        toggle:this.toggle
+                    })
+                }
+            </div>
+        )
+    }
+}
+
+//user interface component
+import React from 'react'
+import Logic from './logic'
+export default function Component(){
+    
+    return (
+        <div>
+            <Logic
+                render={
+                    ({on, devOs, devType, devLibrary, devLanguage, systemsManagement, toggle})=>(
+                        // create user interface here.
+                        <>
+                            <button onClick={toggle}>
+                                {on ? 'Show Data':'Hide Data'}
+                            </button>
+                            <div style={{display: on ? 'none':'block'}}>
+                                <ul>
+                                    <li>{devType}</li>
+                                    <li>{devOs}</li>
+                                    <li>{devLanguage}</li>
+                                    <li>{devLibrary}</li>
+                                    <li>{systemsManagement}</li>
+                                </ul>
+                            </div>
+                        </>
+                    )
+                }
+            />
+        </div>
+    )
+}
+
+//react.js; render props pattern b
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(<Root/>,document.getElementById('root'))
+
+import React from 'react'
+import Logic from './logic'
+import Component from './component'
+export default function Root() {
+    return (
+        <div>
+            <Logic
+                render={
+                    ({on, toggle, systems, systemsVersionA, systemsVersionB, virtual})=>(
+                        <Component
+                            on={on}
+                            toggle={toggle}
+                            systems={systems}
+                            systemsVersionA={systemsVersionA}
+                            systemsVersionB={systemsVersionB}
+                            virtual={virtual}
+                        />
+                    )
+                }
+            />
+        </div>
+    )
+}
+
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    state = {
+        on:false,
+        systems:'linux Systems Admin',
+        systemsVersionA:'red hat linux os',
+        systemsVersionB:'centOs stream',
+        virtual:'virtualBox'
+    }
+
+    toggle=()=>{
+
+    }
+
+    render() {
+        return (
+            <div>
+                {
+                    this.props.render(
+                        {
+                            on:this.state.on,
+                            toggle:this.toggle,
+                            systems:this.state.systems,
+                            systemsVersionA:this.state.systemsVersionA,
+                            systemsVersionB:this.state.systemsVersionB,
+                            virtual:this.state.virtual
+                        }
+                    )
+                }
+            </div>
+        )
+    }
+}
+
+//ui component receiving props
+import React from 'react'
+
+export default function Component(props) {
+    return (
+        <div>
+            <>
+                
+            </>
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
