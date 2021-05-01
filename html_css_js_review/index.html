@@ -5,6 +5,10 @@
         <title>
             Practice Page
         </title>
+        <!-- import google fonts to use different fonts -->
+        <!-- can allow fonts to degrade to generic/default font families -->
+        <!-- <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css"> -->
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body>
         <header>
@@ -26,6 +30,7 @@
                 </li>
             </ul>
         </header>
+        <hr/>
         <div 
         id='main-heading'
         style=
@@ -36,6 +41,14 @@
             width: 400px; padding: 20px;
             margin:0 auto;'
         >
+        <div id='thin-black-container'>
+            <!-- can apply multiple classes to one class attribute -->
+            <a href="#">
+                <img class='smaller-image thick-gold-border cat-image' 
+                src="https://bit.ly/fcc-relaxing-cat" 
+                alt="A cute orange cat lying on its back.">
+            </a>
+        </div>
             <h1 style='text-align: center; color:brown;'>
                 <em>HTML Practice Page/Portfolio Page</em>
             </h1>
@@ -75,5 +88,74 @@
                 creativity and style.
             </p>
         </div>
+        <br/>
+        <!-- Inputs type;
+            
+            add input forms, & placeholder text-->
+
+        <!-- Form input elements;
+            
+            nest input elements within form elements.
+        form elements contain an action attribute that can 
+        send data to a server with pure html
+
+        required attribute can be added to input
+        so that user has to enter text before it can be submitted.
+
+        buttons send form data to server
+        -->
+
+        <!-- 
+            Radio;
+            inputs can also become radio types
+        labels contains a 'for' attribute that links 
+        to the input id.
+
+        each input should have the same name to be related/associated.
+        -->
+        <!-- 
+            Checkbox input;
+
+            add checkbox type to input within 
+            form element.
+
+            value attribute in elements;
+
+            value attributes are used to store specific 
+            input data within a server.
+
+         -->
+
+
+        <section style="margin:auto;text-align: center;border:solid 5px brown;">
+            <h2 id='form-heading'>Data Submission: Form Elements</h2>
+            <form action="">
+                <input type="text" value='input-text' placeholder="text here" name='input-text' required>
+                <button type='submit'>Submit</button>
+
+                <label for="frontend">
+                    Front End
+                    <input id='frontend' value='frontend' type="radio" name='frontend-backend' checked>
+                </label>
+
+                <label for="backend">
+                    Back End
+                    <input id='backend' value='backend' type="radio" name='frontend-backend'>
+                </label>
+                <br/>
+                <label for='web-dev'>
+                    Web Developer
+                    <input id='web-dev' value='web-dev' type="checkbox" name='software' checked>
+                </label>
+                <label for="sys-admin">
+                    Systems Admin
+                    <input id='sys-admin' value='sys-admin' type="checkbox" name='software' checked>
+                </label>
+                <label for="network-eng">
+                    Network Engineer
+                    <input id='network-eng' value='network-eng' type="checkbox" name='software'>
+                </label>
+            </form>
+        </section>
     </body>
 </html>

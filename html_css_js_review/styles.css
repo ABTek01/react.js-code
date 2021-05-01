@@ -14,6 +14,33 @@ hex - hexadecimal values #7ab0fb
 rgb - red green blue rgb(0, 0, 0)
 hsl - hue, saturation, lightness hsl(100, 200%, 300%)
 */
+#form-heading{
+    color:brown;
+}
+
+.smaller-image{
+    width:100px;
+}
+#thin-black-container{
+    border:solid black 2px;
+}
+/*border radius rounds the border of an border */
+/*can use percentages to round images and division elements*/
+
+.thick-gold-border{
+    border-color:gold;
+    border-width:10px;
+    border-style:solid;
+    /* border-radius:50% */
+    border-radius: 10px;
+}
+.cat-image{
+    border-radius:50%;
+}
+
+h2{
+    font-family: Lobster, sans-serif;
+}
 
 
 

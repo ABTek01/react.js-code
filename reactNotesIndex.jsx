@@ -8900,7 +8900,7 @@ import React, {Component} from 'react'
 
 class Root extends Component{
     state = {
-        alias:'',
+        newAlias:'',
         frontEndDev: false
 
     }
@@ -8914,13 +8914,13 @@ class Root extends Component{
 
     render(){
         //can rename state.
-        const {alias: newAlias, frontEndDev} = this.state
+        const {name: newAlias, frontEndDev} = this.state
         return(
             <div>
                 <input 
                     type = "text"
-                    name = 'alias'
-                    value = {alias}
+                    name = 'newAlias'
+                    value = {newAlias}
                     onChange = {this.handleChange}
                 />
                 <br/>
@@ -8930,7 +8930,7 @@ class Root extends Component{
                     checked = {frontEndDev}
                     onChange = {this.handleChange}
                 />
-                <h1>My alias is; {alias}</h1>
+                <h1>My alias is; {newlias}</h1>
                 <h2>I am a front end dev; {frontEndDev}</h2>
             </div>
         )
@@ -10452,6 +10452,7 @@ class Transformer extends Component{
         const ComponentProps = this.props.componentProps
         return (
             <>
+                {/*component passing down props*/}
                 <ComponentProps
                     conversion={this.state.conversion}
                     uiData_0 = {this.state.uiData_0}
@@ -11522,11 +11523,878 @@ export default function Component(props) {
     return (
         <div>
             <>
-                
+                <button onClick={props.toggle}>
+                    {props.on ? 'Hide Data':'Show Data'}
+                </button>
+                <br/>
+                <div style={{display:props.on ? 'block':'none'}}>
+                    <ul>
+                        <li>{props.systems}</li>
+                        <li>{props.systemsVersionA}</li>
+                        <li>{props.systemsVersionB}</li>
+                        <li>{props.virtual}</li>
+                    </ul>
+                </div>
             </>
         </div>
     )
 }
+
+//react.js; render props pattern_c/react.children
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+
+ReactDOM.render(<Root/>,document.getElementById('root'))
+
+import React from 'react'
+import Logic from './logic'
+import Component from './component'
+export default function reactNotesIndex(){
+    return (
+        <div>
+            <Logic>
+                {
+                    ({frontEndData, sysAdminData})=>(
+                        <Component
+                            frontEndData={frontEndData}
+                            sysAdminData={sysAdminData}
+                        />
+                    )
+                }
+            </Logic>
+            
+        </div>
+    )
+}
+
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    constructor(){
+        super()
+        this.state = {
+            frontEndData:['html','css', 'js', 'react.js', 'redux'],
+            sysAdminData:'linux'
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                {
+                    this.props.children(
+                        {
+                            frontEndData:this.state.frontEndData,
+                            sysAdmin:this.state.sysAdminData
+                        }
+                    )
+                }
+            </div>
+        )
+    }
+}
+
+//ui component
+import React from 'react'
+import Logic from './logic'
+export default function reactNotesIndex(props){
+    return (
+        <div>
+            <ul>
+                <li>{props.frontEndData}</li>
+                <hr/>
+                <li>{props.sysAdminData}</li>
+            </ul>
+        </div>
+    )
+}
+
+// react.jS; render props component reuseability, pattern b.
+// create two components; component_a; increments props/state, 
+// component_b; displays props/state with click of button.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(<Root/>,document.getElementById('root'))
+
+import React from 'react'
+import Logic from './logic'
+import Component_a from './component_a'
+import Component_b from './component_b'
+export default function Root(){
+    return (
+        <div>
+            <logic
+                render={
+                    ({int, increment})=>(
+                        <Component_a
+                            int={int}
+                            increment={increment}
+                        />
+                    )
+                }
+            />
+            <br/>
+            <logic
+                defaultOnValue={true}
+                render={
+                    ({on, alias, toggle})=>(
+                        <Component_b
+                            on={on}
+                            alias={alias}
+                            toggle={toggle}
+                            //defaultOnValue={true}
+                        />
+                    )
+                }
+            />
+        </div>
+    )
+}
+
+//logical component
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    state = {
+        on:this.props.defaultOnValue,
+        alias:'cyberman',
+        int:0
+    }
+
+    static defaultProps = {
+        defaultOnValue:true
+    }
+
+    //method that increments int state by one everytime the button is clicked.
+    increment=()=>{
+        this.setState(prevState=>{
+            return {
+                int:prevState.int++
+            }
+        })
+    }
+
+    //method that toggles data to be hidden and shown when button is clicked.
+    toggle=()=>{
+        this.setState(prevState=>{
+            return this.state = {
+                on:!prevState.on
+            }
+        })
+    }   
+
+    render() {
+        return (
+            <div>
+                {
+                    this.props.render({
+                        on:this.state.on,
+                        alias:this.state.alias,
+                        int:this.state.int,
+                        increment:this.increment,
+                        toggle:this.toggle
+                    })
+                }
+            </div>
+        )
+    }
+}
+
+//ui component_a
+import React from 'react'
+import Logic from './logic'
+export default function Component_a(props){
+    return (
+        <div>
+            <h2>{props.int}</h2>
+            <button onClick={props.increment}>
+                Click to Increment
+            </button>
+        </div>
+    )
+}
+
+//ui component_b
+import React from 'react'
+import Logic from './logic'
+export default function Component_b(props){
+    return (
+        <div>
+            <button onClick={props.toggle}>
+                {props.on ? 'Hide Alias':'Show Alias'}
+            </button>
+            <hr/>
+            <div style={{display:props.on ? 'block':'none'}}>
+                <h2>{props.alias}</h2>
+            </div>
+        </div>
+    )
+}
+
+//react.js; render props reusability react.children
+// <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Document</title>
+</head>
+<body>
+    <div id='root'></div>
+    <script src='index.js'></script>
+</body>
+</html>
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+ReactDOM.render(<h1>This is jsx, not html</h1>, 
+    document.getElementById('root'))
+
+//react functional component
+import React from 'react'
+
+export default function FunctionalComp(){
+    return (
+        <div>
+            <h1>Functional Component</h1>
+        </div>
+    )
+}
+
+//moving components into their own files
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Parent from './parent'
+
+import React from 'react'
+import Child_0 from './child_0'
+import Child_1 from './child_1'
+
+export default function Parent() {
+    return (
+        <div>
+            <Child_0/>
+            <Child_1/>
+        </div>
+    )
+}
+
+//'./child_0'
+import React from 'react'
+
+export default function Child_0() {
+    return (
+        <div>
+            <h1>First Child Component</h1>
+        </div>
+    )
+}
+
+//'./child_1'
+import React from 'react'
+
+export default function Child_1() {
+    return (
+        <div>
+            <h1>Second Child Component</h1>
+        </div>
+    )
+}
+
+//react.js; parent & child component
+import React from 'react'
+import ReactDOM from './react-dom'
+import Parent from './parent'
+ReactDOM.render(<Parent/>, document.getElementById('root'))
+
+import React from 'react'
+import ChildComp from './childcomp'
+export default function Parent(){
+    return (
+        <div>
+            <ChildComp/>
+        </div>
+    )
+}
+
+//'./childcomp'
+import React from 'react'
+
+export default function ChildComp() {
+    return (
+        <div>
+            <h1>Child component rendered</h1>
+        </div>
+    )
+}
+
+//react.js styling with css classes.
+import React from 'react'
+import ReactDOM from './react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+function Root(){
+    const style = {
+        border:'solid 5px black',
+        margin:'auto',
+        padding:20
+    }
+    return(
+        <div>
+            <div style={style}>
+                <h1>Component has inline class styling.</h1>
+            </div>
+        </div>
+    )
+}
+export default Root
+
+
+//jsx to js and back
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+//js
+function Root(){
+    // jsx styling objects
+    const divStyle = {
+        border:'solid 5px black'
+    }
+    return(
+        //jsx to js
+        <div style={divStyle}>
+            {/*apply js objects to jsx css/styling.*/}
+            <h1 style={{
+                color:'red',
+                fontFamily:'fantasy'
+            }}>
+            JSX to JS and Back
+            </h1>
+        </div>
+    )
+}
+export default Root
+
+//react.js; passing down props pattern a, pattern b.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import Child from './child'
+import NewChild from './newchild'
+function Root(){
+    return(
+        <>
+            <Child
+                pattern= 'passing static down props'
+            />
+            <NewChild
+                pattern={{
+                    newData:'passing down static object props'
+                }}
+            />
+        </>
+    )
+}
+export default Root
+
+import React from 'react'
+function Child(props){
+    return(
+        <>
+            <h1>{props.pattern}</h1>
+        </>
+    )
+}
+export default Child
+
+import React from 'react'
+function NewChild(props){
+    return(
+        <>
+            <h1>{props.pattern.newData}</h1>
+        </>
+    )
+}
+export default NewChild
+
+//react.js; class based components
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+//class based component
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React,{Component} from 'react'
+class Root extends Component{
+    //state = {}; use arrow functions to create component methods.
+    constructor(){
+        super()
+        this.state = {
+            stateA:'any data type',
+            stateB:'any data type',
+            onState:false
+        }
+        //bind built in methods here.
+        this.handleClick = this.handleClick.bind(this)
+    }
+
+    //methods here 
+    //method pattern a
+    handleClick(){
+        this.setState(prevState=>{
+            return this.state = {
+                onState:!prevState.onState
+            }
+        })
+    }
+
+    //method pattern b
+    // handleClick=()=>{
+    //     return this.state = {
+    //         onState:!prevState.onState
+    //     }
+    // }
+
+    render(){
+        //jsx styling & objects placed here.
+        return(
+            <>
+                {/*jsx ui layouts here */}
+            </>
+        )
+    }
+}
+export default Root
+
+//react.js; state
+import React,{Component} from 'react'
+class StateFul extends Component{
+    constructor(){
+        super()
+        //initialize state data here
+        this.state = {
+            a:'software engineer',
+            //can apply nested objects/arrays within state.
+            b:{
+                frontEnd:'html',
+                sysAdmin:'bash',
+                backEnd:'python'
+            }
+        }
+    }
+
+    render(){
+        // use obj destructuring to access state data
+        const {b} = this.state
+
+        return (
+            <>
+                <h1>{this.state.a}</h1>
+                <h1>{b.frontEnd}</h1>
+                <h1>{b.sysAdmin}</h1>
+            </>
+        )
+    }
+}
+export default StateFul
+
+//react.js; handling events in react.js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React, { Component } from 'react'
+
+export default class Root extends Component {
+    state = {
+        //integer to be incremented
+        int:0
+    }
+
+    //method that increments an integer
+    handleIncrement=()=>{
+        this.setState(prevState=>{
+            return {
+                int:prevState.int+= 1
+            }
+        })
+    }
+
+    render() {
+        const {int} = this.state
+        return (
+            <div>
+                <h1>{int}</h1>
+                {/*applying method to event handler */}
+                <button onClick={this.handleIncrement}>
+                    Click to increment
+                </button>
+            </div>
+        )
+    }
+}
+export default Root
+
+//react.js;lifecyle methods
+import React from 'react'
+function Clock(props){
+    return (
+        <div>
+            <h1>Hello, world!</h1>
+            <h2>It is {props.date.toLocaleTimeString()}.</h2>
+        </div>
+    )
+}
+
+function tick(){//callback that renders component and its UI
+    ReactDOM.render(
+        <Clock data={new Date()}/>,
+        document.getElementById('root')
+    )
+}
+/*
+instead of the data being managed outside, component
+should manage its own data.
+*/
+setInterval(tick, 1000)
+
+//react.js Clock component re-write
+import React, {Component} from 'react'
+class Clock extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            date:new Date()
+        }
+    }
+    //functionality is set up for first time when component rendered to DOM.
+
+    /*
+    this.timerId; allows freedom to add 
+    additional fields to the class manually 
+    if you need to store something that does not 
+    participate in the data flow.
+    */
+    componentDidMount(){
+        this.timerId = setInterval(
+            ()=> this.tick(), 1000
+        )
+    }
+    //DOM/functionality created by component is removed.
+    componentWillUnmount(){
+        clearInterval(this.timerId)
+    }
+
+    //method that Clock will run every second
+    tick(){
+        this.setState({
+            data:new Date()
+        })
+    }
+
+    //render(){} will be called everytime an update happens
+    render(){
+        return(
+            <div>
+                <h1>Hello, world!</h1>
+                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+            </div>
+        )
+    }
+}
+/*
+as long as we render Clock within the DOM node,
+only one instance of the Clock component will be
+used, allowing us to use local state and other 
+lifecycle methods.
+
+lifecycle methods are used 
+to free sup resources when components
+are destroyed.
+
+mounting; setting up functionality
+to a component for the first time.
+
+a. componentDidMount(); used when initial functionality
+is rendered for the first time; 'mounting' in react.js
+
+a. The componentDidMount() method runs after the component output 
+has been rendered to the DOM. 
+This is a good place to set up a timer:
+
+componentWillUnmount(); used when the DOM/functionality created by
+the component is removed; 'unmounting' in react.js
+
+*/
+ReactDOM.render(
+    <Clock/>,
+    document.getElementById('root')
+)
+
+//react.js; conditional render props passdown patterns a, b.
+//application that renders a ui when loaded properly.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import Logic from './logic'
+import ChildComponent from './childcomponent'
+function Root(){
+    return(
+        <>
+        <Logic/>
+        <ChildComponent/>
+        </>
+    )
+}
+export default Root
+
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    state = {
+        loading:true
+    }
+    componentDidMount(){
+        setTimeout(()=>{
+            this.setState(prevState=>{
+                return {
+                    loading:prevState.Loading = false
+                }
+            })
+        }, 3000)
+    }
+
+    render() {
+        return (
+            <div>
+                {
+                    this.state.loading ?
+                    <h1>Loading...</h1>
+                    :
+                    //component pass down pattern b.
+                    <ChildComponent
+                        loadState = {{loadMessage:'System Load Successful'}}
+                    />
+                }
+            </div>
+        )
+    }
+}
+export default ChildComponent
+
+import React from 'react'
+
+export default function ChildComponent(props){
+    return (
+        <div>
+            <h1>{props.loadState.loadMessage}</h1>
+        </div>
+    )
+}
+
+//react.js practice;
+
+
+/*
+react.js; render props pattern c/react.js.children
+create a component that uses input logic & state/props
+to print out a message, along with conditional rendering.
+*/
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+import React from 'react'
+import Logic from './logic'
+import Child from './child'
+export default function Root() {
+    return (
+        <div>
+            <Logic>
+                {
+                    ({loading, textInput})=>(
+                        <Child
+                            loading={loading}
+                            textInput={textInput}
+                        />
+                    )
+                }
+            </Logic>
+        </div>
+    )
+}
+
+
+import React, { Component } from 'react'
+import Child from './child'
+export default class Logic extends Component {
+    state = {
+        loading:true,
+        textInput:''
+    }
+    //if loading is true, page will continue to load, else u.i. will appear.
+    componentDidMount(){
+        setTimeout(()=>{
+            this.setState(prevState=>{
+                return {
+                    loading: prevState.loading = false
+                }
+            })
+        }, 3000)
+    }
+
+    //method that allows input-types to be interactive.
+    handleInputChange=(event)=>{
+        const {name, type, value, checked} = event.target
+        //initially checks if input type is a checkbox...
+        //then validates input-type was/to be checked, or validates it was a text value.
+        type === 'checkbox' ? this.setState({[name]:checked})
+        : this.setState({[name]:value})
+    }
+
+    render() {
+        const {loading, textInput} = this.state
+        return (
+            <>
+                    <>{
+                        this.props.children({
+                            loading:this.state.loading,
+                            textInput:this.state.textInput
+                        })      
+                    }</>
+                    <br/>
+                    <>{
+                        this.state.loading ? <h3>Loading...</h3> : <Child/>
+                    }</>
+            </>
+        )
+    }
+}
+
+import React from 'react'
+import Logic from './logic'
+export default function Child(props){
+    return (
+        <div>
+            <h1>The Next Generation of Television</h1>
+            <form>
+                    <input 
+                        type='text'
+                        name='textInput'
+                        value={props.textInput}
+                        onChange={props.handleInputChange}
+                    />
+                    {/*apply button functionality*/}
+                    <button onClick={}>
+                        Get Started
+                    </button>
+            </form>
+        </div>
+    )
+}
+
+/*
+conditional render components 
+pattens; a, b, c.
+that displays fetch-api data
+within a u.i.
+*/
+
+
+
+
+
+/*
+react.js; Shallow Comparison
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+react.js tree rendering; how it affects performance.
+
+to increase performance of a react app,
+react.js recursively renders components down a branch
+until there are no more components to render.
+
+changes to state or props in any component will
+recursively re-render down the remaining tree wether
+those component have changed or not. This can 
+affect the performance of the react.app.
+*/
+
+
+
+
+
+
+
 
 
 
@@ -13448,15 +14316,34 @@ callbacks and other parameters.
 
 Render Props;
 
-"Is A component with a render={} prop that takes a
-function and returns a React element and 
+"Is A component with a render={ ({})=>() } prop 
+that takes a function and returns a React element and 
 calls it instead of implementing its own render logic."
-Functions are a valid argument for functions in Javascript 
-and work because they are passed down as props. 
+'functions' are a valid argument for functions in Javascript 
+and work because they are passed down as props(react.js)/paremeters/arguments.
 
 
 
 
+///////////////
+React.js Tree Rendering; how it affects performance.
+
+to increase performance of a react app,
+react.js recursively renders components down a branch
+until there are no more components to render.
+
+changes to state or props in any component will
+recursively re-render down the remaining tree wether
+those component have changed or not. This can 
+affect the performance of the react.app.
+
+remedies to poor app performance; 
+1. shouldComponentUpdate()
+2. React.PureComponent
+3. React.memo()
+
+
+React.js; Performance
 
 
 */

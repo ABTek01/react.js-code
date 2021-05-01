@@ -1095,7 +1095,7 @@ can use objects to look up
 data values instead of if/else
 and switch statements.
 
-use obj[bracketnotation](no string)
+use obj[bracket-notation](no string)
 to look up the functions parameter.
 */
 function dataLookUp(val){
@@ -1138,19 +1138,145 @@ delete testObj3['sysadmin']
 console.log(testObj3)
 
 
+/*
+Testing objects for properties
 
+test if a function
+contains a specific property
+using hasOwnProperty() method.
+*/
+function testObj(obj, checkForProp){
+    if(obj.hasOwnProperty(checkForProp)){
+        return `${obj[checkForProp]}; ${true}`
+    }else{
+        return 'not found'
+    }
+}
+testObj(
+    {html:'structure', 
+    css:'presentation', 
+    javaScript:'behavior'},
+    'javaScript'
+)
 
+//working with complex object; c.o. can contain any object or data type.
+var complexObj = {
+    technologies:[
+        'html',
+        'css',
+        'javascript',
+        'react.js'
+    ],
+    itSkills:{
+        systemsAdmin:'linux os',
+        shellScripting:[
+            'bash',
+            'python'
+        ]
+    }
+}
 
+//accessing nested properties in a complex object
+var complexObjData = complexObj.technologies
+//complexObjData = complexObj['technologies']
+console.log(complexObjData)
+complexObjData = complexObj.itSkills.shellScripting
+complexObjData = complexObj.itSkills.shellScripting[1]
+console.log(complexObjData)
 
+var devComplexObj = {
+    devTechnologies:[
+        'html',
+        'css',
+        'javascript',
+        'react.js'
+    ],
+    sysItSkills:{
+        systemsAdmin:'linux os',
+        shellScripting:[
+            'bash',
+            'python'
+        ]
+    }
+}
+var systemsSoftware = devComplexObj.sysItSkills
+systemsSoftware = devComplexObj.sysItSkills.systemsAdmin
+console.log(systemsSoftware)
 
+systemsSoftware = {
+    itSkills:['linux', 'python', 'bash', 'networking'],
+    shellScripting:'automation'
+}
 
+var newSoftwareObj = systemsSoftware.itSkills
+console.log(newSoftwareObj)
 
-
-
+systemsSoftware = {
+    'itSkills':['linux', 'python', 'bash', 'networking'],
+    shellScripting:'automation'
+}
+//bracket notation good for 'string' properties.
+newSoftwareObj = systemsSoftware['itSkills']
 
 /*
-Testing 
+Accessing Nested Arrays
+
+objects can contain both nested objects and nested arrays. 
+Similar to accessing nested objects, array bracket 
+notation can be chained to access nested arrays.
 */
+
+var nestedTechObjs = [
+    {
+        developmentTech:'user interface',
+        software:[
+            'html',
+            'css',
+            'js',
+            'react'
+        ]
+    },
+    {
+        systemsTech:'systems administration',
+        software:[
+            'linux os',
+            'bash',
+            'python',
+            'automation',
+            'firewalls'
+        ]
+    }
+]
+console.log(nestedTechObjs[0].software[3])
+
+var newlyObj = {
+    101:{
+        array:['a', 'b', 'c']
+    }
+}
+console.log(newlyObj[101].array)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
