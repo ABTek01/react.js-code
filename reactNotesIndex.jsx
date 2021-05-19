@@ -1938,7 +1938,7 @@ function Root(){
         tech_name = {data.tech_name}
         type = {data.type}
 
-        // can apply object obj={data} from child components
+        //can apply object obj={data} from child components
         //when rendering outside data.
     />)
     return(
@@ -1959,7 +1959,7 @@ function DataComp(props){
             <h1>{props.type}</h1>
             {/*
                 can apply props double dot notation when 
-                props.obj.propertyName
+                props.obj.propertyName for each property.
 
                 when passing down props and rendering 
                 outside data to root.
@@ -10424,6 +10424,16 @@ ReactDOM.render(
     <Root/>,
     document.getElementById('root')
 )
+import {extendedTransformer} from './extendedTransformer'
+import MetamorphicComp from './metamorphiccomp'
+function Root(){
+    return (
+        <>
+            <MetamorphicComp/>
+        </>
+    )
+}
+export default Root
 
 import React, {Component} from 'react'
 class Transformer extends Component{
@@ -10465,7 +10475,7 @@ class Transformer extends Component{
     }
 }
 
-export function extendedTransformer(ComponentProps){
+export default function extendedTransformer(componentProps){
     return function(props){
         return (
             <>
@@ -10477,6 +10487,7 @@ export function extendedTransformer(ComponentProps){
         )
     }
 }
+
 
 import React,{Component} from 'react'
 import {extendedTransformer} from './extendedtransformer'
@@ -12345,49 +12356,343 @@ within a u.i.
 
 
 
-
-
 /*
-react.js; Shallow Comparison
+Performance & how React renders its components
+react.js; SHALLOW COMPARISON
+
+shouldComponentUpdate(){}; method that determines
+if a component should be updated if there are changes between
+passed down state/props compared to current state/props.
+
+!no changes between current state/props & passed down state/props
+will not re-render components.
+
+
+comparing two objects created in memory(face value) are not
+strictly equal. (objA !== objB)
+
+comparing two objects created in memory with 
+the same 'first level' properties/shallow properties
+will have a shallow comparison.
+(objA = {data:true}) === (objB = {data:true})
+
+
+comparing two objects created in memory with nested
+objects within eachother will not have a shallow comparison
+because two more objects are created within memory and
+are compared in reference and not value.
+(objA = {
+    data:true, 
+    objIn:{
+        data:true
+    }
+})
+
+!==
+
+(objB = {
+    data:true,
+    objIn:{
+        data:true
+    }
+})
 
 */
 
+//objects created in memory are not equal
+const obj000 = {}
+const obj001 = {}
+console.log(obj000 === obj001)
 
+//the same first level object.properties are considered equal
+const obj002 = {data:true} 
+const obj003 = {data:true}
+console.log(obj002.data === obj003.data)
 
+//objects.properties that are nested objects are not equal
+const obj004 = {
+    data:true,
+    nestedObj:{
+        nestedData:1
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const obj005 = {
+    data:true,
+    nestedObj:{
+        nestedData:1
+    }
+}
+//two objects are not equal/shallowly equal.
+console.log(obj004 === obj005)
+//two objects with nested objects are not equal/shallowly equal.
+console.log(obj004.nestedObj  === obj005.nestedObj)
+//two object.properties are equal/shallowly equal.
+console.log(obj004.data === obj005.data)
 
 
 
 /*
 react.js tree rendering; how it affects performance.
 
-to increase performance of a react app,
-react.js recursively renders components down a branch
-until there are no more components to render.
+React.js automatically recursively re-renders each component(inefficient),
+down tree branches until there are no more components to render.
 
 changes to state or props in any component will
 recursively re-render down the remaining tree wether
 those component have changed or not. This can 
 affect the performance of the react.app.
 */
+
+//excercise
+/*
+react.js; SHALLOW COMPARISON, shouldComponentUpdate(){}
+with HOcs, use shallow comparisson 
+TO create an application that toggles 
+data based on state.
+*/
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+//import UiComponent from './uicomponent
+export default function Root() {
+    return (
+        <div>
+            {/* <UiComponent/> */}
+        </div>
+    )
+}
+
+//extendedLogic.js
+import React, { Component } from 'react'
+class Logic extends Component {
+    state = {
+        on:false
+    }
+
+    handleClick=()=>{
+        this.setState(prevState=>{
+            return this.state = {
+                on:!prevState.on
+            }
+        })
+    }
+
+
+
+    render() {
+        const ComponentTemplate = this.props.componentProps
+        return (
+            <div>
+                <ComponentTemplate
+                    on={this.state.on}
+                    handleClick={this.handleClick}
+                    {...this.props}
+                />
+            </div>
+        )
+    }
+}
+
+export function extendedLogic(componentProps){
+    return function(props){
+        return (
+            <>
+                <Logic
+                    componentProps={componentProps}
+                    {...props}
+                />
+            </>
+        )
+    }
+}
+
+import React, { Component } from 'react'
+import {extendedLogic} from './extendedlogic'
+export default class  UiComponent extends Component {
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.on === this.props.on){
+            //if no change in props or state = false; no need to update or re-render
+            return false
+        }
+        //if change in props or state = true; component will update and re-render
+        return true
+    }
+    render() {
+        return (
+            <>
+                <button onClick={this.props.handleClick}>
+                    {this.props.on ? 'Show Data':'Hide Data'}
+                </button>
+                <hr/>
+                <div style={{display:this.props.on ? 'none':'block'}}>
+                    <ul>
+                        <li>Front End Wed Development</li>
+                        <li>User Interface Development</li>
+                        <li>Linux Systems Administration</li>
+                    </ul>
+                </div>
+            </>
+        )
+    }
+}
+
+
+
+
+
+
+
+
+
+/*
+react.js; SHALLOW COMPARISON, shouldComponentUpdate(){}
+with renderProps, use shallow comparisson, render props 
+to create an application that toggles 
+screen color and different text based on change in
+old props/state & new props/state, determine if component
+needs to be re-rendered.
+*/
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>, document.getElementById('root')
+)
+
+import React from 'react'
+import UiComponent from './uicomponent'
+function Root(){
+    return (
+        <>
+            <UiComponent/>
+        </>
+    )
+}
+export default Root
+
+
+//logic component
+import React,{Component} from 'react'
+class Logic extends Component{
+    state = {
+        onRed:true,
+        onGreen:true
+    }
+
+    //method that toggle a red ui
+    toggleRed=()=>{
+        this.setState(prevState=>{
+            return {
+                onRed:!prevState.onRed
+            }
+        })
+    }
+    //method that toggles a green ui
+    toggleGreen=()=>{
+        this.setState(prevState=>{
+            onGreen:!prevState.onGreen
+        })
+    }
+
+    render(){
+        const {onRed, onGreen} = this.state
+        return(
+            <>
+                {
+                    this.props.render({
+                        onGreen:this.state.onGreen,
+                        onRed:this.state.onRed,
+                        toggleRed:this.toggleRed,
+                        toggleGreen:this.toggleGreen
+                    })
+                }
+            </>
+        )
+    }
+}
+export default Logic
+
+//uicomponent, shouldComponentUpdate(){}
+import React,{Component} from 'react'
+import Logic from './logic'
+class UiComponent extends Component{
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.onRed === onRed && nextProps.onGreen === onGreen){
+            return false
+        }
+        return true
+    }
+
+    render(){
+        return(
+            <>
+                <Logic
+                    //rendering props
+                    render={
+                        ({onGreen, onRed, toggleRed, toggleGreen})=>(
+                            <>
+                                <button onClick={toggleRed}>
+                                    {on ? 'Show Red Ui':'Hide Red Ui'}
+                                </button>
+                                <hr/>
+                                <div>
+                                    <ul>
+                                        <li>Front End Web Development</li>
+                                        <li>React.js; Red Ui</li>
+                                    </ul>
+                                </div>
+                                <br/>
+                                <button onClick={toggleGreen}>
+                                    {on ? 'Show Green Ui':'Hide Green Ui'}
+                                </button>
+                                <hr/>
+                                <div>
+                                    <ul>
+                                        <li>Front End Web Development</li>
+                                        <li>React.js; Green Ui</li>
+                                    </ul>
+                                </div>
+                            </>
+                        )
+                    }
+                />
+            </>
+        )
+    }
+}
+export default UiComponent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -14345,252 +14650,714 @@ remedies to poor app performance;
 
 React.js; Performance
 
+Performance & how React renders its components
+react.js; SHALLOW COMPARISON
 
+shouldComponentUpdate(){}
+
+comparing two objects created in memory are not
+strictly equal. (objA !== objB)
+
+comparing two objects created in memory with 
+the same 'first level' properties/shallow properties
+will have a shallow comparison.
+(objA = {data:true}) === (objB = {data:true})
+
+comparing two objects created in memory with nested
+objects within eachother will not have a shallow comparison
+because two more objects are created within memory and
+are compared in reference and not value.
+(objA = {
+    data:true, 
+    objIn:{
+        data:true
+    }
+})
+
+!==
+
+(objB = {
+    data:true,
+    objIn:{
+        data:true
+    }
+})
+
+shouldComponentUpdate(nextProps, nextState){
+    if(nextProps.props === this.state.props){
+        return true
+    }
+    return false
+}
+
+//////////////////////////////////////////
+import React, {PureComponent} from 'react'
+class App extends PureComponent{};
+
+operates like shouldComponentUpdate(){}
+and checks if a component(s) need to be 
+re-rendered based on change in current state/props
+from previous state/props.
+
+react.memo;
 */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+react.js; React.memo
+Higher Order Component built by React.
+React.memo() === PureComponent(), but for functional 
+components.
+
+It only compares prevProps and newProps (no state checking).
+can implement own checking functions to determins if it should
+use the memoized result.
+
+shouldComponentUpdate(); true, component should re-render/update,
+props/state are different. false, component should not re-render
+props/state are the same.
+
+
+React.memo(); HOC for functional components.
+React.memo(); true, component should not re-render if props are equal.
+
+false, component should re-render if props are different.
+
+React.memo() caches original props, then compares to 
+new props and determines if component should re-render
+based on if any changes are made.
+
+true; cache, use original/same props, no re-render.
+false; no cache, use new/changed props, re-render.
+
+React.js; REACT CONTEXT
+
+Provides a way to pass data
+through the component tree
+without having to pass down manually
+at every level('props-drilling').
+
+provider and consumer
+pair wrap similar components
+that create a link between
+that parent, and every child component
+that needs to consume that data
+or method.
+
+method within a child component
+ca be fired which will modify state
+within the 'parent' which will be passed
+down to every 'child' component.
+
+e.g.
+Parent.Provider(parentComponent)
+Parent.Comsumer(childComponent)
+*/
+
+//react.js; React.memo(), HOC function takes a component and returns a component.
+//counter app.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+import React, { Component } from 'react'
+import Child from './child'
+export default class Root extends Component {
+    state = {
+        count = 0
+    }
+
+    //method that allows count to increment by 1 each time invoked().
+    increment=()=>{
+        this.setState(prevState=>{
+            return {
+                count:prevState.count + 1
+            }
+        })
+    }
+
+
+    render() {
+        return (
+            <div>
+                {/*can pass down props/state here */}
+                <Child count={this.state.count}/>
+            </div>
+        )
+    }
+}
+
+//false; component will be re-rendered based on change in props.
+import React,{memo} from 'react'
+import App from './app'
+import NewChild from './newchild'
+
+export default memo(function Child(props) {
+    return (
+        <div>
+            <h1>Child Component Rendered.</h1>
+            <h1>{props.count}</h1>
+            <NewChild/>
+        </div>
+    )
+})
+
+import React from 'react'
+export default React.memo(function NewCild(){
+    return (
+        <div>
+            <h1>True; Chached; No re-render</h1>
+        </div>
+    )
+})
+
+/*
+React.memo() with HOCs
+counter application.
+*/
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import UiComponent from './uicomponent'
+export default function Root() {
+    return (
+        <div>
+            <UiComponent/>
+        </div>
+    )
+}
+
+//logic component/HOC.
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    state = {
+        count: 0
+    }
+    //method that increments state.
+    incremenet=()=>{
+        this.setState(prevState=>{
+            return {
+                count:prevState.count + 1
+            }
+        })
+    }
+
+    render() {
+        const ComponentContainer = this.props.containerProps
+        return (
+            <div>
+                <ComponentContainer
+                    count={this.state.count}
+                    increment={this.increment}
+                    {...this.props}
+                />
+            </div>
+        )
+    }
+}
+
+//HOC that allows reuse of Logical component.
+export function extendedLogic(containerProps){
+    return function(props){
+        return (
+            <>
+                <Logic
+                    componentProps={containerProps}
+                    {...props}
+                />
+            </>
+        )
+    }
+}
+
+//UiComponent that reuses logic from {extendedLogic}
+import React from 'react'
+import {extendedLogic} from './extendedlogic'
+export default function UiComponent(){
+    return (
+        <div>
+            <h1>{props.count}</h1>
+            <button onClick={props.increament}>
+                Increment
+            </button>
+        </div>
+    )
+}
+
+
+/*
+React.js; React Context
+
+Provides a way to pass data
+through the component tree
+without having to pass down manually
+at every level('props-drilling').
+
+provider and consumer
+pair wrap similar components
+that create a link between
+that parent, and every child component
+that needs to consume that data
+or method.
+
+method within a child component
+ca be fired which will modify state
+within the 'parent' which will be passed
+down to every 'child' component.
+
+e.g.
+Parent.Provider(parentComponent)
+Parent.Comsumer(childComponent)
+
+note: use REACT CONTEXT to
+build on previous concepts.
+*/
+
+/*
+React Context; pattern a1, a2
+assigning provider context to 
+a parent component,
+need to provide 
+*/
+
+//pattern a1; declare/initialize variable to create compound componen/context
+//ThemeContext is now an object that contains components as properties
+//need to provide value={} prop to be passed down.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import ThemeContext from './themecontext'
+
+//place ThemeContext in its own file './themecontext
+//const ThemeContext = React.createContext()
+ReactDOM.render(
+    <ThemeContext.Provider value={'data'}>
+        <Root/>
+    </ThemeContext.Provider>,
+    document.getElementById('root')
+)
+
+//ThemeContext file; './themecontext/
+import React from 'react'
+const ThemeContext = React.createContext()
+export default ThemeContext
+
+//pattern a2; use object destructuring to create compound component/context
+//ThemeContext is now an object that contains components as properties
+//need to provide value={} prop to be passed down.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import ThemeContext from './themecontext'
+
+// const ThemeContext = React.createContext()
+// const {Provider, Consumer} = ThemeContext
+ReactDOM.render(
+    <Provider value={'data'}>
+        <Root/>
+    </Provider>,
+    document.getElementById('root')
+)
+
+//to avoid bug; place ThemeContext into its owb file then export default ThemeContext
+//'./themecontext' file
+import React from 'react'
+const ThemeContext = React.createContext()
+export default ThemeContext
+
+//React Context practice; pattern a
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import ThemeContext from './themecontext'
+ReactDOM.render(
+    <ThemeContext.Provider>
+        <Root/>
+    </ThemeContext.Provider>,
+    document.getElementById('root')
+)
+
+//ThemeContext object file
+import React from 'react'
+const ThemeContext = React.createContext()
+export default ThemeContext
+
+//React Context practice; pattern b
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import ThemeContext from './themecontext'
+ReactDOM.render(
+    <Provider>
+        <Root/>
+    </Provider>,
+    document.getElementById('root')
+)
+
+//ThemeContext file.
+import React from 'react'
+var ThemeContext = React.createContext()
+const {Provider, Consumer} = ThemeContext
+
+
+//css style is applied to <Root/>
+//React.js; React Context; contextType
+//render file
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import ThemeContext from './themecontext'
+ReactDOM.render(
+    <ThemeContext.Provider value={'css style passdown'}>
+        <Root/>
+    </ThemeContext.Provider>,
+    document.getElementById('root')
+    /*
+        <Provider>
+            <Root/>
+        </Provider>,
+        document.getElementById('root')
+    */
+)
+
+//ThemeContext file './themecontext'
+import React from 'react'
+const ThemeContext = React.createContext()
+//obj-dest; const {Provider, Consumer} = ThemeContext
+export default ThemeContext
+
+import React from 'react'
+import Header from './header'
+import Section from './section'
+
+export default function Root() {
+    return (
+        <div>
+            <Header/>
+            <Section/>
+        </div>
+    )
+}
+
+//header component
+import React, { Component } from 'react'
+import ThemeContext from './themecontext'
+
+export default class Header extends Component {
+    render() {
+        const headerTheme = this.context
+        return (
+            <>
+                {/*<header className={`${this.context}-theme`}>*/}
+                <header className={`${headerTheme}-theme`}>
+                    Header Component
+                </header>
+            </>
+        )
+    }
+}
+Header.contextType = ThemeContext
+
+import React, { PureComponent } from 'react'
+
+export default class Section extends PureComponent {
+    render() {
+        const sectionTheme = this.context
+        return (
+            <>
+                {/*<section className={`${this.context}-theme`}>*/}
+                <section className={`${sectionTheme}-theme`}>
+                    Section Component
+                </section>
+            </>
+        )
+    }
+}
+Section.contextType = ThemeContext
+
+//React.context, contextType
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import ThemeContext from './themecontext'
+ReactDOM.render(
+    <ThemeContext.Provider>
+        <Root/>
+    </ThemeContext.Provider>,
+    document.getElementById('root')
+)
+
+//'./themecontext' file
+import React from 'react'
+const ThemeContext = React.createContext()
+export default ThemeContext
+
+//Root component
+import React from 'react'
+//import ChildA from './childA'
+//import ChildB from './childB'
+export default function Root(){
+    return (
+        <div>
+            {/*<ChildA/>*/}
+            {/*<ChildB/>*/}
+        </div>
+    )
+}
+
+//'./childA' file
+import React, { Component } from 'react'
+import ThemeContext from './themecontext'
+export default class ChildA extends Component {
+    render() {
+        const theme = this.context
+        return (
+            <div>
+                <h1></h1>
+            </div>
+        )
+    }
+}
+ChildA.contextType = ThemeContext
+
+//'./childB' file
+import React, { Component } from 'react'
+import ThemeContext from './themecontext'
+export default class reactNotesIndex extends Component {
+    render() {
+        return (
+            <div>
+                <h1></h1>
+            </div>
+        )
+    }
+}
+ChildB.contextType = ThemeContext
+
+//multi rendering/toggling user interface.
+//apply react.context
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+import ThemeContext from './themecontext'
+ReactDOM.render(
+    <ThemeContext.Provider>
+        <Root/>
+    </ThemeContext.Provider>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+const ThemeContext = React.createContext()
+export default ThemeContext
+
+
+import React from 'react'
+import ChildUi from './childui'
+//rendering component
+export default function Root(){
+    return (
+        <div>
+            <ChildUi/>
+        </div>
+    )
+}
+
+//logic component that toggles two different colored UIs.
+import React, { Component } from 'react'
+
+export default class Logic extends Component {
+    state = {
+        onGreen:false,
+        onRed:false
+    }
+
+    //method that toggles green colored UI.
+    toggleGreen=()=>{
+        this.setState(prevState=>{
+            return {
+                onGreen:!prevState.onGreen
+            }
+        })
+    }
+
+    //method that toggles red colored UI.
+    toggleGreen=()=>{
+        this.setState(prevState=>{
+            return {
+                onRed:!prevState.onRed
+            }
+        })
+    }
+
+    render() {
+        const CompContain = this.props.componentProps
+        return (
+            <div>
+                <Component
+                    onGreen={this.state.onGreen}
+                    onRed={this.state.onRed}
+                    toggleRed={this.toggleRed}
+                    toggleGreen={this.toggleGreen}
+                />
+            </div>
+        )
+    }
+}
+
+export function extendedLogic(componentProps){
+    return function(props){
+        return (
+            <>
+                <Logic 
+                    componentProps={componentProps}
+                    {...props}
+                />
+            </>
+        )
+    }
+}
+
+//child ui component
+import React, { Component } from 'react'
+import ThemeContext from './themecontext'
+import {extendedLogic} from './extendedlogic'
+
+export default class ChildUi extends Component{
+    //state, methods
+    render() {
+        //variables, logic
+        const theme = this.context
+        return (
+            <>
+                <button onClick={this.props.toggleRed}>
+                    {this.props.onRed ? 'Toggle Red':'Hide Red'}
+                </button>
+                <div className={`${theme}-theme`} style={{display: this.props.onRed ? 'none':'block'}}>
+                    <ul>
+                        <li>Red Ui</li>
+                        <li>Red State</li>
+                        <li>Red Passed Through Props</li>
+                    </ul>
+                </div>
+                <br/>
+                <hr/>
+                <button onClick={this.props.toggleGreen}>
+                    {this.props.onGreen ? 'Toggle Green':'Hide green'}
+                </button>
+                <div className={`${theme}-theme`} style={{display: this.props.onGreen ? 'none':'block'}}>
+                    <ul>
+                        <li>Green Ui</li>
+                        <li>Green State</li>
+                        <li>Green Passed Down Through Props</li>
+                    </ul>
+                </div>
+            </>
+        )
+    }
+}
+ChildUi.contextType = ThemeContext
+
+//create ui that will display a user name, via react.context use static-contextType.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import Context from './context'
+ReactDOM.render(
+    <Context.Provider value={'cyberman'}>
+        <Root/>
+    </Context.Provider>,
+    document.getElementById('root')
+)
+
+//'./context' file
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
+//'./root'
+import React from 'react'
+import UserNameUi from './usernameui'
+export default function Root(){
+    return (
+        <div>
+            <UserNameUi/>
+        </div>
+    )
+}
+
+//'./extendedlogic'/logic component
+import React, { PureComponent } from 'react'
+
+export default class Logic extends PureComponent {
+    state = {
+        on:false
+    }
+
+    //method that toggles a ui on and off.
+    toggle=()=>{
+        this.setState(prevState=>{
+            return {
+                on:!prevState.on
+            }
+        })
+    }
+    
+    render() {
+        return (
+            <div>
+                <>{
+                    this.props.render({
+                        on:this.state.on,
+                        toggle:this.toggle
+                    })
+                }</>
+            </div>
+        )
+    }
+}
+export default Logic
+
+//'.usernameui' component
+import React, { Component } from 'react'
+import Context from './context'
+import Logic from './logic'
+
+export default class UserNameUi extends Component{
+    static contextType = Context
+    render() {
+        const userName = this.context
+        return (
+            <>
+                <Logic
+                    render={
+                        ({on, toggle})=>(
+                            <>
+                                <button onClick={toggle}>
+                                    {on ? 'Hide Username':'Show Username'}
+                                </button>
+                                <hr/>
+                                <br/>
+                                <div style={{display: on ? 'block':'none'}}>
+                                    <h2>Welcome: {userName}!</h2>
+                                </div>
+                            </>
+                        )
+                    }
+                />
+            </>
+        )
+    }
+}
 
 
 

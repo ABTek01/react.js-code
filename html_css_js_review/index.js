@@ -1257,6 +1257,286 @@ var newlyObj = {
 console.log(newlyObj[101].array)
 
 
+//while loop; runs a loop as long as a condition is true.
+//while loop that loops every even number between 0 and/including 100.
+function useWhileLoop(){
+    var count = 0
+    var newArray = []
+    while(count <= 100){
+        newArray.push(count)
+        count += 2
+    }
+    console.log(newArray)
+}
+useWhileLoop()
+
+
+//for loop, nested for loop, odds, evens, product, total.
+//finding the sum of a variable and elements in a nested array.
+function nestedLoop(){
+    var leveledArray = [
+        [1, 2], [3, 4], [5, 6]
+    ]
+    var total = 0
+    for(var i = 0;i < leveledArray.length;i++){
+        for(var j = 0;j < leveledArray[i].length;j++){
+            total += leveledArray[i][j]
+        }
+        console.log(total)
+    }
+}
+nestedLoop()
+
+//iterating through odd numbers within an array with a for loop.
+function oddLoops(){
+    var empty = []
+    for(var i = 1;i <= 50; i += 2){
+        empty.push(i)
+    }
+    console.log(empty)
+}
+oddLoops()
+
+//iterating through odd numbers in reverse order array with a for loop.
+function reverseOddLoops(){
+    var empty = []
+    for(var i = 49; i >= 1; i -= 2){
+        empty.push(i)
+    }
+    console.log(empty)
+}
+reverseOddLoops()
+
+/*
+looping through a nested array with nested loops, 
+finding sum of variable and array elements.
+*/
+function nestedSum(){
+    var nested = [
+        [1,2], [3,4], [5,6], [7,9], [10,11], [12]
+    ]
+    var sum = 0
+    for(var i = 0;i < nested.length;i++){
+        for(var j = 0;j < nested[i].length;j++){
+            sum += nested[i][j]
+        }
+        console.log(sum)
+    }
+}
+nestedSum()
+
+
+
+/*
+do...while loop; runs all code at least once, keeps
+running as long as condition is true. stops
+as when condition is false.
+*/
+function useDoWhileLoop(){
+    var empty = []
+    var i = 0
+    do{
+        empty.push(i)
+        i++
+    }while(i <= 5)
+    console.log(empty)
+}
+useDoWhileLoop()
+
+/*
+do...while loop that iterates and 
+pushes a single number to an empty array.
+*/
+function doWhileTrue(){
+    var emptyArr = []
+    var i = 1
+    do{
+        emptyArr.push(i)
+        i++
+    }while(i <= 2)
+    console.log(emptyArr)
+}
+doWhileTrue()
+
+/*
+do...while loop that iterates
+and adds even numbers to an 
+empty array.
+*/
+function doWhileEven(){
+    var empty = []
+    var i = 0
+    do{
+        empty.push(i)
+        i += 2
+    }while(i <= 20)
+    console.log(empty)
+}
+doWhileEven()
+
+/*
+do...while loop that 
+iterates and adds odd numbers
+to an empty array.
+*/
+function doWhileOdd(){
+    var empty = []
+    var i = 1
+    do{
+        empty.push(i)
+        i += 2
+    }while(i <= 100)
+    console.log(empty)
+}
+doWhileOdd()
+
+/*
+do..while loop that
+reverse iterates numbers
+within an array.
+*/
+
+function doWhileReversed(){
+    var empty = []
+    var i = 100
+    do{
+        empty.push(i)
+        i -= 3
+    }while(i >= 0)
+    console.log(empty)
+}
+doWhileReversed()
+
+// //replacing loops with recursion
+// function sum(arr, n){
+//     //base case
+//     if(n <= 0){
+//         return 0
+//     //recursive case
+//     }else{
+//         return sum(arr, n - 1) + arr[n - 1]
+//     }
+// }
+// sum([1, 2, 3, 5], 4)
+
+var array = [1, 2, 3, 5]
+console.log(array.length - 1)//3
+
+
+//first solution; using while loop
+//make a pile of boxes to look through
+//while the piles isn't empty
+//grab a box
+//if you find a key; done
+//if you find a box add it to the pile of boxes
+//repeat steps
+
+
+
+//second solution; clearer
+//look through every item in box
+//key; done
+//box; repeat
+
+
+/*
+recursion; base case; function does not call 
+itself again base/condition reached
+
+recursion; recursive case; function calls itself 
+when base case/condition is not reached.
+*/
+
+//function being expressed in terms of itself/recursion
+function multiply(arr, n){
+    var product = 1
+    for(var i = 0; i < n;i++){
+      product *= arr[i]
+    }
+    return product
+  }
+  multiply([1, 2, 3], 3)
+
+
+  function product(arr, n){
+    //base case
+    if(n <= 0){
+        return 0
+    //recursive case
+    }else{
+        return sum(arr, n - 1) + arr[n - 1]
+    }
+}
+product([1, 2, 3], 3)
+
+//profile look up; using for-loop and nested if statements.
+var contacts = [
+    {
+        'firstName':'cyberman',
+        'language':'javascript',
+        'framework':'react.js',
+        'developmentType':['front end', 'user interface', 'web development']
+    },
+    {
+        'firstName':'sysAdmin_1',
+        'language':'bash',
+        'framework':'terminal',
+        'developmentType':['scripting', 'automation']
+    },
+    {
+        'firstName':'programmer_1',
+        'language':'python',
+        'framework':'django',
+        'developmentType':['back end', 'server side', 'database']
+    }
+]
+
+function contactLookUp(name, prop){
+    for(var i = 0; i < contacts.length;i++){
+        if(contacts[i].firstName === name){
+            if(contacts[i].hasOwnProperty(prop)){
+                console.log(contacts[i][prop])
+            }else{
+                console.log('No such property')
+            }
+        }
+    }
+    console.log('No such contact')
+}
+contactLookUp('cyberman', 'developmentType')
+
+//generate random decimals/fractions with Math.random()
+function generateRandomDec(x){
+    while(x < 1){
+        console.log(Math.random())
+        break;
+    }
+}
+generateRandomDec(0)
+
+//generating a whole number between 0 and 10.
+function generateWholeNum(){
+    console.log(Math.floor(Math.random() * 11))
+}
+generateWholeNum()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
