@@ -12594,6 +12594,7 @@ class Logic extends Component{
             }
         })
     }
+    
     //method that toggles a green ui
     toggleGreen=()=>{
         this.setState(prevState=>{
@@ -12620,7 +12621,7 @@ class Logic extends Component{
 export default Logic
 
 //uicomponent, shouldComponentUpdate(){}
-import React,{Component} from 'react'
+import React, {Component} from 'react'
 import Logic from './logic'
 class UiComponent extends Component{
     shouldComponentUpdate(nextProps, nextState){
@@ -15267,7 +15268,8 @@ export default class ChildUi extends Component{
 }
 ChildUi.contextType = ThemeContext
 
-//create ui that will display a user name, via react.context use static-contextType.
+//use static.contextType = Context, as a 'static-prop' to pass down context value={''}
+//create a ui that will display a user name, via react.context use static-contextType.
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
@@ -15333,6 +15335,7 @@ import Context from './context'
 import Logic from './logic'
 
 export default class UserNameUi extends Component{
+    //using static contextType as a static-prop to be passed down.
     static contextType = Context
     render() {
         const userName = this.context
@@ -15358,6 +15361,65 @@ export default class UserNameUi extends Component{
         )
     }
 }
+
+/*
+React Context; Context.Consumer
+use React Context Consumer only on function based components
+
+Context provides a way to share values between components 
+without having to explicitly pass a prop through every level of the tree.
+
+1. use in place of class components static contextType = Context & Component.contexttype = Context
+1a. const contextVar = this.context
+
+2. returns an embedded function that returns an element/ui.
+
+3. only use on components that need props from a specific parent component.
+
+4. can apply theme directly into a single component; (pattern a; every instance)
+
+5. can apply Consumer render prop pattern, if outside component and if we have multiple instances of the component. (pattern b;
+single instance)
+
+6. can apply default props or prop.types to secure ui display if incorrect data is passed down.
+*/
+
+//React Context.Consumer. & default-props
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import Context from './context'
+ReactDOM.render(
+    <Context.Provider value={'cyberman'}>
+        <Root/>
+    </Context.Provider>,
+    document.getElementById('root')
+)
+
+//Context file './context'
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
+//create single and duplicate instances of passed down data.
+//Root file './root'
+import React from 'react'
+import Context from './context'
+import React from 'react'
+
+export default function Root(){
+    return (
+        <>
+            
+        </>
+    )
+}
+
+
+
+
+
+
 
 
 
