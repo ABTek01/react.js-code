@@ -15243,6 +15243,7 @@ export default class ChildUi extends Component{
                 <button onClick={this.props.toggleRed}>
                     {this.props.onRed ? 'Toggle Red':'Hide Red'}
                 </button>
+                {/* theme is brought in from css file. */}
                 <div className={`${theme}-theme`} style={{display: this.props.onRed ? 'none':'block'}}>
                     <ul>
                         <li>Red Ui</li>
@@ -15404,16 +15405,221 @@ export default Context
 //create single and duplicate instances of passed down data.
 //Root file './root'
 import React from 'react'
-import Context from './context'
-import React from 'react'
+import Uichild from './uichild'
 
 export default function Root(){
     return (
         <>
-            
+            <Uichild/>
         </>
     )
 }
+
+import React from 'react'
+import Context from './context'
+
+export default function UiChild(props){
+    return (
+        <>
+            <Context.Consumer>
+                {
+                    (username)=>(
+                        <h1>Greetings {username}</h1>
+                    )
+                }
+            </Context.Consumer>
+        </>
+    )
+}
+
+//create instance of Context.Consumer of passed down data.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Context from './comtext'
+ReactDOM.render(
+    <Context.Provider value={'cyberman'}>
+        <Root/>
+    </Context.Provider>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
+import React from 'react'
+import Context from './context'
+import UserHeader from './userheader'
+import UserData from './userdata'
+
+export default function Root() {
+    return (
+        <div>
+            <UserHeader/>
+            <UserData/>
+        </div>
+    )
+}
+
+//passing down data from provider to child consumer.
+import React from 'react'
+import Context from './context'
+export default function UserHeader(props){
+    return (
+        <div>
+            <Consumer.Consumer>
+                {
+                    (username)=>(
+                        <h1>Greetings, {username}</h1>
+                    )
+                }
+            </Consumer.Consumer>
+        </div>
+    )
+}
+
+//no context.consumer, stactic contextType
+//passing down context data to child class-based component
+import React, { Component } from 'react'
+import Context from './context'
+
+export default class UserData extends Component {
+    static defaultProps = {
+        softwareSkillA:'front end web development',
+        softwareSkillB:'linux systems administration'
+    }
+    render() {
+        const username = this.context
+        return (
+            <div>
+                <h1>{username}</h1>
+                <h2>{this.props.softwareSkillA}</h2>
+                <h2>{this.props.softwareSkillB}</h2>
+            </div>
+        )
+    }
+}
+UserData.contextType = Context
+
+
+//moving context.provider into its own file; functional-component based.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ExtendedContextProvider} from './extendedcontextprovider'
+
+ReactDOM.render(
+    //ExtendedContextProvider is its own component.
+    <ExtendedContextProvider>
+        <Root/>
+    </ExtendedContextProvider>,
+    document.getElementById('root')
+)
+
+//'./extendedcontext' file
+import React, {Component} from 'react'
+//providing either Provider or Consumer to the component.
+const {Provider, Consumer} = React.createContext()
+
+class ExtendedContextProvider extends Component{
+    render(){
+        return(
+            <>
+                <Provider value={'data'}>
+                    {this.props.children}
+                </Provider>
+            </>
+        )
+    }
+}
+//named export to access either provider or consumer
+export {ExtendedContextProvider, Consumer as ExtendedContextConsumer}
+
+import React from 'react'
+import UiComponent_A from './uicomponent_a'
+import UiComponent_B from './uicomponent_b'
+function Root(){
+    return(
+        <>
+            <UiComponent_A/>
+            <UiComponent_B/>
+        </>
+    )
+}
+export default Root
+
+//individual components
+//'./uicomponent_a'
+import React from 'react'
+import {ExtendedContextConsumer} from './extendedcontext'
+
+export default function UiComponent_A(props) {
+    return (
+        <ExtendedContextConsumer>
+            {
+                (data)=>(
+                    <div>
+                        <h1>This is context.consumer data; {props.data}</h1>
+                    </div>
+                )
+            }
+        </ExtendedContextConsumer>
+    )
+}
+
+
+//'./uicomponent_b'
+import React from 'react'
+import {ExtendedContextConsumer} from './extendedcontext'
+
+export default function reactNotesIndex(props) {
+    return (
+        <ExtendedContextConsumer>
+            {
+                (data)=>(
+                    <div>
+                        <h2>This is context.consumer data; {props.data}</h2>
+                    </div>
+                )
+            }
+        </ExtendedContextConsumer>
+    )
+}
+
+//passing down data via context.provider; class-based.
+//pasing down data via context.provider; function based.
+//passing down data via context.provider from its providers own file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

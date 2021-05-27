@@ -1450,7 +1450,7 @@ when base case/condition is not reached.
 //function being expressed in terms of itself/recursion
 function multiply(arr, n){
     var product = 1
-    for(var i = 0; i < n;i++){
+    for(var i = 0; i < n; i++){
       product *= arr[i]
     }
     return product
@@ -1464,7 +1464,7 @@ function multiply(arr, n){
         return 0
     //recursive case
     }else{
-        return sum(arr, n - 1) + arr[n - 1]
+        return product(arr, n - 1) + arr[n - 1]
     }
 }
 product([1, 2, 3], 3)
@@ -1505,7 +1505,78 @@ function contactLookUp(name, prop){
 }
 contactLookUp('cyberman', 'developmentType')
 
+
+/*
+recursion review.
+1. recursion;
+
+problem a;
+Write a recursive function, product(arr, n),
+that multiplies the first n elements of an array
+to create the product of those elements(for-loop, recursive).
+
+problem b;
+Write a recursive function, sum(arr, n),
+that returns the sum of the first n elements of an array(for-loop, recursive).
+*/ 
+
+  // Only change code below this line
+  // arr = [1, 2, 3]
+  // n = 3
+  // (n - 1 = 2) * arr[3 - 1] = 'indexed array element.'
+  // 2 * 3 = 6
+
+//problem a
+function product(arr, n){
+    //number to multiply to find the product of the elements in the array.
+    var product = 1
+    for(var i = 0; i < n; i++){
+        product *= arr[i]
+    }
+    return product
+}
+([1, 2, 3], 3)
+
+//problem b
+function pro(arr, n){
+    if(n <= 0){
+        return 1
+    }else{
+        return pro(arr, n - 1) * arr[n - 1]
+    }
+}
+pro([1, 2, 3], 3)
+
+//problem b
+function sumAll(arr, n){
+    var sum = 1
+    for(let i = 0; i < arr.length; i++){
+        sum += arr[i]
+    }
+    return sum
+}
+sumAll([1, 2, 4], 3)
+
+function sumItAll(arr, n){
+    if(n <= 0){
+        return 0
+    }else{
+        return sumItAll(arr, n - 1) + arr[n - 1]
+    }
+}
+sumItAll([1, 2, 3], 3)
+
+/*
+    profile lookup
+*/
+
+
+
+
+
+
 //generate random decimals/fractions with Math.random()
+
 function generateRandomDec(x){
     while(x < 1){
         console.log(Math.random())
