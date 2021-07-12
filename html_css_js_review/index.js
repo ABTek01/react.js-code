@@ -1566,9 +1566,73 @@ function sumItAll(arr, n){
 }
 sumItAll([1, 2, 3], 3)
 
+function newSum(a){
+    if(a <= 0){
+        return 0
+    }else{
+        return a + newSum(a - 1)
+    }
+}
+newSum(4)
+newSum(3)
+newSum(2)
+newSum(1)
+newSum(0)
+
+function pairSumSeq(n){
+    let sum = 0
+    for(let i = 0; i < n; i++){
+        sum += pairSum(i, i + 1)
+    }
+    return sum
+}
+
+function pairSum(a, b){
+    return a + b
+}
+
+pairSumSeq(5)
+
 /*
     profile lookup
 */
+const devData = [
+    {
+        'alias':'cyberman',
+        'language':'javascript',
+        'devType':'front end',
+        'skills':['html', 'css', 'js', 'react', 'linux']
+    },
+    {
+        'alias':'programmer_a',
+        'language':'python3',
+        'devType':'back end',
+        'skills':['database', 'scripting', 'server side programming']
+    },
+    {
+        'alias':'programmer_b',
+        'language':'java',
+        'devType':'back end',
+        'skills':['database']
+    }
+]
+
+//function that searches for an existing name and prop that matches data within an object-array.
+function profileLookUp(name, prop){
+    for(let i = 0; i < devData.length; i++){
+        if(devData[i].alias === [name]){
+            if(devData[i].hasOwnProperty(prop)){
+                console.log(devData[i][prop])
+            }else{
+                console.log('no such property')
+            }
+        }
+    }
+    console.log('no such contact')
+}
+profileLookUp('programmer_b', 'skills')
+
+
 
 
 
@@ -1576,6 +1640,7 @@ sumItAll([1, 2, 3], 3)
 
 
 //generate random decimals/fractions with Math.random()
+//Math.random() will return a number/decimal between 0 and 1 where the number does not reach 1.
 
 function generateRandomDec(x){
     while(x < 1){
@@ -1583,13 +1648,1085 @@ function generateRandomDec(x){
         break;
     }
 }
-generateRandomDec(0)
+generateRandomDec(-1)
+generateRandomDec(-2)
+
 
 //generating a whole number between 0 and 10.
+//Math.floor() will return an integer less than or equal to its numerical argument.
 function generateWholeNum(){
-    console.log(Math.floor(Math.random() * 11))
+    console.log(
+        Math.floor(Math.random() * 2)
+    )
 }
-generateWholeNum()
+//will return either 0 or 1, not 2.
+generateWholeNum(2)
+
+function newRandom(){
+    let x = 1
+    while(x < 10){
+        return Math.floor(
+            Math.random()
+        )
+    }
+}
+//should return numbers less then 10.
+newRandom()
+
+
+//use a do-while loop that will return random numbers between 0 and 9.
+function useRandomDoWhile(){
+    let x = 0
+    do{
+        return Math.floor(Math.random() * 10)
+    }while(x < 10)
+}
+useRandomDoWhile()
+
+/*
+function that generates a random whole 
+number that falls between a range of two whole numbers.
+*/
+function randomInRange(min, max){
+    while(min < max){
+        console.log(
+            Math.floor(
+                Math.random() * (max - min + 1)
+            ) + min
+        )
+        // Math.floor(Math.random() * (max - min + 1)) + min
+    }
+}
+randomInRange(1, 5)
+
+//use parseInt() method to convert a string to a number.
+function convertStr(string){
+    const toInt = parseInt(string)
+    while(toInt !== '1'){
+        return toInt
+    }
+}
+convertStr('1')
+
+/*
+    function that converts and returns an array of 
+    strings into a list of numbers,
+    or will return an 'error' message.
+*/
+
+function convertStrArray(strArr){
+    for(let i = 0; i < strArr.length; i++){
+        if(strArr){//checks for truth
+            console.log(parseInt(strArr[i]))
+        }else{
+            console.log('operation error')
+        }
+    }
+}
+convertStrArray(['1', '2', '3', '4', '5'])
+
+/*
+    function that adds string ints to an
+    empty array then converts and returns an array of 
+    of numbers, and logs the length or the new array.
+*/
+
+function convertToInts(array){
+    array.push('1', '2', '3', '4', '5')
+    for(let i = 0; i < array.length; i++){
+        console.log(parseInt(array[i]))
+    }
+    console.log(`array length; ${array.length}`)
+}
+convertToInts([])
+
+/*
+convert a string into a 
+binary number using a radix.
+*/
+function useRadix(str){
+    return parseInt(str, 2)
+}
+useRadix('11')
+
+/*
+use double-ternary conditional logic
+instead of multiple if else statements.
+*/
+function newConditionalLogic(num){
+    return (num <= 0) ? 'falsy' : (num >= 1) ? 'truthy' : 1;
+}
+newConditionalLogic(0)
+newConditionalLogic(1)
+
+/*
+recursive function
+that will return
+an empty array
+if the input is
+less than 1,
+but will re-call itself
+and add every number 
+starting from the first
+input upto and including 
+the last input at the beginning
+of the array.
+*/
+
+function countdown(n){
+    //checks to see if a number is less than 
+    if(n < 1){
+        return []
+    }else{
+        const arr = countdown(n - 1)
+        arr.unshift(n)
+        return arr;
+    }
+}
+countdown(1)
+countdown(5)
+countdown(2)
+
+/*
+Use Recursion to Create 
+an array to store 'range' of numbers.
+Start number must be 
+less than or equal to the
+end number.
+*/
+
+function inRangeArray(start, end){
+    if(end - start === 0){
+        return [start]
+    }else{
+        const arrayRange = inRangeArray(start, end - 1)
+        arrayRange.push(end)
+        return arrayRange
+    }
+}
+inRangeArray(1, 16)
+inRangeArray(1, 1)
+
+/*
+difference between 'var' and 'let'
+var; you can overwrite variables that use
+the 'var' keyword.
+
+let; another keyword that will
+not overwrite variables,
+avoids accidental overwrites.
+*/
+
+var namedVariable = 'programmer'
+var namedVariable = 'cyberman'
+console.log(namedVariable)
+
+let aNumber = 0;
+function newInRange(start, end){
+    if(end - start === aNumber){
+        return [start]
+    }else{
+        const inRange = newInRange(start, end - 1)
+        inRange.push(end)
+        return inRange
+    }
+}
+newInRange(5, 17)
+
+/*
+var; used in the global scope
+will remain in the global scope.
+
+let; declared in the global scope
+can be re-assigned. Also, when 
+stored in the block level will
+be accessed at block level.
+*/
+
+var emptyArray = []
+
+
+function createNewArray(){
+    /*
+        i is kept in the global scope; 
+        var i; will be a updated as a global value.
+    */
+   //var i;
+    for(i = 0; i < 10; i++){
+        if(i === 2){
+            emptyArray.push(i)
+            console.log(emptyArray)
+        }
+    }
+    console.log(i)
+}
+createNewArray()
+
+let empty;
+//let empty; starts off as a global scoped value, but will re-initialized.
+function createNewArrayObj(){
+    //let i; remains seen within the function/local scope, not within the global scope.
+    for(let i = 0; i < 10; i++){
+        if(i === 2){
+            empty = []
+            empty.push(i)
+            console.log(empty)
+        }
+    }
+    // return i
+}
+createNewArrayObj()
+
+/*
+    i is created in the global level
+    with var, and is updated and
+    not returned within the inner function.
+
+    issue;
+    the stored function will always refer 
+    to the value of the updated global i variable.
+*/
+var getExact;
+//var i will be updated
+var i;
+for(i = 0; i < 10; i++){
+    if(i === 2){
+        //re-assigning a variable into a function to return data
+        getExact = function(){
+            return i
+        }
+    }
+}
+console.log(getExact())
+
+/*
+i is created in the block/local level 
+and is available only in the for-loop level
+then accessed again within the if statement.
+
+the stored function will refer to the local/block
+scoped i value.
+*/
+
+let printExact;
+for(let i = 0; i < 10; i++){
+    if(i === 2){
+        //re-assigning a variable into a function to return data
+        printExact = function(){
+            return i
+        }
+    }
+}
+console.log(printExact())
+
+/*
+    declare variables
+    using const for 
+    variable that cannot be
+    re-assigned.
+*/
+function useConst(tech){
+    const SENTENCE = tech + '; front end web development'
+    for(let i = 0; i < tech.length; i ++){
+        console.log(SENTENCE)
+    }
+}
+useConst('react.js')
+useConst('react.native')
+
+
+/*
+mutate an array using const
+*/
+
+const intArray = [10, 8, 6]
+function manageIntArray(){
+    let i = 0
+    while(i < intArray.length){
+        intArray[0] = 6
+        intArray[1] = 8
+        intArray[2] = 10
+        break;
+    }
+    console.log(intArray)
+}
+manageIntArray()
+
+
+/*
+    prevent object mutation;
+    Object.freeze(objName)
+    prevents anyone/code from
+    updating the properties 
+    belonging to the passed in object.
+*/
+
+function manageObj(obj){
+    Object.freeze(obj)
+    obj['language'] = 'python 3'
+    return obj
+}
+manageObj(
+    {
+        alias:'cyberman',
+        devType:'user interface development'
+    }
+)
+
+function manageObject(obj){
+    obj['language'] = 'javaScript'
+    if(obj.language === 'javaScript'){
+        return obj.language
+    }else{
+        return 'error: object cannot be mutated'
+    }
+}
+manageObject({
+    alias:'cyberman',
+    devType:'user interface development'
+})
+
+function manageFrozenObject(obj){
+    Object.freeze(obj)
+    obj['language'] = 'javaScript'
+    if(obj.language === 'javaScript'){
+        return obj.language
+    }else{
+        return 'error: object cannot be mutated'
+    }
+}
+manageFrozenObject({
+    alias:'cyberman',
+    devType:'user interface development'
+})
+
+/*
+    write concise code with ARROW
+    FUNCTIONS.
+
+    arrow functions; allow us the choice to
+    name our functions, or not,
+    especially when we want to pass
+    them into other function to use once.
+
+    arrow functions; do not have the traditional
+    function body, so we do not need to use
+    the 'return' keyword. we can use the 
+    implicit return method to make our code more 
+    concise & we can get rid of curly brackets.
+*/
+
+const newArrowFun =()=> 
+    'new arrow function'
+newArrowFun()
+
+/*
+    write arrow functions
+    with parameters.
+
+    arrow functions;
+    just like regular functions
+    we can give parameters and arguments
+    to 'afs'.
+
+    key! if an 'af' has one parameter we
+    can get rid of parenthesis, curly braces
+    and return keyword.
+
+    must invoke all function in order
+    for functions to execute.
+*/
+
+const newArrowB = int =>
+    int * 5
+newArrowB(5)
+
+const newArrowC =(int)=>
+    int * 10
+newArrowC(25)
+
+const newArrowD =(int_a, int_b)=>
+    int_a < int_b ? 'a is less than b'
+        : 'a is greater than b'
+newArrowD(5, 15)
+
+/*
+    default parameters;
+    assign default values within
+    a functions parameters incase no values are 
+    passed in as arguments.
+
+   at least the second default parameter needs to be initialized.
+*/
+const useDefault = (a, b = 2) => a + b;
+useDefault(1)
+
+const increment = (number, value = 1) => number + value;
+increment(6)
+
+/*
+Use the Rest Parameter with Function Parameters.
+
+with the rest parameter we can create a variable amount 
+of arguments that will be stored in an array.
+the arguments can be accessed later from within 
+a function.
+*/
+
+/*
+rest ...parameters
+function that returns integers greater than 10.
+*/
+const useSpread =(...vals)=>{
+    return vals.filter(
+        val => val > 10
+    )
+}
+useSpread(3, 5, 11, 6, 16, 23, 8)
+
+/*
+spread ...parameters
+function that takes array elements
+and sums & returns them.
+*/
+const sumSpreadVals=(...vals)=>{
+    return vals.reduce(
+        (a, b)=> a + b, 0
+    )
+}
+sumSpreadVals(1, 6)
+
+/*
+    Use the Spread Operator to Evaluate Arrays In-Place
+
+    ES6 introduces the spread operator, which allows us to 
+    expand arrays and other expressions in places where 
+    multiple parameters or elements are expected.
+*/
+const spreadFun=(array)=>{
+    array = [1, 2, 3, 4, 5]
+    let array1 = [...array]
+    return array1
+}
+spreadFun()
+
+/*  
+    use the destructuring 
+    to extract object values.
+
+    Destructuring assignment is 
+    special syntax introduced in ES6, 
+    for neatly assigning values taken directly from an object.
+*/
+function accessData(){
+    const newDataObj = {
+        alias:'cyberman',
+        devType:'user interface development',
+        devLanguage:'javaScript',
+        devLibrary:'react.js'
+    }
+    
+    const { alias, devType, devLanguage, devLibrary } = newDataObj
+    const dataArray = []
+    dataArray.push(alias, devType, devLanguage, devLibrary)
+    console.log(dataArray)
+}
+accessData()
+
+
+/*
+    Use Destructuring Assignment
+    to Assign Variables from Objects
+
+    Destructuring allows you to assign a new variable name when 
+    extracting values. You can do this by putting 
+    the new name after a colon when assigning the value.
+*/
+const manageObjValue=()=>{
+    const frontEndObj = {
+        devType:'user interface',
+        languageAndTools:['html', 'css', 'javaScript', 'react.js']
+    }
+
+    //destructed object with new variables assigned to properties.
+    const {
+        devType:frontEndEngineer, 
+        languageAndTools:devLanguages
+    } = frontEndObj
+
+    const devArray = []
+
+    devArray.push(
+        frontEndEngineer, 
+        devLanguages
+    )
+    console.log(devArray)
+}
+manageObjValue()
+
+/*
+    use object destructuring
+    to assign values from nested 
+    objects.
+*/
+
+const nestedObjData = {
+    developmentTools:{
+        'language0':'html',
+        'language1':'css',
+        'language2':'javaScript',
+        'library':'react.js'
+    }
+}
+//two ways to access object data(if a property is a string).
+console.log(nestedObjData.developmentTools['language0'])
+console.log(nestedObjData.developmentTools.language0)
+
+//variable assignment via object destructuring
+const {
+    //one nested object.
+    developmentTools:{
+        language0: markUpLang,
+        language1: styleLang,
+        language2: behaveLang,
+        library: buildLang
+    }
+} = nestedObjData
+
+//logging out new nested object variables
+console.log(markUpLang)
+
+const newNestedObjData = {
+    nestedObjProp:{
+        nonStringPropTitle:'data',
+        'stringPropTitle':'data'
+    }
+}
+
+console.log(newNestedObjData)
+//dot-bracket-string access method
+console.log(newNestedObjData.nestedObjProp['nonStringPropTitle'])
+console.log(newNestedObjData['nestedObjProp'].nonStringPropTitle)
+
+//double bracket-string access method
+console.log(newNestedObjData['nestedObjProp']['nonStringPropTitle'])
+
+console.log(newNestedObjData.nestedObjProp['stringPropTitle'])
+console.log(newNestedObjData.nestedObjProp.stringPropTitle)
+
+//dot notation
+console.log(newNestedObjData.nestedObjProp.nonStringPropTitle)
+
+const {
+    nestedObjProp:{
+        nonStringPropTitle:dataVar,
+        stringPropTitle:dataVar_1
+    }
+} = newNestedObjData
+
+console.log(dataVar)
+console.log(dataVar_1)
+
+/*
+    Use Destructuring Assignment 
+    to Assign Variables from Arrays
+
+    array destructuring is that the spread 
+    operator unpacks all contents of an 
+    array into a comma-separated list.
+*/
+
+const numArray = ['a', 'b', 'c', 'd', 'e', 'f']
+const [a, b, c,,, d] = [1, 2, 3, 4, 5, 6]
+//every number between 3 and 6 are eliminated.
+//6 is now assigned to d.
+console.log(a, b, c, d)
+//1, 2, 3, 6.
+
+/*
+    Use Destructuring Assignment,  with 
+    the... Rest Parameter to reassign array elements.
+
+    assign first two values to two variables
+    to use later.
+*/
+
+//function that removes the first two ints from an array.
+const intsArray = [1, 2, 3, 4, 5]
+function destSpreadFun(array){ 
+    const [a, b, ...arr] = array
+    return arr
+}
+//storing an invoked function within a variable then logging the variable.
+const managedInts = destSpreadFun(intsArray)
+console.log(managedInts)
+//[3, 4, 5]
+
+
+//function that divides an array using dest and spread operators.
+function divideInts(intsArray){
+    const [a, b, ...ints] = intsArray
+    console.log(a)
+    console.log(b)
+    console.log(ints)
+}
+divideInts([1, 2, 3, 4, 5])
+//a = 1
+//b = 2
+//ints = [3, 4, 5]
+
+/*
+    Use object destructuring assignment 
+    to pass values as parameters into a function.
+
+    When data is passed to the above function, 
+    the values are destructured from the 
+    function parameter for use within the function.
+
+    function that uses object destructuring 
+    and returns object data.
+*/
+
+const stats = {
+    max:100,
+    min:20
+}
+
+function value({max, min}){
+    return (max + min) / 20
+}
+value(stats)
+
+
+/*
+    create strings using template literals
+
+    we can create multi-line with template 
+    literals.
+*/
+
+const result = {
+    success: ["max-length", "no-amd", "prefer-arrow-functions"],
+    failure: ["no-var", "var-on-top", "line-break"],
+    skipped: ["no-extra-semi", "no-dup-keys"]
+};
+
+function manageListArray(arr){
+    const failureItems = [
+        `<li class='text-warning'>${"no-var"}</li>`,
+        `<li class='text-warning'>${"var-on-top"}</li>`,
+        `<li class='text-warning'>${"line-break"}</li>`,
+    ];
+    
+    for(let i = 0; i < failureItems.length; i++){
+        console.log(failureItems[i])
+    }
+    // return failureItems
+}
+manageListArray(result.failure)
+
+
+// console.log(failureItems)
+// console.log(failureItems[0])
+
+
+/*
+    Write Concise Object Literal Declarations 
+    Using Object Property Shorthand
+*/
+//implicit return
+const createObject = (name, age)=> (
+    {name, age}
+)
+createObject('cyberman', '30')
+//using 'return'
+const createNewObj = (language, devType)=> {
+    return {
+        language,
+        devType
+    }
+}
+createNewObj('javaScript', 'frontend development')
+
+const createANewObject = (library, devType) =>{
+    console.log(
+        {
+            library,
+            devType
+        }
+    )
+}
+createANewObject('react.js', 'component based')
+
+/*
+    use class syntax to 
+    declare a constructor function.
+
+    es5; constructor function syntax
+    es6; class syntax
+
+    class constructor is a function/syntax that creates
+    objects and properties.
+*/
+
+//es5 constructor function
+var favLibrary = function(library){
+   return this.library = library
+}
+var myDevLib = new favLibrary('react.js')
+console.log(myDevLib.library)
+
+//class constructor
+class favDevLib{
+    constructor(library){
+       return this.library = library
+    }
+    
+}
+var devLib = new favDevLib('react.js')
+console.log(typeof favDevLib)
+console.log(devLib.library)
+
+/*
+    assign new values to object properties
+    to access later.
+*/
+
+const testObj0 = {
+    dataA:1,
+    dataB:2,
+    dataC:3
+}
+
+function setObjVals(obj){
+    const {
+        int0,
+        int1,
+        int2
+    } = obj
+    return obj
+}
+setObjVals(testObj0)
+
+/*
+    use obj-dest and value reassignment
+    on obj values for future access.
+*/
+const objectData = {
+    prop0:'first property',
+    props1:'second property',
+    props2:'third property'
+}
+
+function containProps(destObj){
+    const {
+        prop0:firstProp,
+        prop1:secondProp,
+        prop2:thirdProp
+    } = destObj
+    return destObj
+}
+containProps(objectData)
+
+/*
+    Write Concise Declarative 
+    Functions with ES6; object methods
+    objects.
+*/
+const share_data = {
+    devData: [
+    'cyberman', 
+    'javaScript', 
+    'scripting language', 
+    'user interface development'
+    ],
+    //method now returns a new devData key-val.
+    dataMethod(data){
+        return this.devData = data
+    }
+}
+//running an object method.
+share_data.dataMethod('python script automation')
+//object method reassigns an objects kay-val.
+console.log(share_data.devData)
+
+/*
+    Use class Syntax to 
+    Define a Constructor Function
+
+    class keyword declares a new function, 
+    to which a constructor is added. 
+    This constructor is invoked when new is called to create a new object.
+*/
+
+class Language {
+    constructor(lang){
+        return this._lang = lang
+    }
+}
+//devLang is now an object with the lang property.
+const devLang = new Language('python3')
+console.log(devLang._lang)
+
+
+class Vegetable{
+    constructor(name){
+        return this._name = name
+    }
+}
+//carrot is now an object with the name property.
+const carrot = new Vegetable('carrot');
+console.log(carrot._name);
+
+
+
+/*
+    use getters and setters
+    to get and set the values
+    of constructor functions.
+
+    You can obtain values from an object 
+    and set the value of a property within an object.
+
+    GETTERS and SETTERS are important 
+    because they hide internal implementation details.
+*/
+class ManageClass{
+    constructor(devData){
+        return this._data = devData
+    }
+    //returns data
+    get dataMethod(){
+        return this._data
+    }
+
+    //allows data to change
+    set dataMethod(devData){
+        return this._data = devData
+    }
+}
+const myData = new ManageClass('software engineer')
+console.log(myData.dataMethod)
+
+
+
+/*
+    ES6 introduced a way to easily share code among 
+    JavaScript files. This involves exporting 
+    parts of a file for use in one or more other files, 
+    and importing the parts you need, where you need them.
+
+    <script type='module' src='index.js'></script>
+*/
+
+/*
+Use export to Share a Code Block;
+allows us to share code block from 
+one js file to another.
+*/
+
+const shareDevData = (data)=> 
+    data + `; software engineer`;
+
+
+const shareSysData = (data) =>
+    data + `; systems administrator`
+
+//sharing functions with different js files.
+export {shareDevData, shareSysData}
+
+/*
+    Reuse JavaScript Code 
+    in other files Using import
+*/
+import {shareDevData, shareSysData} from './share_functions.js'
+
+/*
+Use * to Import Everything from a File
+*/
+import * as dataFunctions from './share_functions.js'
+dataFunctions.shareDevData('cyberman')
+dataFunctions.shareSysData('cyberman')
+
+/*
+    Create an Export Fallback with export default
+
+    used to create a fallback value for a file or module
+    can only have one export default in a module or a file
+    (similar to export default in React.js)
+*/
+//export default named function
+export default function addVals(a, b){
+    return a + b
+}
+
+//export default anonymous function
+export default function(a, b){
+    return a + b
+}
+
+/*
+    import a default export without 
+    curly braces.
+*/
+
+import addVals from './math_functions.js'
+
+
+/*
+    create js promises;
+
+    use it to make a promise to do something, usually asynchronously. 
+    When the task completes, you either fulfill your promise or fail to do so. 
+    Promise is a constructor function, so you need to use the new keyword to create one. 
+
+    takes a function as an argument, with 'resolve' or 'reject' as
+    parameters which determine the outcome of the promise.
+*/
+
+const serverRequest = new Promise((resolve, reject)=>{
+})
+
+/*
+    promises have three different states; 
+    pending, fulfilled, and rejected.
+
+    The resolve and reject parameters given to 
+    the promise argument are used to to complete the promise 
+    when in a pending promise state.
+
+    'resolve' is used when you want your promise to succeed.
+
+    'reject' is used when you want it to fail. These are methods 
+    that take an argument.
+*/
+let serverResponse = true
+
+const managePromise = new Promise((resolve, reject)=>{
+    if(serverResponse){
+        resolve('server response successful')
+    }else{
+        reject('server response failure')
+    }
+})
+
+//Handle a Fulfilled Promise with 'then'
+managePromise.then(result=>{
+    console.log(result)
+})
+
+//
+serverResponse = false
+
+const manageLatestPromise = new Promise((resolve, reject)=>{
+    !serverResponse ? 'server response failure' : 'server response successful'
+})
+
+//Handle a Fulfilled Promise with 'then'
+manageLatestPromise.then(result=>{
+    console.log(result)
+})
+
+
+/*
+    handle a rejected promise with 'catch'
+
+    catch is the method used when your promise 
+    has been rejected.
+*/
+managePromise.catch(error=>{
+    console.error(error)
+})
+
+//handle a rejected promise with 'catch'
+manageLatestPromise.catch(error=>{
+    console.error(error)
+})
+
+/*
+    JavaScript; regular expressions
+    
+    Using the Test Method
+*/
+let firstRegex = 'first regular expression'
+let regex = /first/
+regex.test(firstRegex)//returns true
+
+
+/*
+js review
+objects have .properties that characterize a variable
+
+methods() are built in functions that perform an action.
+*/
+
+//returning string count; string prop
+console.log('cyberman'.length)
+
+//returning a string to all uppercase; string method
+console.log('frontend software engineering'.toUpperCase())
+
+
+//returning a string to all lowercase; string method
+console.log('FRONTEND SOFTWARE ENGINEERING'.toLowerCase())
+
+//removing string white-space; string method
+console.log(' cyberman; frontend software engineer '.trim())
+
+/*working with built-in Math object and methods */
+//Math.random generates a random number between 0 and 1.
+console.log(Math.random())
+
+//Math.random multiplied by (x) generates a random number between 0 (x) which will be a decimal
+console.log(Math.random() * 1000)
+
+//Math.floor(Math.random() * 1000) rounds the number down to the nearest whole number
+console.log(Math.floor(Math.random() * 1000))
+
+/*working with built-in Number object and methods */
+console.log(Number.isInteger(5.7))
+
+console.log(Number.isInteger(7))
+
+/*
+variables;
+1. Store or update information stored in a variable.
+2. Reference or “get” information stored in a variable
+*/
+
+var devId = 'cyberman'
+var devEmphasis = 'frontend'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

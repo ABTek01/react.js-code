@@ -12147,6 +12147,7 @@ class Clock extends Component{
         )
     }
 }
+
 /*
 as long as we render Clock within the DOM node,
 only one instance of the Clock component will be
@@ -12515,6 +12516,7 @@ export function extendedLogic(componentProps){
 
 import React, { Component } from 'react'
 import {extendedLogic} from './extendedlogic'
+
 export default class  UiComponent extends Component {
     shouldComponentUpdate(nextProps, nextState){
         if(nextProps.on === this.props.on){
@@ -12623,6 +12625,7 @@ export default Logic
 //uicomponent, shouldComponentUpdate(){}
 import React, {Component} from 'react'
 import Logic from './logic'
+
 class UiComponent extends Component{
     shouldComponentUpdate(nextProps, nextState){
         if(nextProps.onRed === onRed && nextProps.onGreen === onGreen){
@@ -14883,7 +14886,7 @@ export function extendedLogic(containerProps){
 //UiComponent that reuses logic from {extendedLogic}
 import React from 'react'
 import {extendedLogic} from './extendedlogic'
-export default function UiComponent(){
+export default function UiComponent(props){
     return (
         <div>
             <h1>{props.count}</h1>
@@ -14921,9 +14924,9 @@ Parent.Comsumer(childComponent)
 
 note: use REACT CONTEXT to
 build on previous concepts.
-*/
 
-/*
+
+
 React Context; pattern a1, a2
 assigning provider context to 
 a parent component,
@@ -14933,6 +14936,13 @@ need to provide
 //pattern a1; declare/initialize variable to create compound componen/context
 //ThemeContext is now an object that contains components as properties
 //need to provide value={} prop to be passed down.
+
+//ThemeContext file; './themecontext/
+import React from 'react'
+const ThemeContext = React.createContext()
+export default ThemeContext
+
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
@@ -14947,21 +14957,21 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-//ThemeContext file; './themecontext/
-import React from 'react'
-const ThemeContext = React.createContext()
-export default ThemeContext
-
 //pattern a2; use object destructuring to create compound component/context
 //ThemeContext is now an object that contains components as properties
 //need to provide value={} prop to be passed down.
+
+//ThemeContext.js file
+import React from 'react'
+const ThemeContext = React.createContext()
+const {Provider, Consumer} = ThemeContext
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
 import ThemeContext from './themecontext'
 
-// const ThemeContext = React.createContext()
-// const {Provider, Consumer} = ThemeContext
+
 ReactDOM.render(
     <Provider value={'data'}>
         <Root/>
@@ -14969,13 +14979,17 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-//to avoid bug; place ThemeContext into its owb file then export default ThemeContext
+//to avoid bug; place ThemeContext into its own file then export default ThemeContext
 //'./themecontext' file
+
+//React Context practice; pattern a
+
+//ThemeContext object file
 import React from 'react'
 const ThemeContext = React.createContext()
 export default ThemeContext
 
-//React Context practice; pattern a
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
@@ -14987,12 +15001,15 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-//ThemeContext object file
-import React from 'react'
-const ThemeContext = React.createContext()
-export default ThemeContext
 
 //React Context practice; pattern b
+
+//ThemeContext file.
+import React from 'react'
+var ThemeContext = React.createContext()
+const {Provider, Consumer} = ThemeContext
+
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
@@ -15004,25 +15021,35 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-//ThemeContext file.
-import React from 'react'
-var ThemeContext = React.createContext()
-const {Provider, Consumer} = ThemeContext
 
 
 //css style is applied to <Root/>
 //React.js; React Context; contextType
+
+//ThemeContext file './themecontext'
+import React from 'react'
+const ThemeContext = React.createContext()
+//obj-dest; const {Provider, Consumer} = ThemeContext
+export default ThemeContext
+
 //render file
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
 import ThemeContext from './themecontext'
+
 ReactDOM.render(
     <ThemeContext.Provider value={'css style passdown'}>
         <Root/>
     </ThemeContext.Provider>,
     document.getElementById('root')
     /*
+
+        import React from 'react'
+        const ThemeContext = React.createContext()
+        const {Provider, Consumer} = ThemeContext
+        export default ThemeContext
+
         <Provider>
             <Root/>
         </Provider>,
@@ -15030,11 +15057,6 @@ ReactDOM.render(
     */
 )
 
-//ThemeContext file './themecontext'
-import React from 'react'
-const ThemeContext = React.createContext()
-//obj-dest; const {Provider, Consumer} = ThemeContext
-export default ThemeContext
 
 import React from 'react'
 import Header from './header'
@@ -15104,13 +15126,13 @@ export default ThemeContext
 
 //Root component
 import React from 'react'
-//import ChildA from './childA'
-//import ChildB from './childB'
+import ChildA from './childA'
+import ChildB from './childB'
 export default function Root(){
     return (
         <div>
-            {/*<ChildA/>*/}
-            {/*<ChildB/>*/}
+            <ChildA/>
+            <ChildB/>
         </div>
     )
 }
@@ -15123,7 +15145,7 @@ export default class ChildA extends Component {
         const theme = this.context
         return (
             <div>
-                <h1></h1>
+                <h1>{theme}</h1>
             </div>
         )
     }
@@ -15133,11 +15155,12 @@ ChildA.contextType = ThemeContext
 //'./childB' file
 import React, { Component } from 'react'
 import ThemeContext from './themecontext'
-export default class reactNotesIndex extends Component {
+export default class ChildB extends Component {
     render() {
+        const theme = this.context
         return (
             <div>
-                <h1></h1>
+                <h1>{theme}</h1>
             </div>
         )
     }
@@ -15147,9 +15170,14 @@ ChildB.contextType = ThemeContext
 //multi rendering/toggling user interface.
 //apply react.context
 import React from 'react'
+const ThemeContext = React.createContext()
+export default ThemeContext
+
+import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from 'root'
 import ThemeContext from './themecontext'
+
 ReactDOM.render(
     <ThemeContext.Provider>
         <Root/>
@@ -15157,9 +15185,6 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-import React from 'react'
-const ThemeContext = React.createContext()
-export default ThemeContext
 
 
 import React from 'react'
@@ -15204,7 +15229,7 @@ export default class Logic extends Component {
         const CompContain = this.props.componentProps
         return (
             <div>
-                <Component
+                <Logic
                     onGreen={this.state.onGreen}
                     onRed={this.state.onRed}
                     toggleRed={this.toggleRed}
@@ -15228,12 +15253,14 @@ export function extendedLogic(componentProps){
     }
 }
 
+
 //child ui component
 import React, { Component } from 'react'
 import ThemeContext from './themecontext'
 import {extendedLogic} from './extendedlogic'
 
-export default class ChildUi extends Component{
+class ChildUi extends Component{
+    static contentType = ThemeContext
     //state, methods
     render() {
         //variables, logic
@@ -15267,10 +15294,21 @@ export default class ChildUi extends Component{
         )
     }
 }
-ChildUi.contextType = ThemeContext
+const SuperClassLogic = extendedLogic(ChildUi)
+export default SuperClassLogic
 
-//use static.contextType = Context, as a 'static-prop' to pass down context value={''}
-//create a ui that will display a user name, via react.context use static-contextType.
+
+/*
+use static.contextType = Context render props pattern, as a 'static-prop' 
+to pass down context value={''}
+create a ui that will display a user name, via react.context use static-contextType.
+*/
+
+//'./context' file
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
@@ -15282,10 +15320,6 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-//'./context' file
-import React from 'react'
-const Context = React.createContext()
-export default Context
 
 //'./root'
 import React from 'react'
@@ -15379,8 +15413,8 @@ without having to explicitly pass a prop through every level of the tree.
 
 4. can apply theme directly into a single component; (pattern a; every instance)
 
-5. can apply Consumer render prop pattern, if outside component and if we have multiple instances of the component. (pattern b;
-single instance)
+5. can apply Consumer render prop pattern, if outside component and if we have multiple 
+instances of the component. (pattern b; single instance)
 
 6. can apply default props or prop.types to secure ui display if incorrect data is passed down.
 */
@@ -15434,8 +15468,12 @@ export default function UiChild(props){
 
 //create instance of Context.Consumer of passed down data.
 import React from 'react'
+const Context = React.createContext()
+export default Context
+
+import React from 'react'
 import ReactDOM from 'react-dom'
-import Context from './comtext'
+import Context from './context'
 ReactDOM.render(
     <Context.Provider value={'cyberman'}>
         <Root/>
@@ -15443,9 +15481,6 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-import React from 'react'
-const Context = React.createContext()
-export default Context
 
 import React from 'react'
 import Context from './context'
@@ -15503,92 +15538,3726 @@ UserData.contextType = Context
 
 
 //moving context.provider into its own file; functional-component based.
+//'./contextprovider' file; contains ContextProvider component.
+import React, {Component} from 'react'
+const {Provider, Consumer} = React.createContext()
+
+class ContextProvider extends Component{
+    render() {
+        return (
+            <Provider value={'context data'}>
+                <div>
+                    <>{this.props.children}</>
+                </div>
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Consumer as ContextConsumer}
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
-import {ExtendedContextProvider} from './extendedcontextprovider'
-
+import {ContextProvider} from './contextprovider'
 ReactDOM.render(
-    //ExtendedContextProvider is its own component.
-    <ExtendedContextProvider>
+    <ContextProvider>
         <Root/>
-    </ExtendedContextProvider>,
+    </ContextProvider>,
     document.getElementById('root')
 )
 
-//'./extendedcontext' file
-import React, {Component} from 'react'
-//providing either Provider or Consumer to the component.
-const {Provider, Consumer} = React.createContext()
+//'./root' file
+import React from 'react'
+import ComponentA from './componentA'
+import ComponentB from './componentB'
 
-class ExtendedContextProvider extends Component{
+function Root() {
+    return (
+        <div>
+            <ComponentA/>
+            <ComponentB/>
+        </div>
+    )
+}
+export default Root
+
+//'./componentA' file, class-based component
+import React, {Component} from 'react'
+import {ContextConsumer} from './contextprovider'
+
+export default class ComponentA extends Component {
+    render() {
+        return (
+            <ContextConsumer>
+                {
+                    (contextData)=>(
+                        <div>
+                            <h1>{contextData}</h1>
+                        </div>
+                    )
+                }
+            </ContextConsumer>
+        )
+    }
+}
+
+//'./componentB' function-based component.
+import React from 'react'
+import {ContextConsumer} from './contextprovider'
+export default function ComponentB(){
+    return (
+        <ContextConsumer>
+            {
+                (contextData)=>(
+                    <div>
+                        <h1>{contextData}</h1>
+                    </div>
+                )
+            }
+        </ContextConsumer>
+    )
+}
+
+/*
+    react.context patterns a, b, c.
+    best practice to use react.context
+    within functional components.
+*/
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+import Context from './context'
+ReactDOM.render(
+    <Context.Provider value={'unique context data'}>
+        <Root/>
+    </Context.Provider>
+)
+
+import React from 'react'
+import ChildComponentA from './childcomponentA'
+import ChildComponentB from './childcomponentB'
+export default function Root(){
+    return(
+        <>
+            <ChildComponentA/>
+            <ChildComponentB/>
+        </>
+    )
+}
+
+//'./childcomponentA' file; pattern a; class based.
+import React,{Component} from 'react'
+import Context from './context'
+export default class ChildComponentA extends Component{
+    static contextType = Context
+    render(){
+        const data = this.context
+        return(
+            <>
+                <h1>{data}</h1>
+            </>
+        )
+    }
+}
+//ChildComponentA.contextType = Context
+
+//'./childcomponentB' file; pattern b; function based.
+import React from 'react'
+import Context from './context'
+export default function ChildComponentB(){
+    return(
+        <Context.Consumer>
+            {
+                (data)=>(
+                    <>
+                        <h1>{data}</h1>
+                    </>
+                )
+            }
+        </Context.Consumer>
+    )
+}
+
+/*
+    react.context placing context within its own file.
+    we need to use class-based component to add state.
+*/
+import React,{Component} from 'react'
+
+/*
+can create several instances of context 
+const Context = React.createContext()
+
+individual context-provider file.
+*/
+const {Provider, Consumer} = React.createContext()
+class ContextProvider extends Component{
+    render(){
+        return(
+            <Provider value={'context data provided'}>
+                {this.props.children}
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Consumer as ContextConsumer}
+
+//render file.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextprovider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+//root files
+import React from 'react'
+import ComponentA from './componentA'
+import ComponentB from './componentB'
+export default function Root(){
+    return(
+        <>
+            <ComponentA/>
+            <ComponentB/>
+        </>
+    )
+}
+
+//'./componenta' file
+import React from 'react'
+import {ContextConsumer} from './contextprovider'
+export default function ComponentA(){
+    return(
+        <ContextConsumer>
+            {
+                function(providedData){
+                    return(
+                        <h1>{providedData}</h1>
+                    )
+                }
+            }
+        </ContextConsumer>
+    )
+}
+
+//'./componentb file
+import React from 'react'
+import {ContextConsumer} from './contextprovider'
+export default function ComponentB(){
+    return (
+        <ContextConsumer>
+            {
+                (providedData)=>(
+                    <>
+                        <h1>{providedData}</h1>
+                    </>
+                )
+            }
+        </ContextConsumer>
+    )
+}
+
+//excercise; changing/updating react.js context with state.
+//counter application
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from ',/contextprovider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+
+
+
+import React from 'react'
+const {Provider, Consumer} = React.createContext()
+class ContextProvider extends Component{
+    state = {
+        count:1
+    }
+
+    handleCount=()=>{
+        this.setState(prevState=>{
+            return this.state = {
+                count: prevState.count += 1
+            }
+        })
+    }
+
     render(){
         return(
             <>
-                <Provider value={'data'}>
+                <Provider value={{
+                    count:this.state.count, 
+                    handleCount:this.handleCount
+                }}>
                     {this.props.children}
                 </Provider>
             </>
         )
     }
 }
-//named export to access either provider or consumer
-export {ExtendedContextProvider, Consumer as ExtendedContextConsumer}
+export {ContextProvider, Consumer as ContextConsumer}
+
+//'./root' file
+import React from 'react'
+import CountComponent from './countcomponent'
+export default function Root(){
+    return (
+        <>
+            <CountComponent/>
+        </>
+    )
+}
 
 import React from 'react'
-import UiComponent_A from './uicomponent_a'
-import UiComponent_B from './uicomponent_b'
+import {ContextConsumer} from './contextprovider'
+export default function reactNotesIndex() {
+    return (
+        <ContextConsumer>
+            {
+                (context)=>(
+                    <>
+                        <h1>{context.count}</h1>
+                        <button onClick={context.handleCount}>
+                            Click to increment
+                        </button>
+                    </>
+                )
+            }
+        </ContextConsumer>
+    )
+}
+
+/*
+    adding state to components
+    using context from an individual file.
+*/
+
+
+
+
+
+
+
+
+
+//developerdatacomponent
+
+/*
+//JavaScript and ES6//
+
+
+Variables
+
+- var; Declares a variable, optionally initializing it to a value.
+
+- var; variables declared using var are created before any code is 
+executed in a process known as hoisting.
+
+- global scoped variables; A JavaScript local variable is 
+declared inside block or function. It is accessible 
+within the function or block only.
+
+- local scoped variables; A JavaScript global variable 
+is accessible from any function. A variable i.e. declared
+outside the function or declared with window object is 
+known as global variable.
+
+- var and let variables can be reinitialized
+
+- let; Declares a block scope local variable, 
+optionally initializing it to a value.
+
+- const; Declares a read-only named constant.
+Cannot be changed directly/explicitly.
+
+
+Primitive Data Types; 
+
+- strings; padStart() & padEnd(); allows us
+to add characters to start of and end of strings
+- numbers
+- booleans
+- undefined
+- null
+
+Logic
+- short circuiting
+- ternary
+- conditionals
+
+- switch statements; case and parameter have to match accordingly
+- template literals/concatenation; link things together
+as in a series or chain.
+
+- functions/arrow functions; accessing global variables/scope
+local variable scope.
+
+- closures/ partial application
+- default parameters
+
+
+- call-back functions; A callback is a function passed 
+as an argument to another function
+technique allows a function to call another function.
+Callback function can run after another function has finished
+
+reference types(arrays, objects, maps, sets etc.)
+- object literals; destructuring, ...object spread operator
+
+
+- Rest operator; function(...Rest) {console.log(Rest)} (1, 2, 3, 4, 5)
+allows us to retrieve arguments from functions. Also,
+allows for use of spread op, without use of object types.
+
+- Default parameters prevents functions from returning undefined
+values, by setting values to parameters in functions early on.
+
+- the map-object; .set(), forEach(()=>{}), ...map object spread
+
+- PRACTICE ARRAY METHODS/OPERATIONS -
+- map(()=>{})
+- filter(()=>{})
+let arrayInt = [1,2,3,4,5,6]
+
+- arrayInt.reduce((acc, int)=>{
+    if(int > 1){
+        acc.concat(int)
+    }
+})
+- some(()=>{}) / every(()=>{})
+- find(()=>{})
+- forEach(()=>{})
+- indexOf(array-element); returns the index of an
+existing array element.
+
+Plus:
+- findIndex()
+- slice(beginning place, ending place)
+- concat()
+
+- includes(); lets us 
+check for a specified array element
+then returns a Boolean.
+
+- ...array spread operator; used to create a copy of original object.
+and/or to add to original object.
+
+- Creating and destructuring arrays
+
+
+- array destructuring
+- array spread operator [...arraySpread]
+- Object.keys()
+- Object.values()
+- Object.entries()
+- for-in loop; iterates over object data
+- sets
+- for-of loop; iterates over new Set data;
+sets maintain uniques values; unless different object type.
+- for-loop; iterates over an array's contents.
+
+- constructor functions
+- prototype.chaining
+
+Classes;
+- template to create objects and instances of objects 
+- can update class-object properties using .notation
+& their properties
+- class methods/logic
+- extends keyword makes child class from parent
+- super(); function/method used for parent to child class inheritance
+properties from parent classes.
+- They encapsulate code to work on that data;
+good container for application logic.
+
+GET property (property lookup)
+
+- The get syntax binds an object property to a function 
+that will be called when that property is looked up.
+
+STATIC keyword (for cloning or fixed-values/config)
+
+- Static methods are often utility functions, 
+such as functions to create or clone objects, 
+whereas static properties are useful for caches, 
+fixed-configuration, or any other data 
+you don't need to be replicated across instances.
+
+
+
+
+
+
+CLASS METHODS/OPERATIONS
+classes;
+Classes are a functions/template for creating objects
+and object properties and object methods.
+
+
+
+Classes in JS are built on prototypes but also have some syntax and
+semantics that are not shared with ES5 classalike semantics.
+
+- sharing methods between parent and children classes.
+- how to use 'get' and 'set' keywords on classes.
+- .bind() explicitly binds a method(s) to classes within the constructors().
+.bind() makes a method refer to a class/value. 
+- parent and child classes need the same properties within 
+their constructor.
+
+Trailing commas
+- allows commas to exist after parameters
+
+- DOM; Document Object Model.
+- what is the DOM?
+- Get single and multiple elements
+- Create and modify HTML elements
+- Dynamically add css styles
+- Work with and understand events
+
+What is the DOM?
+DOM; Document Object Model; document; lives on the window.
+DOM is an object that represents all of the HTML as objects that can 
+be modified by js.
+
+
+
+- get single element tags containing id from DOM; document.getElementById()
+- get multiple elements with matching tags from DOM; document.getElementsByTagName()
+- get first single element from DOM id/class; document.querySelector()
+- get multiple elements from DOM id/class; document.querySelectorAll()//most superior.
+- access a tag and link with forEach(()=>{}), conditionals and .matches('tag type[]'). method.
+- creating and modifying html elements; 
+- applying class selector to an element with .className = ''
+
+ EVENTS & EVENT LISTENERS
+    Events; actions that occur when user interacts with the keyboard, mouse etc.
+    Event listeners; tools that watch/listen for when events to occur; 
+    can be applied to html elements using functions.
+    - add events to elements with .addEventListener(()=>{
+    })
+
+- loop over all of the same events with .forEach(()=>{ and add styling to multiple elements.
+    .addEventListener(('fired event', param)=>{
+        element.style. = ''
+    })
+})
+- peform event actions on elements that are closest()/macthes() a targeted element with;
+
+Ajax;
+
+Working with AJAX; asynchronus javaScript;
+
+With Ajax, web applications can send and retrieve data from a server asynchronously 
+(in the background) without interfering with the display and behaviour of the existing page.
+
+- AJAX enables a Web page to update just part of a page 
+without disrupting what the user is doing.
+- non-blocking; can continue operations when others are taking longer to complet.
+- ajax allows multiple lines of code to run.
+- ajax; some operations will take an unknown amount of time to execute.
+
+PROBLEMS WITH CALLBACKS
+
+- fix callback hell (an abundance of callback functions.); new Promise((resolve, reject)=>{
+new Promise(()=>{}); type of ajax constructor function.
+})
+
+- call-back functions; A callback is a function passed as an argument to another function
+call-back technique allows a function to call another function.
+callback function can run after another function has finished.
+
+- new Promise(()=>{}); is a constructor function; returns an instance of itself.
+promises; contain three different states when created; pending, fulfilled, rejected.
+promises; start with the 'pending' state until promise is either 'fulfilled' or 'rejected'.
+promises;
+
+- Fetch() method api; used to make an ajax network 
+request to retrieve data from 
+REST api architectual code.
+
+- fetch() data from an 
+api then disply it to 
+the browser/web page/application.
+createElement()
+.innerHTML
+document.body.appendChild()
+
+- iterate(forEach, for-loop) through json
+object data and use .notation
+or [bracket] notation to access
+and display data to the browser.
+
+- error handling with .catch(); catches an error
+when errors are present.
+
+
+CRUD; 
+CRUD is an acronym term that comes from the world of computer programming and 
+refers to the four functions that are considered necessary to implement a 
+persistent storage application: create, read, update and delete.
+
+C.R.U.D.;
+CREATE; POST method; creates resource/data.
+READ; GET method; retrieves data from database.
+UPDATE; PUT/PATCH methods; updates data.
+DELETE; DELETE method; allows deletion of data.
+
+- Dead-simple Promises with async-await; 
+allows us to avoid writting multiple callback functions
+when using the fetch() api/method
+
+- async functions always returns a promise
+The async and await keywords enable asynchronous, 
+promise-based behavior to be written in a cleaner style, 
+avoiding the need to explicitly configure promise chains.
+
+
+- async await pauses promise code until all requests are resolved;
+no need for .then() or .catch() or .finally().
+
+
+- async functions using the fetch() api
+used to write cleaner promises; avoids callback hell.
+
+- await; The await expression causes async function execution to pause until a Promise is settled 
+(that is, fulfilled or rejected), and to resume execution of the async function after fulfillment.
+try keyword runs code black and 'tries' to verify that code contains no errors.
+catch is used to notify user that there is an error when retrieving data.
+can nest a Promise inside of an async function.
+
+- async, await;  pauses promise code 
+until all requests are resolved(no use of catch).
+
+- async functions using the fetch() api;
+are used to write cleaner promises; avoids callback hell.
+use of await(early on)
+not using .then() or .catch() or .finally().
+
+- write cleaner promises with async, await 
+catch errors on try{} & catch(error){}.
+handle errors.
+
+CREATE, READ, UPDATE, DELETE(CRUD) data while using ftech() api.
+
+MODULES: Essential Concepts
+
+- Modules; split up code data into multiple files while still sharing code data.
+isolate js functionality when sharing code between files.
+- Modules; are just outside files being brought in.
+- sharing code between files; 
+- IMPORT; allows us to import functionality from different files/scripts(modules)
+- EXPORT; allows us to lable and share variables and functions outside of a module
+
+//Basics of Web Architecture
+
+My computer
+My ISP(internet service provider)
+DNS(Domain Name System) and routers
+Web Servers
+Applications
+Hosting
+
+What is the internet?
+
+- Internet is the global system of interconnected computer networks
+ that uses the Internet protocol suite (TCP/IP) 
+to communicate between networks and devices.
+Internet search process
+
+How the internet works
+
+1. user makes a request for a website
+2. router/modem sends request over wifi; connected to isp network
+3. isp provides intenet connectivity receives request
+4. isp asks DNS(Domain Named System server); like a phone book
+5. DNS retrieves an address and routes traffic to isp
+6. isp sends information through router and its firewalls/other protocols
+7. web page is sent to end user.
+
+//Requests
+
+1. Requests; exist so we can tell a server what we want
+and how.
+
+2. Parts of a request;
+GET - verb that requests data; request method
+
+- two ways to classify verbs
+a. safe and unsafe
+b. indempotent/not indempotent
+
+GET and HEAD are safe beacuse retrieving
+and sending data are their only actions.
+
+other verbs are unsafe; they do take an
+action and change something.
+
+GET, HEAD, PUT, DELETE - indempotent('same', 'having power')
+end result of making the same request is the same no matter 
+how many times the request is made.
+
+Parts Of a Request - scheeme
+
+http - hypertext transfer protocol
+https - hypertext transfer protocol secure
+
+other schemes
+
+Tells browser how to send the request, and how to make sense 
+of the response.
+
+ws:// for websocket
+wss:// for websocket secure
+sftp:// for secure file transfer protocol
+
+Anything up to // is the SCHEME.
+
+Domain - assets.website.company.com
+
+subdomain: assets.
+domain: company.
+tld/top level domain: com
+
+Port - where data passes through
+
+80 for public http traffic; assumed 
+when link starts with http://
+
+443 for public https traffic; assumed
+when link starts with https://
+
+
+Path - /get
+
+tells the server what content you want.
+path is optional
+
+Query Arguments
+
+used to filter the result.
+
+Query parameters are a defined set of parameters attached 
+to the end of a url. They are extensions of the URL that 
+are used to help define specific 
+content or actions based on the data being passed
+
+Fragment Identifier
+
+Headers
+
+Additional information 
+
+Body
+
+Content of the request
+
+
+//Responses
+
+- what you get back after making a request.
+
+Response Codes
+
+2xx - tells user what server did with request.
+
+200 - ok
+
+201 - created
+
+204 - not connected
+
+
+
+3XX - redirection
+
+301 - moved permanently
+
+302 - found 
+
+304 - not found
+
+
+4xx - you're doing something wrong
+
+400 - bad request 
+
+401 - unauthorized
+
+403 - forbidden
+
+404 - not found
+
+405 - method not allowed
+
+
+5xx - server is doing it wrong
+
+500 - internal server error
+
+502 - bad gateway
+
+503 - service unavailable
+
+504 - gateway timeout
+
+
+SSL/TLS
+
+Secure Socket Layer
+
+Transport Layer Security
+
+HTTPS = HTTPS + TLS
+
+
+Why we need TLS
+
+To prevent maliscious entities from 
+taking sensitive data and sending maliscious
+software
+
+integrity;
+
+content was not tampered with
+
+encryption;
+
+content cannot be read by others
+
+authentication;
+
+you are actually connected to 
+the server you think you are 
+connected to
+
+how is TLS implementation?
+
+TLS is a cryptographic protocol that provides end-to-end security 
+of data sent between applications over the internet.
+
+It is mostly familiar to users through its use in secure web browsing, and in particular the padlock icon that appears 
+in web browsers when a secure session is established.
+
+
+Domains, Routing, DNS
+(how a computer finds data we are looking for)
+
+Domain;
+
+human friendly address of a website
+(where a site is stored/lives)
+
+address settings live in a 
+'zone file' on the authoritative
+name server for the domain.
+
+info is public, in order for routing
+to work.
+
+registrar
+
+registry - keeps track fo TLDs
+
+registrar - commercial sales
+of domains within TLD
+
+name server - holds info
+on settings for domain.
+
+registrar needs to know where 
+nameservers are
+
+Routing()
+
+DNS
+(Domain Named Server)
+
+
+Caching
+
+a way to remember data
+
+Reasons for caching
+away to save network data
+
+save cpu cycles
+
+save database lookup
+
+Stale data
+
+add complexity to software 
+
+hard to debug where something went wrong
+
+3 types of caching
+browser caching; client side
+managed by browser
+
+DNS cache 
+knows all visited ip addresses
+
+Server cache;
+storing copies of previously
+requested data e.g. applcation pages.
+
+
+
+
+Web Servers and Applications
+
+- handles requests
+- listens to the internet
+- reponses provided
+- web servers respond with; 
+data from applications.
+
+
+
+
+Applications and Databases Relationship 
+
+content management process;
+1. user requests a page from internet
+2. app/site receives request from path/
+3. app needs to look up for path-data within its server
+4. course data is returned to user
+
+Relational/RDS; like excel spread sheet, columns & rows
+can be crosse referenced because of related datasets.
+
+Database and object cache; 
+- 'expensive' queries
+- save the result
+- don't query again
+
+How it works; 
+1. user makes page request
+2. timed response and return making a copy
+3. later request is reponded with a saved/cached copy 
+of previous request.
+downside!; caches are not always updated.
+
+Dynamic Content;
+- template + data (e.g. objects);
+request uses template & fills in the gaps
+from the database.
+
+Static
+- previously compiled (html, css, images);
+fill in gaps for each post, and save it as a 
+details for a file, etc.
+- request comes in, serves the .html/.css file, image.
+no db.
+
+example relational databases;
+- MySQL
+- Postgress
+- Sqlite
+
+example content management databases
+Document Store; 
+- AKA NoSQL
+- MongoDB
+- Cassandra
+
+
+
+
+Hosting and serverless
+
+Two ways to ship code
+
+Self managed hosting
+- easier to get started
+
+Serverless
+- new method
+- not compatible with databases
+
+
+Hosting method
+- size & level
+- size of individual services
+- type of caching is vital
+- managed hosting not much but tends to be more
+expensive
+- wire things together ourself
+
+
+Micro Services and Firewalls
+
+not-micro services; 
+
+monolith; everything is together hard to 
+upgrade or scale.
+
+codebase lives on a single server.
+build and update is expensive, complicated
+
+
+microservice achitecture
+
+
+isolated components divided 
+by responsibility
+
+isolated scaling from others
+
+can be independently developed
+by different teams
+
+communication - services usually have one, or few ports
+open
+
+usually they restrict who can talk to them
+
+encryption is not necessary inside 
+of cluster
+gateway is used to talk to outside machines
+
+
+comms & firewalls
+
+stop request from reaching service
+to make a response
+
+firewalls throttle down requests/slowdown 
+responses if they grow quickly.
+
+AJAX programming;
+AJAX is a technique for accessing web servers from a web page.
+
+intro to fetch
+
+used with external apis
+to get and received data; local 
+or remote.
+
+promised based
+
+- easily get and recieve data
+- generally used with external APIs
+- asynchronous and uses Promises
+- fetch can be used to GET, POST, PUT, or DELETE data
+- errot handling is simple
+
+api; 
+specify how software components
+should interact
+
+how to interact with back-end app
+how to send and recieve data.
+
+//prerequisites
+
+- js & es6
+- arrow functions
+- promises
+- async await
+- JSON understanding
+
+//course outline
+
+- get data from local api
+- get data from an api
+- push data to an api
+- error handling
+- project builds
+
+*/
+
+/*
+fetch basics; fetch api is promise based.
+
+fetch('https://some_api_url_endpoint.com')
+.then(response=> response.json())
+.then(data=> console.log(data))
+
+what is json?
+
+- javascript object notation
+- data representation 
+- storing and transport of data
+- exchange data between client and server
+- built with; bools, arrays[], numbers, objects{}, null
+- rules; json must contain keyvals,
+double quotes, must fall into data type
+- data is seperated by commas
+- curly braces hold objects
+- square brackets hold arrays
+- use; JSON.stringify() method to convert js string into json
+
+
+*Error Handling*
+
+best methods;
+ promise chaining use; .catch(), to 'catch' any errors
+
+ async/await use; try{}catch(){}, to try code and catch any errors
+
+ automatically invoke (async function(){try{}catch(){}})()
+ can be used to handle errors.
+
+The Promise object represents the eventual completion 
+(or failure) of an asynchronous operation and its resulting value.
+
+3 promise states;
+resolve; return promise was successful
+
+reject; returned promise was unsuccessful
+
+pending; returning a promise is in unknown process 
+
+Async Challenges: course outline;
+
+- Train in ways to handle async calls
+- Handle errors in asynchronous code
+- understand promises
+- promise workout
+
+
+finally() can be used
+when managing promise chaining,
+
+or when managing async promises
+within automatically invoked (async functions resolver (){try{}catch(){}})()
+
+auto invoked (async functions (){try{}catch(){}})()
+then runs the resolver function as a result.
+
+//automatically invoked function
+A self-invoking expression is invoked (started) automatically, without being called.
+(function(){
+})()
+
+Function expressions can be made "self-invoking".
+
+
+
+practice fetch() api, x
+async/await fetch() api, x
+fetch() api error handling techniques; .catch()/try{}catch(){} x
+promise chaining with fetch() api, x
+async/await functions; promise chaining with fetch() api, x
+
+promises; 3 states; [pending, resolved, rejected], x
+promises + auto invoked functions, x
+promises + finally method(auto invoked functions, resolver()) x
+
+promises + fulfill all promises; Promise.all([]) x
+Promise.all([]); good for resolving all promises.
+
+promises + fulfill the fastest promise; Promise.race([]); 
+Promise.race([]); good for timing out an event then not
+proceeding when it takes too long.
+
+parallel execution; 
+
+submitting form form data using fetch() api
+uploading multiple files using fetch() api.
+
+Fetch Advanced
+
+*/
+
+/*
+react clean up
+
+1. delete index.css, delete import index.css in index.js
+2. delete logo svg, delete import logo in app.js
+3. delete header in app.js
+4. delete css in app.css, don't delete file.
+*/
+
+/*
+React Basics
+
+why use react? 
+
+- its speed
+- uses virtual DOM.
+- reusability
+
+React uses Js/ES6 syntax
+React allows jsx to function.
+
+render() keyword/method; lifecycle method
+that invokes the jsx to the virtual DOM.
+
+
+jsx is a js rendition of html
+
+need to wrap jsx elements inside a div.
+
+do not need to import child components through
+the main rendering page.
+
+Parent & Child Component;
+
+- creates a complex tree/hierarchy of components
+- The render page serves an entry point for our app
+when we provide an instance of the parent component '<App/>'
+
+Styling React elements with css classes;
+
+- use 'className' when styling jsx classes/elements
+- accesses js className property.
+- in css file; .nameOfClass{ add style }
+- can only apply to react elements/jsx, not react instances of 
+elements
+
+//
+React Inline Styles with the style property
+
+- style property is a js object wrapped in curly braces.
+e.g. style = {{color: 'red}}.
+
+- style-object value pairs need to be camelCased if they are 
+two worded. 
+e.g. backgroundColor: 'red'.
+
+- create separate variable if inline style code
+gets too long. Must be an object.
+
+- can just use numbers to set default pixel styles.
+
+- can use strings to set style units.
+e.g. '24px', '24em', '24%'.
+
+Instances 
+can apply multiple instances of child components 
+within parent
+
+React Props pt 1
+
+- can apply attributes/props to components
+to pass data.
+
+- props are an object with built in properties.
+and a parameter within component function.
+e.g.
+
+- cannot use props.property & props.propObj.property notation
+on the same component, has to be on two different components.
+
 function Root(){
     return(
-        <>
-            <UiComponent_A/>
-            <UiComponent_B/>
-        </>
+        <div>
+            //1. can give individual attributes
+            <Component data='some data'/>
+
+            or 
+
+            //2. can store an object with key values pairs
+            <Component object={{data: 'some data'}}/>
+        </div>
+    )
+}
+function Component(props){
+    return(
+        <div>
+            //1. can give use dot notation with props and attribute
+            <p>{props.data}</p>
+
+            or
+
+            //2. can use dot notation with props on object and attribute
+            <p>{props.object.data}</p>
+        </div>
+    )
+}
+export default Component
+
+- can use an object to store props within instance of components.
+
+- can leave some props missing if needed.
+- can apply style={{conditional styling/rendering ? to inline style}}
+
+Array methods;
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findindex
+
+
+Styling React elements with css classes;
+
+- use 'className' when styling jsx classes/elements
+- accesses js className property.
+- in css file; .nameOfClass{ add style }
+- can only apply to react elements/jsx, not react instances of 
+elements
+
+Jsx to js and back;
+
+- surround javaScript within jsx with open and 
+closed curly braces.
+- write pure js within the function, but outside of the
+return statement.
+
+//
+React Inline Styles with the style property
+
+- style property is a js object wrapped in curly braces.
+e.g. style = {{color: 'red}}.
+
+- style-object value pairs need to be camelCased if they are 
+two worded. 
+e.g. backgroundColor: 'red'.
+
+- create separate variable if inline style code
+gets too long. Must be an object.
+
+- can just use numbers to set default pixel styles.
+
+- can use strings to set style units.
+e.g. '24px', '24em', '24%'.
+
+React props;
+
+Mapping/Rendering props;
+
+- can use props dot notation within mapped props component
+when passing down props.
+
+e.g. 
+
+//within app/root component
+
+    let newArray = array.map(arrayItem=> <MappedComponent 
+
+        key = {propsItem.id}
+        propsObj = {arrayItem}
+
+        // can apply object obj = {data} from child components
+        //when rendering outside data.
+    />)
+
+return(
+    <element>{propsArray}</element>
+)
+
+//within PropsComponent
+
+function PropsComp(props){
+    return(
+        <div>
+            <h1>{props.propsObj.name}</h1>
+            <h1>{props.propsObj.type}</h1>
+        </div>
+    )
+}
+export default PropsComp
+
+or can use
+
+let newArray = arrayData.map(arrayItem => 
+    <MappedComponent
+        key = {arrayItem.id}
+        name = {arrayItem.name}
+        type = {arrayItem.type}
+    />
+)
+
+return(
+    <div>
+        {newArray}
+    </div>
+)
+
+function PropsComponent(props){
+    return(
+        <div>
+            {props.name}
+            {props.type}
+        </div>
+    )
+}
+export default PropsComponent
+
+practice; class based components.
+practice; class based components and passing down props.
+practice; class based components and state.
+practice; class based components and adding state
+within props.
+
+React Props pt 1
+
+- can apply attributes/props to components
+to pass data.
+
+- props are an object with built in properties.
+and a parameter within component function.
+e.g.
+
+- cannot use props.property & props.propObj.property notation
+on the same component/same time, has to be on two different components.
+
+function Root(){
+    return(
+        <div>
+            //1a. can give props inline
+            <Component data='some data'/>
+
+            or 
+
+            //2a. can store an object with key values pairs
+            <Component object={{data: 'some data'}}/>
+        </div>
+    )
+}
+function Component(props){
+    return(
+        <div>
+            //1a. can use single dot notation with props and attribute
+
+            <p>{props.data}</p>
+
+            or
+
+            //2a. can use props double dot notation when 
+            receiving props
+
+            <p>{props.propsObj.data}</p>
+        </div>
+    )
+}
+export default Component
+
+- can use an object to store props within instance of components.
+
+React.js Class based components
+
+import React from 'react
+
+class ClassBasedComponentExp extends React.Component{
+    constructor(){
+        super()
+        this.state = {
+            stateKeyVal: 'data string'/dataArray/dataObj/bool/int etc.
+        }
+    }
+
+    //other methods() written here
+    render(){
+        //js logic written here
+        //styling variables written here
+        return(
+            <div>
+            </div>
+        )
+    }
+}
+export default ClassBasedComponentExp
+
+or 
+
+import React, {Component} from 'react
+
+class ClassBasedComponentExp extends Component{
+    constructor(){
+        super()
+        this.state = {
+            stateKeyVal: stateKeyVal: 'data string'/dataArray/dataObj/bool/int etc.
+        }
+    }
+
+    //other methods() written here
+    render(){
+        //js logic written here
+        //styling variables written here
+        return(
+            <div>
+            </div>
+        )
+    }
+}
+export default ClassBasedComponentExp
+
+
+State; data that only class based components can manage 
+
+- need/can use a constructor(){ super() } to initialize state
+- this.state = {
+    stateObj: 'data'/dataArray/dataObj etc.
+}
+https://reactjs.org/docs/events.html#supported-events
+
+
+Handling Events in React.js;
+
+- letting the user interact with webpage and application.
+- all events will be camelCased. 
+can add 
+
+- store function inside variable to be used inline.
+
+- within js;
+const functionVariable = function someAction(){
+    //block of code to run
+}
+
+- within jsx; 
+<jsxElement camelCasedReactEvent = {functionVariable}> 
+    Click Button fo action
+</jsxElement>
+
+- inline jsx event handlers;
+< jsxElement camelCasedReactEvent = {
+    ()=>{
+        console.log('some data')
+    }
+}>
+
+< /jsxElement >,
+
+< jsxElement camelCasedReactEvent = {
+        function(){
+            console.log('some data')
+    }
+}>
+
+</jsxElement>
+
+//React lifecycle methods pt. 1;
+render(){}; will always run jsx before and after new lifecycle methods are used.
+
+//In applications with many components, it’s very important to
+//free up resources taken by the components when they are destroyed.
+
+//We can declare special methods on the class
+//component to run some code when a component mounts and unmounts.
+
+//componentDidMount(); 
+
+//method runs after 
+//the component output has been rendered to the DOM.
+
+React lifecycle methods pt.2 
+
+render(){}; will always run jsx before and after new lifecycle methods are used.
+
+//getSnapshotBeforeUpdate(){};
+
+//creates a backup of the current way things are.
+// https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate
+
+//static getDerivedStateFromProps(){}; 
+
+//returns the new, updated state based upon the props
+// https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
+// https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+
+
+//shouldComponentUpdate(nextProps, nextState){}; 
+
+//determines if component needs to 
+//re-render and update props or state.
+
+//return false makes app more performant, 
+//returning true can create bugs within code.
+
+React lifecycle methods pt. 3
+
+render(){}; will always run jsx before and after new lifecycle methods are used.
+
+componentDidUpdate(prevProps, prevState){}; runs after state is allowed to be changed
+and after the component is rendered() and component is mounted() successfully.
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState !== this.state) {
+            //can run some logic
+            //then change state
+            this.setState({state: stateData})
+        }
+
+        or
+
+        if(prevProps !== this.props){
+            //can run some logic
+            //then change props is child component
+
+            propsObj = {{data: this.state.someData}}
+
+            propsItem = {this.state.otherData}
+        }
+    }
+
+Conditional rendering.
+
+//parent component
+render(){
+    return(
+        <div>
+            {
+                this.state.someThing ?
+                <h1>Run some code</h1>
+                :
+                <h1>Run this instead</h1>
+            }
+
+        </div>
+    )
+}
+
+//parent component
+render(){
+    return(
+        <div>
+            {
+                this.state.someThing ?
+                <h1>Run some code</h1>
+                :
+                <RenderThisComponent/>
+            }
+
+        </div>
+    )
+}
+
+//parent component
+render(){
+    return(
+        <div>
+            {
+                this.state.someThing ?
+                <h1>Run some code</h1>
+                :
+                <RenderThisComponent
+                    props = {this.state.something}
+                />
+            }
+
+        </div>
+    )
+}
+
+//parent component
+render(){
+    return(
+        <div>
+            {
+                this.state.someThing ?
+                <h1>Run some code</h1>
+                :
+                <Component
+                    propsObj = {{propsData: this.state.something}}
+                />
+            }
+
+        </div>
+    )
+}
+
+conditional rendering can be applied to a components 
+style.
+
+import React, {Component} from 'react'
+
+class Parent extends Component{
+    constructor(){
+        super()
+        this.state = {
+            verified: true
+        }
+    }
+
+    render(){
+        const verifiedStyle = {
+            color: 'blue'
+        }
+        const unverifiedStyle = {
+            color: 'red'
+        }
+        return(
+            <div>
+                {
+                    this.state.verified ? 
+                    <h1 style = {verifiedStyle}>
+                        Data verified
+                    </h1>
+                    :
+                    <h1 style = {unverifiedStyle}>
+                        Data unverified
+                    </h1>
+                }
+            </div>
+        )
+    }
+}
+export default Parent
+
+fetching data from api in react.js
+
+writing forms and their methods;
+
+<form>
+    text input form
+    <input 
+        type = 'text'
+        name = 'stateValue'
+        value = {this.state.stateValue}
+        onChange = {this.method}
+        placeholder = ''
+    />
+
+    checkbox input form
+    <input
+        type = 'checkbox'
+        name = 'stateVal'
+        checked = {this.state.stateVal}
+        onChange = {this.method}
+    />
+
+    radio button input forms\
+
+    <input
+        type = 'radio'
+        name = 'stateVal'
+        value = 'value'
+        checked = {this.state.stateValue === 'value'}
+        onChange = {this.method}
+    />
+
+    can display state through forms.
+        <h1>{this.state.stateVal}</h1>
+    </form>
+
+  COMPONENT & CONTAINER ARCHITECTURE; 
+  technique that separates components based
+  on app rendering, logic and display.
+
+
+  import React from 'react'
+  import ReactDOM from 'react-dom'
+  import Root from './root'
+
+  ReactDOM.render(
+      <Root/>,
+      document.getElementById('root)
+  )
+
+  import React from 'react'
+  import Container from './container'
+
+  function Root(){
+      return(
+          <Container/>
+      )
+  }
+  export default Root
+
+  import React, {Component} from 'react'
+  import Component from './component'
+
+  class Container extends Component{
+      constructor(){
+          super()
+          this.state = {
+            lang_1: '',
+            lang_2: '',
+            lang_3: '',
+            frontEndDev: false,
+            backEndDev: false,
+            systemsAdmin: false,
+            devInProgress: 'in progress',
+            devNotInProgress: 'not in progress'
+          }
+          this.handleChange = this.handleChange.bind(this)
+      }
+
+      handleChange(event){
+          //destructuring properties from a DOM object targeted user event.
+
+          const {name, value, type, checked} = event.target
+          type === 'checkbox' ? this.setState({[name]: value})
+          : this.setState({[name]: checked})
+      }
+
+
+      render(){
+          return(
+              <div>
+                <Component
+                    handleChange = {this.handleChange}
+                    data = {this.state}
+                />
+              </div>
+          )
+      }
+  }
+  export default Root
+
+  import React from 'react'
+
+  function Component(props){
+    return(
+        <main>
+            <form>
+                <input
+                    type = 'text'
+                    name = 'lang_1'
+                    value = {props.data.lang_1}
+                    onChange = {props.handleChange}
+                    placeholder = 'first development language'
+                />
+                <br/>
+
+                <input
+                    type = 'text'
+                    name = 'lang_2'
+                    value = {props.data.lang_2}
+                    onChange = {props.handleChange}
+                    placeholder = 'second development language'
+                />
+                <br/>
+
+                <input
+                    type = 'text'
+                    name = 'lang_3'
+                    value = {props.data.lang_3}
+                    onChange = {props.handleChange}
+                    placeholder = 'third development language'
+                />
+                <br/>
+
+                <input
+                    type = 'checkbox'
+                    name = 'frontEndDev'
+                    checked = {props.data.frontEndDev}
+                    onChange = {props.handleChange}
+                />
+
+                <input
+                    type = 'checkbox'
+                    name = 'backEndDev'
+                    checked = {props.data.backEndDev}
+                    onChange = {props.handleChange}
+                />
+
+                <input
+                    type = 'checkbox'
+                    name = 'systemsAdmin'
+                    checked = {props.data.systemsAdmin}
+                    onChange = {props.handleChange}
+                />
+                <br/>
+
+                <input
+                    type = 'radio'
+                    name = 'devInProgress'
+                    value = 'in progress'
+                    checked = {props.data.inProgress === 'in progress'}
+                    onChange = {props.handleChange}
+                />
+
+                <input
+                    type = 'radio'
+                    name = 'devNotInProgress'
+                    value = 'not in progress'
+                    checked = {props.data.devNotInProgress === 'not in progress'}
+                    onChange = {props.handleChange}
+                />
+                <h1>{props.data.lang_1}</h1>
+                <br/>
+
+                <h1>{props.data.lang_2}</h1>
+                <br/>
+
+                <h1>{props.data.lang_3}</h1>
+                <br/>
+
+            </form>
+        </main>
+    )
+}
+export default Component
+
+//practice componentDidMount(){} & conditional rendering
+
+//react.js container and component architecture;
+
+//practice creating forms challenge
+
+* react.js container and component architecture;
+used to separate component rendering, js logic
+and layout.
+
+* rebuild todo application and use 
+conditional rendering with 
+form input logic to display task
+updates.
+
+* practice fetching data from an api in 
+react.js
+
+Writing Modern React Apps
+
+ * Other modern/advanced React features/topics to learn:
+ * 
+ * Official React Context API - https://reactjs.org/docs/context.html
+ * Error Boundaries - https://reactjs.org/docs/error-boundaries.html
+ * render props - https://reactjs.org/docs/render-props.html
+ * Higher Order Components - https://reactjs.org/docs/higher-order-components.html
+ * React Router - https://reacttraining.com/react-router/core/guides/philosophy
+ * React Hooks - https://reactjs.org/docs/hooks-intro.html
+ * React lazy, memo, and Suspense - https://reactjs.org/blog/2018/10/23/react-v-16-6.html
+
+
+New Features to React.js
+
+- can use an arrow function for our methods
+no need to use binding, can get rid of constructor.
+
+React Hooks pt1; 
+
+- 'Hook into' state and lifecycle methods with functional 
+based components. 
+
+- improves readability and organization of components.
+
+useState() patterns 1, 2, 3
+
+import React, {useState} from 'react'
+const [ state ] = usetate()
+
+import React, {useState} from 'react'
+const state = useState()
+
+import React from 'react'
+const [ state ] = React.useState()
+
+React Hooks/useState() pt2; changing state
+
+import React, {useState} from 'react'
+
+- function Root(){
+    const [state, changeState] = useState('state')
+
+    function change(){
+        changeState(prevState => prevState = 'state updated')
+    }
+
+    return(
+        <div>
+            <h1>{state}</h1>
+            <button onClick={change}>Change State</button>
+        </div>
     )
 }
 export default Root
 
-//individual components
-//'./uicomponent_a'
-import React from 'react'
-import {ExtendedContextConsumer} from './extendedcontext'
+UseEffect pt.1;
 
-export default function UiComponent_A(props) {
+- hooks into components
+lifecycle and state.
+
+- replacement for componentDidMount,
+componentDidUpdate, componentWillUnMount
+
+- used ƒor; Side effects; 
+// Side effects?
+// Network request
+// Manual DOM manipulation
+// Event listeners or timeouts and intervals
+
+import React, {useState, useEffect} from 'react'
+
+keeps track of what happens to declared state.
+useEffect(()=>{
+
+}, [state])
+
+UseEffect pt.2;
+useEffect twice, return function, empty array.
+
+    //returned function represents componentWillUnmount()
+   
+    //useEffect changes count every 3 seconds on interval
+    //returns a clean up function that prevents bug.
+    useEffect(()=>{
+        const intervalId = setInterval(()=>{
+            setCount(prevCount => prevCount + 1)
+
+        }, 3000)
+
+        return ()=> {//provided as a clean up function.
+            clearInterval(intervalId)
+        }
+    }, []) //empty array represents componentDidMount() sets up/renders once at a time.
+
+    //represents componentDidUpdate(), watches for count state to change
+    //then sets new color to count state.
+    useEffect(()=>{
+        setColor(randomcolor())
+    }, [count])
+
+- can use return function 
+to act as componentWillUnmount()
+to perform any clean up of 
+side effects needed.
+
+- empty array used as componentDidMount()
+
+- can use useEffect twice to 
+act as componentDidUpdate()
+to to watch for changes to state.
+
+
+Ideas for React Apps;
+https://medium.freecodecamp.org/every-time-you-build-a-to-do-list-app-a-puppy-dies-505b54637a5d
+
+https://medium.freecodecamp.org/want-to-build-something-fun-heres-a-list-of-sample-web-app-ideas-b991bce0ed9a
+
+https://medium.freecodecamp.org/summer-is-over-you-should-be-coding-heres-yet-another-list-of-exciting-ideas-to-build-a95d7704d36d
+
+REACT.js BOOTCAMP
+
+modern js features;
+
+no constructor, no binding
+no super, use arrow functions
+to write methods. 
+
+Inside render(){
+    destrucure state object to avoid 
+    writing this.state.stateValue
+    within jsx.
+
+    can rename state values to apply to jsx.
+}
+
+REACT.FRAGMENT;
+
+- Helps us wrap our elements in 
+something that does not create a new node in 
+DOM tree.
+
+React.Fragment; avoids poluting the DOM tree
+with many elements/nodes.
+
+not all components need to
+be fragments because it 
+may affect the css on elements.
+
+child components are placed on
+the same level as their parent components.
+
+
+    DEFAULT PROPS; 
+    automaticaly sets
+    a style property to a component
+    unless the component is directly styled
+    differently.
+
+    import React from 'react'
+    import Comp from './comp
+
+    function Root(){
+        return(
+            <div>
+                <Comp
+                    componentColor='red'
+                    componentBorder='10px dashed black'
+                    componentHeight={200}
+                />
+            </div>
+        )
+    }
+    export default Root
+
+    import React from 'react'
+
+    function Comp(props){
+    const style = {
+        color: props.componentColor,
+        border: props.componentBorder,
+        height: props.componentHeight
+    }
+
+    return(
+        <div>
+            <Child/>
+        </div>
+    )
+}
+
+Comp.defaultProps = {
+    componentColor: 'black',
+    componentBorder: '5px solid white',
+    componentHeight: 100
+}
+
+export default Comp
+
+
+
+
+
+    PROP TYPES; 
+    type check what kind of 
+    props are being passed down.
+
+    Component.propTypes = {
+        cardColor: PropTypes.dataType.isRequired,
+        cardWidth: PropTypes.oneOf([dataType, dataType]).isRequired,
+        cardHeight: PropTypes.dataType
+    }
+
+    .isRequired can be chained to 
+    propTypes and automatically specifies
+    required data type.
+
+
+    REUSABILITY; prevents code repetition,
+    writing the same code over and over again.
+    D.R.Y. dont repeat yourself
+
+    inheritance; what drives oop (flawed pattern).
+    composition; compose code structure, bits and pieces (best method).
+
+    Techniques;
+    1. component with props
+    2. children
+    3. HOC
+    4. render props
+
+    React children; allows component reusability 
+    and props pass down with {props.children} pattern
+    and regular props pass down style patterns.
+
+    React.js HOC; a function that passes down
+    reusable logoic from a parent component to 
+    child components within an app. 
+````HOC returns a function that returns a ui and 
+    passed down props/state. The function takes a component
+    as a parameter and argument then is invoked allowing the 
+    children components special abilities.
+
+React.js render props; 
+key notes;
+callbacks - A callback is a 
+function passed as an argument to another function.
+function will be activated when outter
+function is called.
+
+buit in js methods - can take in 
+callbacks and other parameters.
+
+Render Props;
+
+"Is A component with a render={ ({})=>() } prop 
+that takes a function and returns a React element and 
+calls it instead of implementing its own render logic."
+'functions' are a valid argument for functions in Javascript 
+and work because they are passed down as props(react.js)/paremeters/arguments.
+
+
+
+
+///////////////
+React.js Tree Rendering; how it affects performance.
+
+to increase performance of a react app,
+react.js recursively renders components down a branch
+until there are no more components to render.
+
+changes to state or props in any component will
+recursively re-render down the remaining tree wether
+those component have changed or not. This can 
+affect the performance of the react.app.
+
+remedies to poor app performance; 
+1. shouldComponentUpdate()
+2. React.PureComponent
+3. React.memo()
+
+
+React.js; Performance
+
+Performance & how React renders its components
+react.js; SHALLOW COMPARISON
+
+shouldComponentUpdate(){}
+
+comparing two objects created in memory are not
+strictly equal. (objA !== objB)
+
+comparing two objects created in memory with 
+the same 'first level' properties/shallow properties
+will have a shallow comparison.
+(objA = {data:true}) === (objB = {data:true})
+
+comparing two objects created in memory with nested
+objects within eachother will not have a shallow comparison
+because two more objects are created within memory and
+are compared in reference and not value.
+(objA = {
+    data:true, 
+    objIn:{
+        data:true
+    }
+})
+
+!==
+
+(objB = {
+    data:true,
+    objIn:{
+        data:true
+    }
+})
+
+shouldComponentUpdate(nextProps, nextState){
+    if(nextProps.props === this.state.props){
+        return true
+    }
+    return false
+}
+
+//////////////////////////////////////////
+import React, {PureComponent} from 'react'
+class App extends PureComponent{};
+
+operates like shouldComponentUpdate(){}
+and checks if a component(s) need to be 
+re-rendered based on change in current state/props
+from previous state/props.
+
+react.memo;
+
+react.js; React.memo
+Higher Order Component built by React.
+React.memo() === PureComponent(), but for functional 
+components.
+
+It only compares prevProps and newProps (no state checking).
+can implement own checking functions to determins if it should
+use the memoized result.
+
+shouldComponentUpdate(); true, component should re-render/update,
+props/state are different. false, component should not re-render
+props/state are the same.
+
+
+React.memo(); HOC for functional components.
+React.memo(); true, component should not re-render if props are equal.
+
+false, component should re-render if props are different.
+
+React.memo() caches original props, then compares to 
+new props and determines if component should re-render
+based on if any changes are made.
+
+true; cache, use original/same props, no re-render.
+false; no cache, use new/changed props, re-render.
+
+React.js; REACT CONTEXT
+
+Provides a way to pass data
+through the component tree
+without having to pass down manually
+at every level('props-drilling').
+
+provider and consumer
+pair wrap similar components
+that create a link between
+that parent, and every child component
+that needs to consume that data
+or method.
+
+method within a child component
+ca be fired which will modify state
+within the 'parent' which will be passed
+down to every 'child' component.
+
+e.g.
+Parent.Provider(parentComponent)
+Parent.Comsumer(childComponent)
+
+////
+React.js; React Context
+
+Provides a way to pass data
+through the component tree
+without having to pass down manually
+at every level('props-drilling').
+
+provider and consumer
+pair wrap similar components
+that create a link between
+that parent, and every child component
+that needs to consume that data
+or method.
+
+method within a child component
+ca be fired which will modify state
+within the 'parent' which will be passed
+down to every 'child' component.
+
+e.g.
+Parent.Provider(parentComponent)
+Parent.Comsumer(childComponent)
+
+note: use REACT CONTEXT to
+build on previous concepts.
+
+
+
+React Context; pattern a1, a2
+assigning provider context to 
+a parent component,
+need to provide 
+
+
+use static.contextType = Context render props pattern, as a 'static-prop' 
+to pass down context value={''}
+create a ui that will display a user name, via react.context use static-contextType.
+
+
+React Context; Context.Consumer
+use React Context Consumer only on function based components
+
+Context provides a way to share values between components 
+without having to explicitly pass a prop through every level of the tree.
+
+1. use in place of class components static contextType = Context & Component.contexttype = Context
+1a. const contextVar = this.context
+
+2. returns an embedded function that returns an element/ui.
+
+3. only use on components that need props from a specific parent component.
+
+4. can apply theme directly into a single component; (pattern a; every instance)
+
+5. can apply Consumer render prop pattern, if outside component and if we have multiple 
+instances of the component. (pattern b; single instance)
+
+6. can apply default props or prop.types to secure ui display if incorrect data is passed down.
+
+to avoid bugs, place context iside of its own file to 
+pass down data as needed.
+
+The state is an instance of React Component Class can be defined as 
+an object of a set of observable properties that control the behavior of the component. 
+In other words, the State of a component is an object that 
+holds some information that may change over the lifetime of the component.
+
+Key!
+    * Do not use context to avoid prop drilling in certain cercumstances (e.g. a layer, or two down).
+    * Do not use context for state that is kept locally (e.g. forms).
+    * wrap the provider around the lowest parent in the tree.
+    * passing object as value={{obj:this.state.obj}} watch performance, and refactor as necessary.
+    * 
+    * 
+    * React.Context patterns; Context.State pass down
+    * Context.Notation/Render Props pass down.
+*/
+
+//render file.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextprovider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+//'./root/'
+import React from 'react'
+import ComponentUi from './componentui'
+export default function Root(){
+    return(
+        <>
+            <ComponentUi/>
+        </>
+    )
+}
+
+//'./contexprovider'
+import React, {Component} from 'react'
+const {Provider, Consumer} = React.createContext()
+class ContextProvider extends Component{
+    //state that allows data change management.
+    state = {
+        theme:'dark'
+    }
+
+    toggleTheme=()=>{
+        this.setState(prevState=>{
+            return this.state = {
+                theme:prevState.theme === 'dark' ? 'Light':'Dark'
+            }
+        })
+    }
+
+    render(){
+        return (
+            <Provider value={{
+                //color theme assigned 
+                theme:this.state.theme, 
+                //method can active or deactivate a theme.
+                toggleTheme:this.toggleTheme
+            }}>
+                {this.props.children}
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Consumer as ContextConsumer}
+
+//'./componentui file'
+import React from 'react'
+import {ContextConsumer} from './componentprovider'
+
+export default function ComponentUi(){
     return (
-        <ExtendedContextConsumer>
+        <ContextConsumer>
             {
-                (data)=>(
+                (contextLogic)=>(
+                    <>
+                        {/*theme color
+                        received from 
+                        css file.
+                         */}
+                        <div>
+                            {contextLogic.theme}
+                        </div>
+                        <button onClick={contextLogic.toggleTheme}>
+                            switch theme
+                        </button>
+                    </>
+                )   
+            }
+        </ContextConsumer>
+    )
+}
+
+/*
+    excercise; create toggle application 
+    using context and state within its own file,
+    pass down context logic down to consumer components.
+*/
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextprovider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+//'./root'
+import React from 'react'
+import ComponentA from './componentA'
+import ComponentB from './componentB'
+export default function Root(){
+    return (
+        <>
+            <ComponentA/>
+            <ComponentB/>
+        </>
+    )
+}
+
+//'./contextprovider'
+import React, {Component} from 'react'
+const {Provider, Consumer} = React.createContext()
+
+class ContextProvider extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            on:false
+        }
+        this.toggle = this.toggle.bind(this)
+    }
+    //new component methods are stored here.
+    toggle=()=>{
+        return this.setState(prevState=>{
+            on:!prevState.on
+        })  
+    }
+
+    render(){
+        //js logic may be placed here.
+        return (
+            <Provider value={{
+                on:this.state.on, 
+                toggle:this.toggle
+            }}>
+                <>
+                    {this.props.children}
+                </>
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Consumer as ContextConsumer}
+
+//'./componentA file'
+import React from 'react'
+import {ContextProvider} from './contextprovider'
+
+export default function ComponentA(){
+    return (
+        <>
+            <ContextProvider>
+                {
+                    (context)=>(
+                        <>
+                            <div style={{
+                                display: context.on ? 'none':'block'
+                            }}>
+                            {/*add content here */}
+                            </div>
+                            {/*create button below that will toggle ui on and off. */}
+                            <button onClick={context.toggle}>
+                                {context.on ? 'Show Information':'Hide Infomation'}
+                            </button>
+                        </>
+                    )
+                }
+            </ContextProvider>
+        </>
+    )
+}
+
+/////
+/*
+ react.context basics 
+*/
+
+//context file
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
+//render file
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from 'root'
+import Context from './contextProvider'
+ReactDOM.render(
+    <Context.Provider value={'cyberman'}>
+        <Root/>
+    </Context.Provider>,
+    document.getElementById('root')
+)
+
+//'./root' file
+import React from 'react'
+import ComponentA from './componentA'
+export default function Root(){
+    return (
+        <>
+            <ComponentA/>
+        </>
+    )
+}
+
+//'./componentA' file
+import React, {Component} from 'react'
+import Context from './contextProvider'
+
+export default class ComponentA extends Component{
+    static contextType = Context
+    render(){
+        const userName = this.context
+        return(
+            <>
+                <h1>{userName}</h1>
+            </>
+        )
+    }
+}
+
+/*
+    react.context functional components/
+    render props pattern.
+*/
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import Context from './context'
+ReactDOM.render(
+    <Context.Provider value={'cyberman'}>
+        <Root/>
+    </Context.Provider>,
+    document.getElementById('root')
+)
+
+//'./root' file
+import React from 'react'
+import ChildComponent from './childcomponent'
+export default function Root(){
+    return(
+        <>
+            <ChildComponent/>
+        </>
+    )
+}
+
+//'./childcompnent'
+import React from 'react'
+import Context from './context'
+export default function ChildComponent(){
+    return(
+        <>
+            <Context.Consumer>
+                {
+                    (username)=>(
+                        <div>
+                            <h1>{username}</h1>
+                        </div>
+                    )
+                }
+            </Context.Consumer>
+        </>
+    )
+}
+
+/*
+    react.context;
+    placing context within
+    its own file to be acessed
+    down rendering tree.
+*/
+//'./context' file
+import React from 'react'
+const {Provider, Consumer} = React.createContext()
+class ContextProvider extends Component{
+    render(){
+        return(
+            <Provider value={'cyberman'}>
+                {this.props.children}
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Consumer as ContextConsumer}
+
+//'index.js'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextProvider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+//'./root' file
+import React from 'react'
+import ChildComponent from './childComponent'
+export default function Root(){
+    return(
+        <>
+            <ChildComponent/>
+        </>
+    )
+}
+
+//'./childComponent'
+import React from 'react'
+import {ContextConsumer} from './contextConsumer'
+export default function ChildComponent(){
+    return(
+        <ContextConsumer>
+            {
+                (username)=>(
                     <div>
-                        <h1>This is context.consumer data; {props.data}</h1>
+                        <h1>{username}</h1>
                     </div>
                 )
             }
-        </ExtendedContextConsumer>
+        </ContextConsumer>
+    )
+}
+
+/**
+ * Challenge: Add the ability for the user to choose a new username
+ * 
+ * 1. Add state to this component to hold the new username in a controlled form
+ * (https://reactjs.org/docs/forms.html#controlled-components)
+ * (https://scrimba.com/p/p7P5Hd/cW8Jdfy)
+ * 
+ * 2. Change userContext into a component that has state and provides the ability
+ * to change the user's username. Make sure to export the provider and consumer
+ * as named exports and update their uses anywhere else in the app
+ * 
+ * 3. Give this App component the ability to update the username in context when the
+ * button is clicked
+ */
+
+//state and method provided by CONTEXT.STATE
+//state within context file affects the state provided within another component.
+//'./index.js'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextProvider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import ChildComponent from './childComponent'
+export default function Root(props) {
+    return (
+        <div>
+            <ChildComponent/>
+        </div>
     )
 }
 
 
-//'./uicomponent_b'
-import React from 'react'
-import {ExtendedContextConsumer} from './extendedcontext'
 
-export default function reactNotesIndex(props) {
+
+//'./contextprovider' component with state
+import React, {Component} from 'react'
+const {Provider, Consumer} = React.createContext()
+class ContextProvider extends Component{
+    state = {
+        userName:'cyberman'
+    }
+
+    //method that allows button click to change data.
+    handleUserContext=(userName)=>{
+        this.setState({userName})
+    }
+
+    //passing down state and method to other components through context.
+    render(){
+        // const {userName} = this.state
+         return(
+            <Provider value={{
+                userName:this.state.userName,
+                handleUser:this.handleUser
+            }}>
+                {this.props.children}
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Consumer as ContextConsumer}
+
+
+//'./childComponent'
+import React from 'react'
+import {ContextConsumer} from './contextProvider'
+
+export default class ChildComponent extends Component{
+    state = {
+        newUserName:''
+    }
+
+    handleChangeText=(event)=>{
+        const {name, value} = event.target
+        this.setState({[name]: value})
+    }
+
+    render(){
+        return(
+            <ContextConsumer>
+                {
+                    //state and method provided by context
+                    //state within context file affects the state provided within another component.
+                    ({userName, handleUserContext})=>(
+                        <>
+                            <p>
+                                Welcome {userName}!
+                            </p>
+                                <hr/>
+                            <div>
+                                {/*text input form.*/}
+                                <input 
+                                    type="text"
+                                    name='newUserName'
+                                    value={this.state.newUserName}
+                                    onChange={this.handleChangeText}
+                                />
+                            </div>
+                            <button onClick={
+                                ()=> handleUserContext(this.state.newUserName)
+                            }>
+                                Click to update username
+                            </button>
+                        </>
+                    )
+                }
+            </ContextConsumer>
+        )
+    }
+}
+
+/*
+    react.context; RENDER PROPS/CONTEXT.NOTATION
+    create an application that 
+    passes down state from the context provider
+    component to the contextConsumer component.
+    That also toggles data off and on.
+*/
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextProvider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+'./root'
+import React from 'react'
+import UiComponent from './uicomponent'
+export default function Root(){
     return (
-        <ExtendedContextConsumer>
-            {
-                (data)=>(
-                    <div>
-                        <h2>This is context.consumer data; {props.data}</h2>
-                    </div>
-                )
-            }
-        </ExtendedContextConsumer>
+        <UiComponent/>
     )
 }
 
-//passing down data via context.provider; class-based.
-//pasing down data via context.provider; function based.
-//passing down data via context.provider from its providers own file.
+import React, {Component} from 'react'
+const {Provider, Consumer} = React.createContext()
+class ContextProvider extends Component{
+    state = {
+        // on:false,
+        userName:'cyberman',
+        newUserName:'user'
+    }
+
+    //method that allows userName to be updated.
+    handleUpdate=(userName)=>{
+        this.setState({userName})
+    }
+
+    //method that allows text to be changed.
+    handleChangeText=(event)=>{
+        const {name, value} = event.target
+        this.setState({[name]: value})
+    }
+
+    render(){
+        const {userName, newUserName} = this.state
+        return(
+            <Provider value={{
+                userName,
+                newUserName,
+                handleUpdate:this.handleUpdate,
+                handleChangeText:this.handleChangeText
+            }}>
+                {this.props.children}
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Consumer as ContextConsumer}
+
+//'./uicomponent' using contextprovider; use .
+//we dont always have to pass down props
+import React from 'react'
+import {ContextConsumer} from './contextConsumer'
+export default function UiComponent(){
+    return(
+        <ContextConsumer>
+            {
+                //context brings in anything it has created.
+                (context)=>(
+                    
+                    <main>
+                        <div style={{
+                            border:'solid black 5px',
+                            textAlign:'center',
+                            color:'white',
+                            backgroundColor:'blue'
+                        }}>
+                            <h1>Greetings {context.userName}</h1>
+                        </div>
+                        <input
+                            type='text'
+                            name='newUserName'
+                            value={context.newUserName}
+                            placeholder='enter username here'
+                            onChange={context.handelChangeText}
+                        />
+                        <button onClick={()=> context.handleUpdate(context.newUserName)}>
+                            Click to Submit
+                        </button>
+                    </main>
+                )
+            }
+        </ContextConsumer>
+    )
+}
+
+/*
+HOC, Render.Props, Context; Review
+*/
+
+//HOC; username update application that uses HOC logic and data.
+//render file.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+//root file.
+import React from 'react'
+import UiComponent from './uicomponent'
+export default function Root(){
+    return(
+        <>
+            <UiComponent/>
+        </>
+    )
+}
+
+//logic file
+import React, {Component} from 'react'
+class Logic extends Component{
+    state = {
+        userName:'cyberman',
+        newUserName:''
+    }
+
+    //method that allows button click to update username
+    handleUpdateUser=(userName)=>{
+        this.setState({userName})
+    }
+
+    //method that allows form text to change
+    handleChangeText=(event)=>{
+        const {name, value} = event.target
+        this.setState({[name]: value})
+    }
+
+    render(){
+        const {userName, newUserName} = this.state
+        const Component = this.props.componentProps
+        return(
+            <Component
+                userName={userName}
+                newUserName={newUserName}
+                handleUpdateUser={this.handleUpdateUser}
+                handelChangeText={this.handleChangeText}
+                {...this.props}
+            />
+        )
+    }
+}
+
+export function extendedLogic(componentProps){
+    return function(props){
+        return(
+            <>
+                <Logic
+                    componentProps={componentProps}
+                    {...props}
+                />
+            </>
+        )
+    }
+}
+
+//'./uiComponent' ui that allows username to be updated, allows text field to be changed.
+import React from './react'
+import HeaderUi from './headerui'
+import {extendedLogic} from './extendedlogic'
+class UiComponent extends Component{
+    render(){
+        return function(props){
+            return(
+                <>
+                    <HeaderUi/>
+                    <input
+                        type='text'
+                        name='newUserName'
+                        value={this.props.newUserName}
+                        placeholder='enter text here'
+                        onChange={this.props.handleChangeText}
+                    />
+                    <button onClick={this.props.handleUpdateUser}>
+                        click to submit username
+                    </button>
+                </>
+            )
+        }
+    }
+}
+const uiExtendedLogic = extendedLogic(UiComponent)
+export default uiExtendedLogic
+
+//'./headerui' file
+import React from 'react'
+import {extendedLogic} from './extendedlogic'
+class HeaderUi extends Component{
+    render(){
+        return(
+            <header>
+                <h1>Greetings, {this.props.userName}!</h1>
+            </header>
+        )
+    }
+}
+const ExtendedHeaderUiLogic = extendedLogic(HeaderUi)
+export default ExtendedHeaderUiLogic
+
+/*
+    react.js; render props patterns a, b, c
+    pattern a; render props from within root file.
+    pattern b; render props from within uifile.
+    pattern c; render props/uiccomponent from within root+logic component
+    pattern c; render props using react.children.
+
+    task; create an application that updates 
+    a username and allows input field text to
+    change.
+*/
+
+//pattern a; render props from within root file.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+
+//root.js file
+import React from 'react'
+import Child from './child'
+export default function Root(){
+    return (
+        <>
+            <Child
+                render={
+                    (int1, int2)=>(
+                        <>
+                        `${int1 + int2}`
+                        </>
+                    )
+                }   
+            />
+        </>
+    )
+}
+
+import React from 'react'
+export default function Child(props){
+    return (
+        <>
+            <h1>
+                {
+                    props.render(1, 2)
+                }
+            </h1>
+        </>
+    )
+}
+
+
+
+//pattern b; render props from within ui component.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+//'./root' file
+import React from 'react'
+import UiComponent from './uicomponent'
+
+export default function Root(){
+    return(
+        <UiComponent/>
+    )
+}
+
+//'./logic' file
+import React, {Component} from 'react'
+export default class Logic extends Component{
+    state = {
+        userName:'cyberman',
+        newUserName:'user'
+    }
+
+    //method that updates userName
+    handleUpdate=(userName)=>{
+        this.setState({userName})
+    }
+
+    //method that allows input text to change.
+    handleUpdateText=(event)=>{
+        /*
+            The 'target' property of the 'event' interface is a
+        reference to the object(state and DOM objects) onto which the event was dispatched.
+        */
+        //js object/&data will live on a jsx/html element
+        const {name, value} = event.target
+        this.setState({[name]:value})
+    }
+
+    render(){
+        const {userName, newUserName} = this.state
+        return(
+            this.props.render({
+                userName,
+                newUserName,
+                handleUpdate:this.handleUpdate,
+                handleUpdateText:this.handleUpdateText
+            })
+        )
+    }
+}
+
+//'./uicomponent' file
+import React from 'react'
+import Logic from './logic'
+export default function UiComponent(){
+    return(
+        <Logic
+            render={
+                ({userName, newUserName})=>(
+                    <>
+                        <header>
+                            Welcome {userName}!
+                        </header>
+                        <hr/>
+                        <h2>Updates for; {newUserName}</h2>
+                        <input
+                            type='text'
+                            name='newUserName'
+                            placeholder='enter text here'
+                            onChange={handleChangeText}
+                        />
+                        <button onClick={()=> handleUpdateUser(newUserName)}>
+                            Click to enter
+                        </button>
+                    </>
+                )
+            }
+        />
+    )
+}
+
+
+//pattern c; render props, create uicomponent from within roor using imported-logic component
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import Logic from './logic'
+export default function Root(props){
+    return(
+        <>
+            <Logic
+                render={
+                    ({username})=>(
+                        <div>
+                            <h1>{props.username}</h1>
+                        </div>
+                    )
+                }
+            />
+        </>
+    )
+}
+
+//logic component
+import React, {Component} from 'react'
+export default class Logic extends Component{
+    state = {
+        username:'cyberman'
+    }
+    render(){
+        const {username} = this.state
+        return(
+            this.props.render({
+                username
+            })
+        )
+    }
+}
+
+
+//pattern d; render props/ui from within root importr logic component
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import Logic from './logic'
+import UiComponent from './uicomponent'
+export default function Root(){
+    return(
+        <Logic
+            render={
+                ({username, newUsername, handleDisplay, handleChangeText})=>(
+                    <UiComponent
+                        username={username}
+                        newUsername={newUsername}
+                        handleDisplay={handleDisplay}
+                        handleChangeText={handleChangeText}
+                    />
+                )
+            }
+        />
+    )
+}
+
+
+//'./logic' component
+import React, {Component} from 'react'
+export default class Logic extends Component{
+    state = {
+        username:'cyberman',
+        newUserName:'user',
+    }
+
+    handleDisplay =(username)=>{
+        this.setSate({
+            username
+        })
+    }
+
+    handleChangeText=(event)=>{
+        const {name, value} = event.target
+        this.setState({[name]:value})
+    }
+
+    render(){
+        const {username, newUsername} = this.state
+        return(
+            this.props.render({
+                username, 
+                newUsername,
+                handleDisplay: this.handleDisplay,
+                handleChangeText: this.handleChangeText
+            })
+        )
+    }
+}
+
+import React from 'react'
+import Logic from './logic'
+export default function UiComponent(props){
+    return(
+        <main>
+            <div>
+                <h1>Greetings, {props.username}</h1>
+                <hr/>
+                <h2>No updates for; {props.newUsername}</h2>
+            </div>
+            <div>
+                <input
+                    type='text'
+                    name='newUserName'
+                    value={props.newUsername}
+                    placeholder='enter username here'
+                    onChange={props.handleChangeText}
+                />
+                <button onClick={()=> props.handleDisplay(props.newUsername)}>
+                    Click to submit
+                </button>
+            </div>
+        </main>
+    )
+}
+
+//pattern e; render props using react.children.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+//root file
+import React from 'react'
+import Logic from './logic'
+export default function Root(){
+    return(
+        <Logic>
+            {
+                ({username, newUsername, handleDisplayUpdate, handleChangeText})=>(
+                    <UiComponent
+                        username={username}
+                        newUsername={newUsername}
+                        handleDisplayUpdate={handleDisplayUpdate}
+                        handleChangeText={handleChangeText}
+                    />
+                )
+            }
+        </Logic>
+    )
+}
+
+//logic file.
+import React, {Component} from 'react'
+class Logic extends Component{
+    state = {
+        username:'user',
+        newUsername:''
+    }
+
+    //method that diplays updated username when button is clicked
+    handleDisplayUpdate=(username)=>{
+        //state-object property is destructured and accessed.
+        this.setState( {username} )
+    }
+
+    //method that allows input text to be live updated.
+    handleChangeText=(event)=>{
+        const {name, value} = event.target
+        this.setState({[name]:value})
+    }
+
+    render(){
+        const {username, newUsername}
+        return(
+            this.props.children({
+                username,
+                newUsername,
+                handleDisplayUpdate:this.handleDisplayUpdate,
+                handleChangeText:this.handleChangeText
+            })
+        )
+    }
+}
+
+//'./uicomponent' file
+import React from 'react'
+export default function UiComponent(props){
+    return(
+        <>
+            <div>
+                <h1>Welcome, {props.username}!</h1>
+                <br/>
+                <h2>Updates for; {props.newUsername}</h2>
+                <hr/>
+            </div>
+            <div>
+                <input 
+                    type="text"
+                    name='newUsername'
+                    value={props.newUsername}
+                    placeholder='enter text here'
+                    onChange={props.handleChangeText}
+                />
+                <button onClick={()=> props.handleDisplayUpdate(props.newUsername)}>
+                    click to submit
+                </button>
+            </div>
+        </>
+    )
+}
+
+/*
+    react.js.context;
+
+    pattern a; class based, x
+    pattern b; function based, 
+    pattern c; context within its own file. 
+    pattern d; context from within its own file passing down state.
+*/
+//context file
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
+//'./index.js' file
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {Context} from './contextfile'
+ReactDOM.render(
+    <Context.Provider value={'context user interface development'}>
+        <Root/>
+    </Context.Provider>,
+    document.getElementById.getElementById('root')
+)
+
+//'./root' file
+import React from 'react'
+import UiComponent from './uicomponent'
+export default function Root(){
+    return(
+        <UiComponent/>
+    )
+}
+
+//'./uicomponent' file
+export default class UiComponent extends Component{
+    static contextType = Context
+    render(){
+        const {contextData} = this.context
+        return(
+            <>
+                <h1>
+                    development type; {contextData}
+                </h1>
+            </>
+        )
+    }
+}
+
+//context pattern b; function based context.
+import React from 'react'
+const Context = React.createContext()
+export default Context
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {Context} from './context'
+ReactDOM.render(
+    <Context.Provider>
+        <Root/>
+    </Context.Provider>,
+    document.getElementById('root')
+)
+
+// React Hooks; hook into lifecycle of component using functional components,
+// no need to use class based components or lcm
+// improves readability and organization of components.
+//can create custom hooks to use on components.
+
+/*
+useState() pattern a,
+returns array = function that contains an array.
+nust use array destrcucturing to access useState() value
+to dismiss console error.
+*/
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElemenyById('root')
+)
+
+import React, {useState} from 'react'
+export default function Root(){
+    const [userInterface, /* apply function here */] = useState('user interface development')
+    return(
+        <>
+            <h1>
+                Software Engineering Type; <span style={{color: 'red'}}> {userInterface}</span>
+            </h1>
+        </>
+    )
+}
+
+//functional component using useState() hook.
+import React, {count} from 'react'
+
+export default function Counter() {
+    const [count] = useState(0)
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={}>
+                Click to increment
+            </button>
+        </div>
+    )
+}
+
+/*
+    react functional component creating a function within hook.
+*/
+import React, {useState} from 'react'
+
+export default function Count() {
+    //array -> [element/value, function] = hook(argument)
+    const [count, setCount] = useState(0)
+
+    function increment(){
+        setCount(prevCount => prevCount + 1)
+    }
+
+    function decrement(){
+        setCount(prevCount => prevCount - 1)
+    }
+
+    return (
+        <div>
+            <h1>{count}</h1>
+            <hr/>
+            <button onClick={increment}>
+                Increment
+            </button>
+            <br/>
+            <button onClick={decrement}>
+                Decrement
+            </button>
+        </div>
+    )
+}
+
+
+import React, {useState} from 'react'
+
+export default function Root() {
+    //array -> [element/value, function] = hook(argument)
+    const [answer, setAnswer] = useState('No')
+    
+    //can set new state for different data
+
+    function advance(){
+        setAnswer(prevAnswer => prevAnswer = 'Yes')
+    }
+
+    function revert(){
+        setAnswer(prevAnswer => prevAnswer = 'No')
+    }
+
+    return (
+        <div>
+            {/* starts as 'No' */}
+            <h1>{answer}</h1>
+            <br/>
+            <button onClick={advance}>
+                Click for 'Yes'
+            </button>
+            <br/>
+            <button onClick={revert}>
+                Click for 'No'
+            </button>
+        </div>
+    )
+}
+
+
+
+
+/*
+    useState() changing more complex state.
+    react.js ui that stores a name and display it to 
+    browser.
+*/
+
+import React, {useState} from 'react'
+
+export default function reactNotesIndex() {
+    const [inputData, setInputData] = useState({
+        firstName:'',
+        lastName:''
+    })
+ 
+    const [contactsData, setContactsData] = useState([])
+
+    //method that changes form field text
+    function handleChange(event){
+        const {name, value} = event.target
+        
+        setInputData(
+            prevInputData => (
+
+                {...prevInputData, [name]: value}
+
+            )
+        )
+    }
+
+    //method that submits form field text
+    function handleSubmit(event){
+        event.preventDefault()
+
+        setContactsData(
+            prevContacts => (
+
+                [...prevContacts, inputData]
+
+            )
+        )
+    }
+    
+
+    const contacts = contactsData.map(
+        contact =>
+            <h2 key={contact.firstName + contact.lastName}>
+                {contact.firstName} {contact.lastName}
+            </h2>
+    )
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    placeholder='first name'
+                    type="text"
+                    name='firstName'
+                    value={inputData.firstName}
+                    onChange={handleChange}
+                />
+                <input 
+                    placeholder='last name'
+                    type="text"
+                    name='lastName'
+                    value={inputData.lastName}
+                    onChange={handleChange}
+                />
+                <button>Submit</button>
+            </form>
+            {contacts}
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

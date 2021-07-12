@@ -1,0 +1,75 @@
+/* body{
+    background-color: purple;
+    margin: 0 auto;
+}
+#landing-main{
+    border:solid 10px yellow;
+}
+#first-heading{
+    color:white;
+    text-align:center;
+    font-size: 48px;
+}
+#second-heading{
+    color:white;
+    text-align:center;
+    font-size: 24px;
+}
+#landing-div{
+    border: solid 10px white;
+    margin:10px;
+}
+.landing-form{
+    padding:50px;
+}
+#landing-field{
+    background-color: royalblue;
+} */
+
+/* 
+css is based on property-value pairs.
+property; what we change
+value; what we want to change the property to.
+
+in-line/block css style; putting
+css style within the html file itself
+rather than within its own file.
+*/
+body{
+    font-family:serif;
+    color:red;
+}
+h1 { 
+    font-size: 120px;
+}
+
+h2 {
+    font-size: 48px;
+    background-color:navy;
+    /* margin-left:100px;
+    margin-right:75px;
+    margin-top:25px;
+    margin-right:50px; */
+    text-align: center;
+    /*h2 color style will override its original styling*/
+    color:yellow;
+    /* shorthand margin */
+    /* margin:50px 200px 50px 75px; */
+    /*shorthand margin for all sides */
+    margin:50px;
+}
+
+#jsx-p{
+    background-color: indigo;
+    color:white;
+    width:400px;
+    height:200px;
+}
+
+
+
+
+
+
+
+
