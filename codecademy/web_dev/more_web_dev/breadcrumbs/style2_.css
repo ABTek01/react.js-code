@@ -1,0 +1,26 @@
+*{
+    font-size: 32px;
+}
+.breadcrumb li{
+    display:inline;
+}
+
+.breadcrumb li+li::before{
+    padding:10px;
+    content: ">";
+}
+
+.breadcrumb a{
+    text-decoration: none;
+}
+
+.breadcrumb a:hover{
+    color:red;
+}
+
+.breadcrumb a:active, a:visited{
+    color:blue;
+}
+
+
+

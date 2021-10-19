@@ -1516,7 +1516,7 @@ function Component_1a(){
         </div>
     )
 }
-export default Component_1
+export default Component_1a
 
 //moving components to their own file.
 //render page 
@@ -1863,7 +1863,6 @@ function Root(){
             <DataComponent_2
                 dataObj={{data_2: 'second type data'}}
             />
-
         </div>
     )
 }
@@ -14761,14 +14760,15 @@ Parent.Comsumer(childComponent)
 //counter app.
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Root from './root'
+import App from './app'
 ReactDOM.render(
-    <Root/>,
+    <App/>,
     document.getElementById('root')
 )
+
 import React, { Component } from 'react'
 import Child from './child'
-export default class Root extends Component {
+export default class App extends Component {
     state = {
         count = 0
     }
@@ -14798,24 +14798,28 @@ import React,{memo} from 'react'
 import App from './app'
 import NewChild from './newchild'
 
-export default memo(function Child(props) {
-    return (
-        <div>
-            <h1>Child Component Rendered.</h1>
-            <h1>{props.count}</h1>
-            <NewChild/>
-        </div>
-    )
-})
+export default memo(
+    function Child(props) {
+        return (
+            <div>
+                <h1>Child Component Rendered.</h1>
+                <h1>{props.count}</h1>
+                <NewChild/>
+            </div>
+        )
+    }
+)
 
 import React from 'react'
-export default React.memo(function NewCild(){
-    return (
-        <div>
-            <h1>True; Chached; No re-render</h1>
-        </div>
-    )
-})
+export default React.memo(
+    function NewCild(){
+        return (
+            <div>
+                <h1>True; Chached; No re-render</h1>
+            </div>
+        )
+    }
+)
 
 /*
 React.memo() with HOCs
@@ -14961,7 +14965,7 @@ ReactDOM.render(
 //ThemeContext is now an object that contains components as properties
 //need to provide value={} prop to be passed down.
 
-//ThemeContext.js file
+//themecontext.js file
 import React from 'react'
 const ThemeContext = React.createContext()
 const {Provider, Consumer} = ThemeContext
@@ -14970,8 +14974,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
 import ThemeContext from './themecontext'
-
-
 ReactDOM.render(
     <Provider value={'data'}>
         <Root/>
@@ -15091,6 +15093,7 @@ export default class Header extends Component {
 Header.contextType = ThemeContext
 
 import React, { PureComponent } from 'react'
+import ThemeContext from './themecontext'
 
 export default class Section extends PureComponent {
     render() {
@@ -15107,6 +15110,11 @@ export default class Section extends PureComponent {
 }
 Section.contextType = ThemeContext
 
+//'./themecontext' file
+import React from 'react'
+const ThemeContext = React.createContext()
+export default ThemeContext
+
 //React.context, contextType
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -15119,10 +15127,6 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-//'./themecontext' file
-import React from 'react'
-const ThemeContext = React.createContext()
-export default ThemeContext
 
 //Root component
 import React from 'react'
@@ -15334,7 +15338,7 @@ export default function Root(){
 
 //'./extendedlogic'/logic component
 import React, { PureComponent } from 'react'
-
+import Context from './context'
 export default class Logic extends PureComponent {
     state = {
         on:false
@@ -15362,6 +15366,7 @@ export default class Logic extends PureComponent {
         )
     }
 }
+
 export default Logic
 
 //'.usernameui' component
@@ -15466,6 +15471,7 @@ export default function UiChild(props){
     )
 }
 
+//////////////////////////////////////////////////////////////
 //create instance of Context.Consumer of passed down data.
 import React from 'react'
 const Context = React.createContext()
@@ -15585,8 +15591,8 @@ export default Root
 import React, {Component} from 'react'
 import {ContextConsumer} from './contextprovider'
 
-export default class ComponentA extends Component {
-    render() {
+export default class ComponentA extends Component{
+    render(){
         return (
             <ContextConsumer>
                 {
@@ -15652,6 +15658,7 @@ export default function Root(){
 //'./childcomponentA' file; pattern a; class based.
 import React,{Component} from 'react'
 import Context from './context'
+
 export default class ChildComponentA extends Component{
     static contextType = Context
     render(){
@@ -15695,7 +15702,7 @@ const Context = React.createContext()
 individual context-provider file.
 */
 const {Provider, Consumer} = React.createContext()
-class ContextProvider extends Component{
+class ContextProvider extends ContextProvider{
     render(){
         return(
             <Provider value={'context data provided'}>
@@ -15765,22 +15772,7 @@ export default function ComponentB(){
     )
 }
 
-//excercise; changing/updating react.js context with state.
-//counter application
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Root from './root'
-import {ContextProvider} from ',/contextprovider'
-ReactDOM.render(
-    <ContextProvider>
-        <Root/>
-    </ContextProvider>,
-    document.getElementById('root')
-)
-
-
-
-
+///////////////////////////////////////////////////
 import React from 'react'
 const {Provider, Consumer} = React.createContext()
 class ContextProvider extends Component{
@@ -15810,6 +15802,20 @@ class ContextProvider extends Component{
     }
 }
 export {ContextProvider, Consumer as ContextConsumer}
+
+//excercise; changing/updating react.js context with state.
+//counter application
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from ',/contextprovider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
 
 //'./root' file
 import React from 'react'
@@ -17873,31 +17879,63 @@ Key!
     * 
     * React.Context patterns; Context.State pass down
     * Context.Notation/Render Props pass down.
+    * 
+    * useState()
+    * 
+    * useEffect() replaces; 
+    * 
+    
+
+// componentDidMount()
+// componentDidUpdate()
+// componentWillUnmount()
+
+useEffect() main use;
+Side effects?;
+
+// Network request
+// Manual DOM manipulation
+// Event listeners or timeouts and intervals
+
+//main use of class components is for state and lifecycle methods
+
+useEffect() 
+functionality;
+every time the component renders, useEffect() is called to perform
+an action brought in from outside the application or virtual dom.
+
+useEffect takes in a callback function and an array as parameters.
+variables that may change are stored within the array and are watched so 
+useeffect(()=>{}, []) can perform actions on them.
+if there is no array variable argument, useEffect(()=>{},[]) and internal code
+will only run once.
+
+
+// React Hooks; hook into lifecycle of component using functional components,
+// no need to use class based components or lcm
+// improves readability and organization of components.
+//can create custom hooks to use on components.
+useState() pattern a,
+returns array = function that contains an array.
+must use array destrcucturing to access useState() value
+to dismiss console error.
+
+sideEfects with useEffect() do not need clean up LCM.
+
+do need clean up LCM;
+    // document.addEventListener(...)
+    // use of setInterval(()=>{}, 1000) function
+    // subscription
+
+solution 1;
+can call useEffect(()=>{}, [variable]) twice using an empty array 
+and adding the function()/action within first instance of useEffect(()=>{}, [])
+
+solution 2; 
+within first instance of useEffect()
+return a function that takes in an Id from 
+the outside action to clean it up.
 */
-
-//render file.
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Root from './root'
-import {ContextProvider} from './contextprovider'
-ReactDOM.render(
-    <ContextProvider>
-        <Root/>
-    </ContextProvider>,
-    document.getElementById('root')
-)
-
-//'./root/'
-import React from 'react'
-import ComponentUi from './componentui'
-export default function Root(){
-    return(
-        <>
-            <ComponentUi/>
-        </>
-    )
-}
-
 //'./contexprovider'
 import React, {Component} from 'react'
 const {Provider, Consumer} = React.createContext()
@@ -17929,6 +17967,31 @@ class ContextProvider extends Component{
     }
 }
 export {ContextProvider, Consumer as ContextConsumer}
+
+//render file.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextprovider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+//'./root/'
+import React from 'react'
+import ComponentUi from './componentui'
+export default function Root(){
+    return(
+        <>
+            <ComponentUi/>
+        </>
+    )
+}
+
+
 
 //'./componentui file'
 import React from 'react'
@@ -18131,7 +18194,7 @@ export default function Root(){
 
 //'./childcompnent'
 import React from 'react'
-import Context from './context'
+import {Context} from './context'
 export default function ChildComponent(){
     return(
         <>
@@ -18226,33 +18289,11 @@ export default function ChildComponent(){
 //state and method provided by CONTEXT.STATE
 //state within context file affects the state provided within another component.
 //'./index.js'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Root from './root'
-import {ContextProvider} from './contextProvider'
-ReactDOM.render(
-    <ContextProvider>
-        <Root/>
-    </ContextProvider>,
-    document.getElementById('root')
-)
-
-import React from 'react'
-import ChildComponent from './childComponent'
-export default function Root(props) {
-    return (
-        <div>
-            <ChildComponent/>
-        </div>
-    )
-}
-
-
-
 
 //'./contextprovider' component with state
 import React, {Component} from 'react'
 const {Provider, Consumer} = React.createContext()
+
 class ContextProvider extends Component{
     state = {
         userName:'cyberman'
@@ -18278,6 +18319,29 @@ class ContextProvider extends Component{
 }
 export {ContextProvider, Consumer as ContextConsumer}
 
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextProvider'
+
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import ChildComponent from './childComponent'
+
+export default function Root(props) {
+    return (
+        <div>
+            <ChildComponent/>
+        </div>
+    )
+}
+
 
 //'./childComponent'
 import React from 'react'
@@ -18286,6 +18350,10 @@ import {ContextConsumer} from './contextProvider'
 export default class ChildComponent extends Component{
     state = {
         newUserName:''
+    }
+
+    handleUpdate=(newUsername)=>{
+        this.setState({newUsername})
     }
 
     handleChangeText=(event)=>{
@@ -18345,7 +18413,7 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-'./root'
+//'./root'
 import React from 'react'
 import UiComponent from './uicomponent'
 export default function Root(){
@@ -18354,8 +18422,10 @@ export default function Root(){
     )
 }
 
+//'./contextProvider' file.
 import React, {Component} from 'react'
 const {Provider, Consumer} = React.createContext()
+
 class ContextProvider extends Component{
     state = {
         // on:false,
@@ -18371,7 +18441,11 @@ class ContextProvider extends Component{
     //method that allows text to be changed.
     handleChangeText=(event)=>{
         const {name, value} = event.target
-        this.setState({[name]: value})
+        this.setState(
+            {
+                [name]: value
+            }
+        )
     }
 
     render(){
@@ -18694,24 +18768,6 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-import React from 'react'
-import Logic from './logic'
-export default function Root(props){
-    return(
-        <>
-            <Logic
-                render={
-                    ({username})=>(
-                        <div>
-                            <h1>{props.username}</h1>
-                        </div>
-                    )
-                }
-            />
-        </>
-    )
-}
-
 //logic component
 import React, {Component} from 'react'
 export default class Logic extends Component{
@@ -18728,8 +18784,28 @@ export default class Logic extends Component{
     }
 }
 
+import React from 'react'
+import Logic from './logic'
+export default function Root(){
+    return(
+        <>
+            <Logic
+                render={
+                    ({username})=>(
+                        <div>
+                            <h1>{username}</h1>
+                        </div>
+                    )
+                }
+            />
+        </>
+    )
+}
 
-//pattern d; render props/ui from within root importr logic component
+
+
+
+//pattern d; render props/ui from within root import logic component
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './root'
@@ -18867,7 +18943,7 @@ class Logic extends Component{
     }
 
     render(){
-        const {username, newUsername}
+        const {username, newUsername} = this.state
         return(
             this.props.children({
                 username,
@@ -18964,22 +19040,52 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {Context} from './context'
 ReactDOM.render(
-    <Context.Provider>
+    <Context.Provider value={1}>
         <Root/>
     </Context.Provider>,
     document.getElementById('root')
 )
 
+import React from 'react'
+import {Context} from './context'
+export default function Root() {
+    let contextNumber = Context
+    return (
+        <div>
+            <h1>{contextNumber}</h1>
+        </div>
+    )
+}
+
+
+
+/*
 // React Hooks; hook into lifecycle of component using functional components,
 // no need to use class based components or lcm
 // improves readability and organization of components.
 //can create custom hooks to use on components.
-
-/*
 useState() pattern a,
 returns array = function that contains an array.
-nust use array destrcucturing to access useState() value
+must use array destrcucturing to access useState() value
 to dismiss console error.
+
+sideEfects with useEffect() do not need clean up LCM.
+
+do need clean up LCM;
+    // document.addEventListener(...)
+    // use of setInterval(()=>{}, 1000) function
+    // subscription
+
+solution 1;
+can call useEffect(()=>{}, [variable]) twice using an empty array 
+and adding the function()/action within first instance of useEffect(()=>{}, [])
+
+solution 2; 
+within first instance of useEffect()
+return a function that takes in an Id from 
+the outside action to clean it up.
+
+
 */
 
 import React from 'react'
@@ -19003,14 +19109,23 @@ export default function Root(){
 }
 
 //functional component using useState() hook.
-import React, {count} from 'react'
+import React, {useState} from 'react'
 
-export default function Counter() {
+export default function Counter(){
     const [count] = useState(0)
+
+    //function that invokes hook method and manages the count state variable.
+    function handleIncrement(){
+        setCount(
+            prevCount => prevCount + 1
+        )
+    }
+
     return (
         <div>
             <h1>{count}</h1>
-            <button onClick={}>
+            {/*button click invokes incrementing function/method. */}
+            <button onClick={handleIncrement}>
                 Click to increment
             </button>
         </div>
@@ -19018,7 +19133,8 @@ export default function Counter() {
 }
 
 /*
-    react functional component creating a function within hook.
+    react functional component; managing state with hook.
+    simple counter application.
 */
 import React, {useState} from 'react'
 
@@ -19058,6 +19174,7 @@ export default function Root() {
     
     //can set new state for different data
 
+    //methods that toggle strings.
     function advance(){
         setAnswer(prevAnswer => prevAnswer = 'Yes')
     }
@@ -19090,10 +19207,12 @@ export default function Root() {
     react.js ui that stores a name and display it to 
     browser.
 */
+//render files needed.
 
 import React, {useState} from 'react'
 
-export default function reactNotesIndex() {
+export default function ManageUsers(){
+    //useState contains a built in array and returns data from within the array with array destructuring.
     const [inputData, setInputData] = useState({
         firstName:'',
         lastName:''
@@ -19104,7 +19223,6 @@ export default function reactNotesIndex() {
     //method that changes form field text
     function handleChange(event){
         const {name, value} = event.target
-        
         setInputData(
             prevInputData => (
 
@@ -19117,12 +19235,11 @@ export default function reactNotesIndex() {
     //method that submits form field text
     function handleSubmit(event){
         event.preventDefault()
-
         setContactsData(
             prevContacts => (
 
+                //
                 [...prevContacts, inputData]
-
             )
         )
     }
@@ -19158,6 +19275,1044 @@ export default function reactNotesIndex() {
         </div>
     )
 }
+
+
+//react.js useState() pattern c
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React, {useState} from 'react'
+export default function Root(){
+    const [inputData, setInputData] = useState({
+        // state will change/update when text is entered.
+        devType:'',
+        devLanguage:''
+    })
+    const [contactsData, setContactsData] = useState([])
+
+    //method that allows form field text to change
+    function handleInputData(event){
+        const {name, value} = event.target
+        setInputData(
+            prevInputData => (
+                {...prevInputData, [name]: value}
+            )
+        )
+    }
+
+    //method that stores inputData
+    function handleContactsData(event){
+        event.preventDefault()
+        setContactsData(
+            prevContactsData =>(
+                [...prevContactsData, inputData]
+            )
+        )
+    }
+
+    const contacts = contactsData.map(
+        contact=>
+            <h1 key={contact.devType + contact.devLanguage}>
+                {contact.devType} {contact.devLanguage}
+            </h1>
+    )
+
+    return(
+        <div>
+            <form onSubmit={handleContactsData}>
+                <input 
+                    type="text"
+                    name='devType'
+                    value={inputData.devType}
+                    placeholder='enter text here'
+                    onChange={handleInputData}
+                />
+                <br/>
+                <input 
+                    type="text"
+                    name='devLanguage'
+                    value={inputData.devLanguage}
+                    placeholder='enter text here'
+                    onChange={handleInputData}
+                />
+                <button>
+                    Submit
+                </button>
+            </form>
+            {contacts}
+        </div>
+    )
+}
+
+/*
+useEffect() replaces; 
+
+// componentDidMount()
+// componentDidUpdate()
+// componentWillUnmount()
+
+useEffect() main use;
+Side effects?;
+
+// Network request
+// Manual DOM manipulation
+// Event listeners or timeouts and intervals
+
+//main use of class components is for state and lifecycle methods
+
+useEffect() 
+functionality;
+every time the component renders, useEffect() is called to perform
+an action brought in from outside the application or virtual dom.
+
+useEffect takes in a callback function and an array as parameters.
+variables that may change are stored within the array and are watched so 
+useeffect(()=>{}, []) can perform actions on them.
+if there is no array variable argument, useEffect(()=>{},[]) and internal code
+will only run once.
+
+*/
+
+//counter application that uses useEffect(()=>{}, [variable])
+import React, {useState, useEffect} from 'react'
+// import randomcolor from 'randomcolor'
+
+export default function Counter(){
+    const [count, setCount] = useState(0)
+    // const [color, setColor] = useState('')
+
+    // function increment(){
+    //     setCount(
+    //         prevCount =>(
+    //             prevCount + 1
+    //         )
+    //     )
+    // }
+
+    // function decrement(){
+    //     setCount(
+    //         prevCount =>(
+    //             prevCount - 1
+    //         )
+    //     )
+    // }
+
+    useEffect(()=>{
+        const sideEffect = setInterval(() => {
+            setCount(prevCount=> prevCount + 1)
+        }, 1000);
+
+        return ()=> clearInterval(sideEffect)
+    }, [])
+
+    // useEffect(()=>{
+    //     setColor(randomcolor())
+    // },[color])
+
+    return(
+        <div>
+            <h1>{count}</h1>
+        </div>
+    )
+}
+
+/*
+    useState();
+    counter application 
+    that increments a color every interval.
+*/
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import Counter from './counter'
+export default function Root(){
+    return(
+        <>
+            <Counter/>
+        </>
+    )
+}
+
+import React, {useState} from 'react'
+
+export default function Counter() {
+    const [count, setCount] = useState(0)
+
+    function increment(){
+        setCount(
+            prevCount => (
+                prevCount + 1
+            )
+        )
+    }
+
+    function decrement(){
+        setCount(
+            prevCount => (
+                prevCount - 1
+            )
+        )
+    }
+
+
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={increment}>
+                Increment
+            </button>
+            <br/>
+            <button onClick={decrement}>
+                Decrement
+            </button>
+        </div>
+    )
+}
+
+//useState
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import ComponentA from './componentA'
+import ComponentB from './componentB'
+export default function Root(){
+    return (
+        <div>
+            <ComponentA/>
+            <br/>
+            <ComponentB/>
+        </div>
+    )
+}
+
+import React, {useState} from 'react'
+export default function UiComponent(){
+    const [answer, setAnswer] = useState('Yes')
+
+    function handleAnswer(){
+        setAnswer(
+            prevAnswer => prevAnswer = 'No'
+        )
+    }
+
+    return (
+        <div>
+            <h1>{answer}</h1>
+            <button onClick={handleAnswer}>
+                Toggle Answer
+            </button>
+        </div>
+    )
+}
+
+import React, {useState} from 'react'
+export default function ComponentB(){
+    const [inputData, setInputData] = useState({
+        devType:'',
+        language:''
+    })
+
+    const [devData, setDevData] = useState([])
+
+    //method that allows text to change
+    function handleInputData(event){
+        const {name, value} = event.target
+        setInputData(
+            prevInput => (
+                {...prevInput, [name]:value}
+            )
+        )
+    }
+
+    //method that allows button to submit data
+    function handleDevData(event){
+        event.preventDefault()
+        setDevData(
+            prevDevData => (
+                [...prevDevData, inputData]
+            )
+        )
+    }
+
+    const developer = devData.map(
+        data => (
+            //key={} notifies react when a list element has been changed/updated/removed.
+            //data will be wrapped within an h1 jsx element
+            <h1 key={data.devType + data.language}>
+                {data.devType} {data.language}
+            </h1>
+        )
+    )
+
+    return (
+        <div>
+            {/* method on form submits data to browser */}
+            <form onSubmit={handleDevData}>
+                <input 
+                    type="text" //type of input
+                    name='devType' //uses the name saved within state
+                    value={inputData.devType} //value to be saved in memory is from within state array.obj prop.
+                    placeholder='enter text here'
+                    onChange={handleInputData}//method used to id all data and allow it to be displayed.
+                />
+                <input 
+                    type="text"
+                    name='language'
+                    value={inputData.language}
+                    placeholder='enter text here'
+                    onChange={handleInputData}
+                />
+                {/*placing array data into the browser from being mapped/mutated*/}
+                {developer} {/*modified data stored within memory and browser.*/}
+            </form>
+        </div>
+    )
+}
+
+//counter application; using inline functions.
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React, {useState} from 'react'
+
+export default function Root() {
+    const [count, setCount] = useSate(0)
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={()=> setCount(prevCount=> prevCount + 1)}>
+                Increment
+            </button>
+            <button onClick={()=> setCount(prevCount=> prevCount - 1)}>
+                Decrement
+            </button>
+        </div>
+    )
+}
+
+//useState; managing more complex state(forms).
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React,{useState} from 'react'
+export default function Root(){
+    const [inputData, setInput] = useState({
+        firstName:'',
+        lastName:''
+    })
+
+    const [contactsData, setContacts] = useState([])
+
+
+    //function that saves data and displays it to browser.
+    function handleSubmitData(event){
+        event.preventDefault()
+        setContacts(
+            prevContactsData=> (
+                [...prevContactsData, inputData]
+            )
+        )
+    }
+
+    //function that live updates state text.
+    function handleChangeData(event){
+        const {name, value} = event.target
+        /*
+        works similar to 
+        this.state = {
+            on: true
+        }
+        handleToggle=()=>{
+            this.setState(prevState=>{
+                return this.state = {
+                    prevState: !prevState.on
+                }
+            })
+        }*/
+        setInput(
+            prevInput=> (
+                {...prevInput, [name]: value}
+            )
+        )
+    }
+
+
+    const contacts = contactsData.map(
+        contact=> (
+            <h1 key={contact.firstName + contact.lastName}>
+                {contact.firstName} {contact.lastName}
+            </h1>
+        )
+    )
+
+    return(
+        <>
+            <form onSubmit={handleSubmitData}>
+                <input 
+                    type="text" 
+                    name='firsName'
+                    value={inputData.firstName}
+                    placeholder='first name'
+                    onChange={handleChangeData}
+                />
+                <input 
+                    type="text" 
+                    name='lastName'
+                    value={inputData.lastName}
+                    placeholder='last name'
+                    onChange={handleInputData}
+                />
+            </form>
+            {/*actual data being to display.*/}
+            {contacts}
+        </>
+    )
+}
+
+
+
+
+//useEffect
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React from 'react'
+import ComponentA from './componentA'
+export default function Root(){
+    return (
+        <div>
+            <ComponentA/>
+        </div>
+    )
+}
+
+import React, {useState, useEffect} from 'react'
+import randomcolor from 'randomcolor'
+
+export default function ComponentA(){
+    const [count, setCount] = useState(0)
+
+
+    //can call useEffect twice with empty array to prevent new multiple intervals and re-renders.
+    //needed to run only once.
+    useEffect(() => {
+        const effectId = setInterval(()=>{
+            setCount(prevCount => prevCount + 1)
+        }, 1000)
+        //ends interval; returned function acts as componentDidUnmount(){}/cleans up side-effect when component unmounts.
+        return () => clearInterval(effectId)
+    }, []) 
+
+    
+    useEffect(() => {
+        setColor(randomColor())
+    }, [count])
+
+    return (
+        <div>
+            <h1 style={{color: color}}>
+                {count}
+            </h1>
+        </div>
+    )
+}
+
+
+
+/*
+    useRef();
+    The useRef() hook gives us a way 
+    to retain values for the entire 
+    lifespan of the component.
+
+    useRef returns a mutable ref object 
+    whose .current property is initialized 
+    to the passed argument (initialValue). 
+    The returned object will persist 
+    for the full lifetime of the component.
+
+    Essentially, useRef is like a “box” that 
+    can hold a mutable value in its .current 
+    property.
+*/
+//useRef example
+import React from 'react'
+import ReactDOM from 'react-dom'
+ReactDOM.render(
+    <Root/>,
+    document.getElementById('root')
+)
+
+import React, {useState, useRef} from 'react'
+import React from 'react'
+
+export default function Root() {
+    //initializing a todo as an indvidiual empty string state value.
+    //method that activates/set the a new nexTodoValue state.
+    const [nexTodoValue, setNewTodoValue] = useState('')
+
+    //a state array that hold data with every render.
+    //method that actiavates/sets the array on every render.
+    const [todoList, setTodoList] = useState([])
+
+    //reference hook to a DOM node in .current state containing mutable data/value.
+    const inputRef = useRef(null)
+
+    //method that allows mutable values to change when typing.
+    function handleChange(event){
+
+        /*
+            to update name and value texts
+            const {name, value} = event.target
+            setNewTodoValue(prevTodo =>(
+                [...prevTodo, [name]: value]
+            )
+        )
+        */
+        setNewTodoValue(event.target.value)
+    }
+
+    //function that posts todos to state array upon click.
+    function addTodo(event){
+        //prevent DOM event reload.
+        event.preventDefault()
+        //the method that manages state array todo list manages previous state.
+        setTodoList(prevTodoList => [...prevTodoList, nexTodoValue])
+        //reseting newTodoValue to an empty string.
+        setNewTodoValue('')
+        //allowing DOM node to maintain mutable value when in .current focus.
+        inputRef.current.focus()
+    }
+
+    //creating a new/cloned array of todos array within state array and jsx element.
+    const todos = todoList.map(todo=> 
+        <p key={todo}>
+            {todo}
+        </p>
+    )
+
+    return (
+        <div>
+            <form>
+                <input
+                    ref={inputRef}
+                    type="text"
+                    name='todo' 
+                    value={NewTodoValue}
+                    onChage={handleChange}
+                />
+                <button onClick={addTodo}> 
+                    Add Todo Item
+                </button>
+            </form>
+            {todos}
+        </div>
+    )
+}
+
+/*
+    useContext;
+    useContext hook to refactor application logic.
+*/
+//'./themeContextProvider'/ logic file.
+import React, { Component } from 'react'
+const ThemeContext = React.createContext()
+const {Provider, Consumer} = ThemeContext
+
+export default class ThemeContextProvider extends Component {
+    state = {
+        theme:'dark'
+    }
+
+    toggleTheme=()=>{
+        this.setState(prevState=>{
+            return {
+                prevState: theme === 'dark'?'light':'dark'
+            }
+        })
+    }
+
+    render() {
+        const {theme} = this.state
+        return (
+            <div>
+                <Provider
+                        value={{
+                            theme,
+                            toggleTheme:this.toggleTheme
+                        }}>
+                    {this.props.children}
+                </Provider>
+            </div>
+        )
+    }
+}
+export {ThemeContextProvider, ThemeContext}
+
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+//named import
+import {ThemeContextProvider} from './themeContextProvider'
+ReactDOM.render(
+    <ThemeContextProvider>
+        <Root/>
+    </ThemeContextProvider>,
+        document.getElemenyById('root')
+)
+
+import React from 'react'
+import Header from './header'
+import Button from './button'
+export default function Root() {
+    return (
+        <div>
+            <Header/>
+            <Button/>
+        </div>
+    )
+}
+
+
+//'./header'
+import React, {useContext} from 'react'
+import {ThemeContext} from './themeContextProvider'
+
+export default function Header(){
+    const {theme} = useContext(ThemeContext)
+    return (
+        <div>
+            <header 
+                className={`${theme}-theme`}>
+                {theme === 'light' ? 'Light':'Dark'} Theme
+            </header>
+        </div>
+    )
+}
+
+//'./button'
+import React, {useContext} from 'react'
+import {ThemeContext} from './themeContextProvider'
+
+export default function Button(){
+    const {theme, toggleTheme} = useContext(ThemeContext)
+    return (
+        <div>
+            <button 
+                //imported className theme prop
+                className={`${theme}-theme`} 
+                //imported eventListener toggle method prop that switches the theme.
+                onClick={toggleTheme}>
+                    Switch Theme
+            </button>
+        </div>
+    )
+}
+
+/*
+    context, no hook;
+    create an application that toggles a theme.
+*/
+
+//'./themeContextProvider
+import React,{Component} from 'react'
+const {Provider, Consumer} = React.createContext()
+
+export default class ThemeContextProvider extends Component{
+    state = {
+        theme:'dark'
+    }
+
+    toggleTheme =()=>{
+        this.setState(prevTheme=>{
+            return this.state = {
+                theme: prevTheme.theme === 'dark'?'light':'dark'
+            }
+        })
+    }
+
+    render(){
+        const {theme} = this.state
+        return(
+            <>
+                <Provider value={{
+                    theme,
+                    toggleTheme:this.toggleTheme
+                }}>
+                    {this.props.children}
+                </Provider>
+            </>
+        )
+    }
+
+}
+export {ThemeContextProvider, Consumer as ThemeContextConsumer}
+
+//render file
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+//named exports go inside curly brackets
+import {ThemeContextProvider} from './themeContextProvider'
+ReactDOM.render(
+    <ThemeContextProvider>
+        <Root/>
+    </ThemeContextProvider>,
+    document.getElementById('root')
+)
+
+
+//'./header'
+import React from 'react'
+import {ThemeContextConsumer} from './themeContextProvider'
+
+//render props pattern
+export default function Header(props){
+    return (
+        <ThemeContextConsumer>
+            {
+                context=>(
+                    <header className={`${context.theme}-theme`}>
+                        <h1>
+                            {context.theme === 'light'?'Light':'Dark'}
+                            Theme
+                        </h1>
+                    </header>
+                )
+            }
+        </ThemeContextConsumer>
+    )
+}
+
+//complete without looking at notes.
+//'./button' component
+import React from 'react'
+import {ThemeContextConsumer} from './themeContextProvider'
+
+export default function Button(props){
+    return (
+        <ThemeContextConsumer>
+            {
+                context=>(
+                    <button 
+                        onClick={context.toggleTheme} 
+                        className={`${context.theme}-theme`}>
+                        Switch Theme
+                    </button>
+                )
+            }
+        </ThemeContextConsumer>
+    )
+}
+
+
+/*
+    create an application that updates and submits user information 
+    to the browser.
+*/
+import React,{Component} from 'react'
+const {Provider, Consumer} = React.createContext()
+
+export default class ContextProvider extends Component{
+    state = {
+        userName:'',
+        newUserName:'user'
+    }
+
+    //method that displays userName to browser
+    handleUserName=(userName)=>{
+        this.setState({userName})
+    }
+
+    //method that changes text
+    handleChangeText=(event)=>{
+        const {name, value} = event.target
+        this.setState(
+            {[name]:value}
+        )
+    }
+
+    render() {
+        const {userName, newUserName} = this.state
+        return (
+            <div>
+                <Provider value={{
+                    userName,
+                    newUserName,
+                    handleUserName:this.handleUserName,
+                    handleChangeText:this.handleChangeText
+                }}>
+                    {this.props.children}
+                </Provider>
+            </div>
+        )
+    }
+}
+
+export {ContextProvider, Consumer as ContextConsumer}
+
+//'render file.'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextProvider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+        document.getElementById('root')
+)
+
+//'./root file'
+import React from 'react'
+import {ContextConsumer} from './contextProvider'
+
+export default function Root(){
+
+    return(
+        <ContextConsumer>
+            {
+                (context) =>(
+                    <main>
+                        <h1>Greetings, {context.userName}</h1>
+                        <input
+                            type='text'
+                            name='newUserName'
+                            value={context.newUserName}
+                            placeholder='enter username'
+                            onChange={context.handleChangeText}
+                        />
+                        <button onClick={()=> context.handleUserName(context.newUserName)}>
+                            Click to submit
+                        </button>
+                    </main>
+                )
+            }
+        </ContextConsumer>
+    )
+}
+
+
+
+/*
+    useContext use hook;
+    create an application that submits user information 
+    to the browser.
+*/
+
+//'./contextProvider'
+import React, {Component} from 'react'
+const Context = React.createContext()
+const {Provider, Consumer} = Context
+
+export default class ContextProvider extends Component{
+    state = {
+        name:'',
+        input:''
+    }
+
+    handleUpdate=(name)=>{
+        this.setState({
+            name
+        })
+    }
+
+    handleChangeText=(event)=>{
+        const {name, value} = event.target
+        this.setState({[name]:value})
+    }
+
+    render(){
+        const {name, input} = this.state
+        return(
+            <Provider value={{
+                name,
+                input,
+                handleUpdate: this.handleUpdate,
+                handleChange: this.handleChangeText
+            }}>
+                {this.props.children}
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Context}
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+import {ContextProvider} from './contextProvider'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+        document.getElementById('root')
+)
+
+import React, {useContext} from 'react'
+import {Context} from './contextProvider'
+
+export default function Root(){
+    const {name, input, handleUpdate, handleChangeText} = useContext(Context)
+    return (
+        <div>
+            <h1>Greetings, {name}</h1>
+            <input
+                type='text'
+                name='input'
+                value={input}
+                placeholder='enter text here'
+                onChange={handleChangeText}
+            />
+            <button onClick={()=> handleUpdate(input)}>
+                Click to submit
+            </button>
+        </div>
+    )
+}
+
+
+
+
+/*
+    test;
+    parent; contextProvider
+    child; useContext() hook;
+    create an application that toggles a name.
+*/
+import React,{Component} from 'react'
+const Context = React.createContext()
+const {Provider, Consumer} = Context
+
+export default class ContextProvider extends Conponent{
+    state = {
+        username: '',
+        input:''
+    }
+
+    handleUpdate=(username)=>{
+        this.setState(prevState=>{
+            return {
+                username
+            }
+        })
+    }
+
+    handleChangeText = (event)=> {
+        const {name, value} = event.target
+        this.setState({[name]: value})
+    }
+
+    render(){
+        const {username, input} = this.state
+        return(
+            <Provider value={{
+                username, 
+                input,
+                handleUpdate: this.handleUpdate,
+                handleChangeText: this.handleChangeText
+            }}>
+            </Provider>
+        )
+    }
+}
+export {ContextProvider, Context}
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './root'
+ReactDOM.render(
+    <ContextProvider>
+        <Root/>
+    </ContextProvider>,
+    document.getElementById('root')
+)
+
+
+import React, {useContext} from 'react'
+import {Context} from './contextPrivider'
+
+export default function Root(){
+    const {username, input, handleUpdate, handleChangeText} = useContext(Context)
+    return(
+        <>
+            {/**/}
+            <header>
+                <h1>Greetings, {username}</h1>
+            </header>
+            <input
+                type= 'text'
+                name='input'
+                value={input}
+                onChange={handleChangeText}
+            />
+            <button onClick={()=> handleUpdate(input)}>
+                Click to sumit
+            </button>
+        </>
+    )
+}
+
+
+/*
+    useState()
+    single component application that toggles username 
+    refactored ContextProvider component to use useState() hook.
+*/
+import React, {useState} from 'react'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

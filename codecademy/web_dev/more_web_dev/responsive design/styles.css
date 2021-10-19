@@ -1,0 +1,123 @@
+*{
+    margin:0 auto;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bolder;
+}
+
+/* body{ 
+} */
+
+#main-header{
+    position: fixed;
+    /* background-color: brown; */
+    color:white;
+    line-height: 80px;
+    margin-bottom: 20px;
+    border-bottom: lightskyblue solid 1.5px;
+    /* border-bottom-right-radius: 55px;
+    border-bottom-left-radius: 55px; */
+    box-shadow: 5px 10px whitesmoke;
+    z-index: 1;
+    height: 100px;
+    width: 100%;
+}
+
+#main-header{
+    background-image: url('./code-lang-img.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    text-align:center;
+    justify-content:center;
+    display:flex;
+    align-items:center;
+}
+
+.content-div{
+    padding-top: 125px;
+    top:100px;
+    border-bottom: black solid 1.5px;
+    overflow:hidden;
+}
+
+/*responsive design*/
+.img-div{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 50%;
+    height:200px;
+    overflow: hidden;
+    /* border:solid brown 5px; */
+}
+
+.img-div img{
+    max-width: 100%;
+    height: auto;
+    display: block;  
+}
+
+#main-header, .content-div{
+    text-align: center;
+}
+
+#main-header h1{
+    font-size: 2em;
+}
+
+.content-div header{
+    font-size: 1.75em;
+    color: black;
+    text-align: center;
+}
+
+.content-div button{
+    margin: 5px;
+    padding: 20px;
+    text-align: center;
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    display: inline-block;  
+    border: solid whitesmoke 0.5px;
+}
+
+.content-div button:hover{
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+.content-div button a{
+    color:black;
+}
+
+
+.content-div a{
+    text-decoration: none;
+}
+
+.container{
+    padding: 10px;
+    text-align: center;
+}
+
+.info-section{
+    display: inline-block;
+    background-color: lightblue;
+    border: solid lightskyblue 0.5px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    justify-content: space-between;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.info-section p{
+    max-width:300px;
+}
+
+ul li{
+    display: inline-block;
+    list-style:none;
+}

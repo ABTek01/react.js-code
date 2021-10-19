@@ -1,0 +1,116 @@
+
+#main-header{
+    text-align: center;
+    background-color: aliceblue;
+    line-height: 100px;
+    height:100px;
+    margin:0 auto;
+}
+
+#main-heading{
+    font-size: 26px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#system-main{
+    border:solid black 2px;
+}
+
+#color-div{
+    margin: 20px;
+}
+
+#color-section-title{
+    text-align: center;
+}
+
+h2{
+    font-size: 26px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: left;
+    padding-left: 11px;
+}
+
+#color-div{
+    text-align: left;
+}
+
+.color, .fonts{
+    border:solid black 2px;
+    padding:5px;
+    margin: 0 auto;
+    text-align: center;
+    height:150px;
+    width: 300px;
+}
+
+#blue, 
+#light-blue, 
+#dark-blue, 
+#font-1, 
+#font-2, 
+#font-3{
+    margin-top: 20px;
+}
+
+#blue, #light-blue, #dark-blue{
+    padding: 5px;
+}
+
+#light-blue{
+    background-color: hsl(195, 53%, 79%);
+    color:hsl(220, 100%, 50%);
+}
+
+#blue{
+    background-color: hsl(220, 100%, 50%);
+    color:white;
+}
+
+#dark-blue{
+    background-color: hsl(235, 100%, 25%);
+    color:blanchedalmond;
+}
+
+#fonts-div{
+    margin: 20px;
+}
+
+/*#fonts-section-title{
+
+} */
+
+.fonts{
+    position: relative;
+    right:37%;
+}
+
+#font1-heading-style{
+    color:red;
+    font-family: 'Roboto Mono', monospace;
+    font-weight:900;
+    font-size:24px;
+    text-decoration: underline;
+}
+
+#font2-heading-style{
+    color:blue;
+    font-family: 'Raleway', sans-serif;
+    font-weight:bolder;
+    font-size:24px;
+}
+
+#font3-heading-style{
+    font-family: 'Oswald', sans-serif;
+    font-weight:bolder;
+    font-size:24px;
+    text-decoration:overline;
+}
+
+
+
+
+
+
+
+
